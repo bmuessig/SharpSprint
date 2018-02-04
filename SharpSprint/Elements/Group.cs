@@ -11,6 +11,11 @@ namespace SharpSprint.Elements
         // Required Parameters
         public List<Entity> Entities { get; private set; }
 
+        public Group(params Entity[] Entities)
+        {
+            this.Entities = new List<Entity>(Entities);
+        }
+
         public bool Read(Token[][] Tokens, ref uint Pointer)
         {
             throw new NotImplementedException();
