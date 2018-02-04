@@ -8,7 +8,7 @@ namespace SharpSprint
 {
     public interface Entity
     {
-        bool Read(Token[] Tokens);
-        bool Write(out Token[] Tokens);
+        bool Read(Token[][] Tokens, ref uint Pointer);
+        bool Write(out Token[][] Tokens);
     }
 }

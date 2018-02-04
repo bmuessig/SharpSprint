@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\TokenWriter.cs" />
     <Compile Include="Primitives\Angle.cs" />
     <Compile Include="Canvas.cs" />
     <Compile Include="Primitives\CoarseAngle.cs" />
@@ -61,7 +62,9 @@
     <Compile Include="Layer.cs" />
     <Compile Include="IO\Parser.cs" />
     <Compile Include="IO\Token.cs" />
+    <Compile Include="Primitives\IntegerAngle.cs" />
     <Compile Include="Primitives\Position.cs" />
+    <Compile Include="Primitives\Rectangle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Primitives\Size.cs" />
   </ItemGroup>

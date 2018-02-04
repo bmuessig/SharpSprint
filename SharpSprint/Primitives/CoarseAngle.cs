@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SharpSprint.Primitives
 {
-    public class CoarseAngle : Angle
+    public struct CoarseAngle : Angle
     {
         public uint Value { get; set; }
 

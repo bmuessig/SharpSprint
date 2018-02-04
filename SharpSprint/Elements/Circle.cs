@@ -23,12 +23,12 @@ namespace SharpSprint.Elements
         public FineAngle Stop { get; set; } // 0
         public bool Fill { get; set; } // False
 
-        public bool Read(Token[] Tokens)
+        public bool Read(Token[][] Tokens, ref uint Pointer)
         {
             throw new NotImplementedException();
         }
         
-        public bool Write(out Token[] Tokens)
+        public bool Write(out Token[][] Tokens)
         {
             throw new NotImplementedException();
         }

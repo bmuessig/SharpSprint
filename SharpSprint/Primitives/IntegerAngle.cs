@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SharpSprint.Primitives
 {
-    public struct FineAngle : Angle
+    public struct IntegerAngle : Angle
     {
         public uint Value { get; set; }
 
@@ -13,14 +13,14 @@ namespace SharpSprint.Primitives
         {
             get
             {
-                return (float)(Value / 1000);
+                return (float)Value;
             }
 
             set
             {
                 if (Value < 0)
                     return;
-                Value = (uint)Math.Round((float)(Value * 1000), 0);
+                Value = (uint)Math.Round((float)Value, 0);
             }
         }
     }
