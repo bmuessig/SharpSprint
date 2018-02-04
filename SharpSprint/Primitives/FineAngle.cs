@@ -24,6 +24,7 @@ namespace SharpSprint.Primitives
         }
 
         public FineAngle(uint Value)
+            : this()
         {
             this.Value = Value;
         }

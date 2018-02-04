@@ -24,6 +24,7 @@ namespace SharpSprint.Primitives
         }
 
         public CoarseAngle(uint Value)
+            : this()
         {
             this.Value = Value;
         }
