@@ -7,7 +7,7 @@ namespace SharpSprint.IO
 {
     public class Compiler
     {
-        public bool CompileBlock(Token[][] Lines, ref ushort Indent, out string Result)
+        public static bool CompileBlock(Token[][] Lines, ref ushort Indent, out string Result)
         {
             StringBuilder sb = new StringBuilder();
             Result = null;
@@ -39,15 +39,31 @@ namespace SharpSprint.IO
             return true;
         }
 
-        public bool CompileLine(Token[] Tokens, ref ushort Indent, out string Result)
+        public static bool CompileLine(Token[] Tokens, ref ushort Indent, out string Result)
         {
             StringBuilder sb = new StringBuilder();
             Result = null;
+
+            // Check for empty lines
+            if (Tokens.Length == 0)
+            {
+                Result = string.Empty;
+                return true;
+            }
+
+            // Handle indent out
+            if (Tokens[0].Type == Token.TokenType.Keyword && Tokens[0].Indent == Token.IndentTransition.Out)
+                Indent--;
 
             // Indent the output
             for(int tab = 0; tab < Indent; tab++)
                 sb.Append("   ");
 
+            // Handle indent in
+            if (Tokens[0].Type == Token.TokenType.Keyword && Tokens[0].Indent == Token.IndentTransition.In)
+                Indent++;
+
+            uint counter = 0;
             foreach (Token token in Tokens)
             {
                 // Get the encoded representation
@@ -61,18 +77,13 @@ namespace SharpSprint.IO
                 if (string.IsNullOrWhiteSpace(encoded))
                     continue;
 
-                // Handle indenting
-                if(token.Indent == Token.IndentTransition.In)
-                    Indent++;
-                else if(token.Indent == Token.IndentTransition.Out)
-                    Indent--;
-
                 // If neccessairy, append a comma
-                if (sb.Length > 0)
+                if (counter > 0)
                     sb.Append(", ");
 
                 // Write the encoded content
                 sb.Append(encoded);
+                counter++;
             }
 
             // Terminate the line with a semicolon
