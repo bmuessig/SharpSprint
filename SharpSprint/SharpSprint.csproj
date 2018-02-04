@@ -48,11 +48,9 @@
     <Compile Include="Primitives\CoarseAngle.cs" />
     <Compile Include="Elements\Component.cs" />
     <Compile Include="Elements\Circle.cs" />
-    <Compile Include="Elements\Crossing.cs" />
     <Compile Include="Elements\Element.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Elements\Group.cs" />
-    <Compile Include="Elements\Net.cs" />
     <Compile Include="Elements\Pad.cs" />
     <Compile Include="Elements\SMDPad.cs" />
     <Compile Include="Elements\Text.cs" />

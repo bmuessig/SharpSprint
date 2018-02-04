@@ -29,6 +29,34 @@ namespace SharpSprint.Elements
         private const bool HatchDefault = false;
         private const bool HatchAutoDefault = true;
 
+        public Zone(Layer Layer, Distance Width, params Position[] Path)
+        {
+            this.Layer = Layer;
+            this.Width = Width;
+            this.Path = new List<Position>(Path);
+
+            this.Clear = new Distance(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.Hatch = HatchDefault;
+            this.HatchAuto = HatchAutoDefault;
+            this.HatchWidth = new Distance(0);
+        }
+
+        public Zone(Layer Layer, Distance Width, bool Hatch, params Position[] Path)
+        {
+            this.Layer = Layer;
+            this.Width = Width;
+            this.Path = new List<Position>(Path);
+
+            this.Clear = new Distance(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.Hatch = Hatch;
+            this.HatchAuto = HatchAutoDefault;
+            this.HatchWidth = new Distance(0);
+        }
+
         public bool Read(IO.Token[][] Tokens, ref uint Pointer)
         {
             throw new NotImplementedException();

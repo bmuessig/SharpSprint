@@ -31,6 +31,30 @@ namespace SharpSprint.Elements
         private const bool ThermalDefault = false;
         private const ushort ThermalTracksWidthDefault = 100;
 
+        public SMDPad(Layer Layer, Position Position, Size Size, ulong PadId = 0, params Pad[] Connections)
+        {
+            this.Clear = new Distance(ClearDefault);
+            this.Soldermask = SoldermaskDefault;
+            this.Rotation = new CoarseAngle(RotationDefault);
+            this.Thermal = ThermalDefault;
+            this.ThermalTracksWidth = ThermalTracksWidthDefault;
+            this.ThermalTracks = SMDPadThermalTracks.None;
+            this.PadID = PadId;
+            this.Connections = new List<Pad>(Connections);
+        }
+
+        public SMDPad(Layer Layer, Position Position, Size Size, CoarseAngle Rotation, ulong PadId = 0, params Pad[] Connections)
+        {
+            this.Clear = new Distance(ClearDefault);
+            this.Soldermask = SoldermaskDefault;
+            this.Rotation = Rotation;
+            this.Thermal = ThermalDefault;
+            this.ThermalTracksWidth = ThermalTracksWidthDefault;
+            this.ThermalTracks = SMDPadThermalTracks.None;
+            this.PadID = PadId;
+            this.Connections = new List<Pad>(Connections);
+        }
+
         public bool Read(IO.Token[][] Tokens, ref uint Pointer)
         {
             throw new NotImplementedException();

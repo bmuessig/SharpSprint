@@ -31,7 +31,7 @@ namespace SharpSprint.Elements
         private const uint StopDefault = 0;
         private const bool FillDefault = false;
 
-        public Circle(Layer Layer, Distance Width, Position Center, Distance Radius)
+        public Circle(Layer Layer, Distance Width, Position Center, Distance Radius, bool Fill = FillDefault)
         {
             this.Layer = Layer;
             this.Width = Width;
@@ -43,11 +43,10 @@ namespace SharpSprint.Elements
             this.Soldermask = SoldermaskDefault;
             this.Start = new FineAngle(StartDefault);
             this.Stop = new FineAngle(StopDefault);
-            this.Fill = FillDefault;
+            this.Fill = Fill;
         }
 
-        public Circle(Layer Layer, Distance Width, Position Center, Distance Radius, bool Fill = FillDefault,
-            bool Soldermask = SoldermaskDefault)
+        public Circle(Layer Layer, Distance Width, Position Center, Distance Radius, FineAngle Start, FineAngle Stop, bool Fill = FillDefault)
         {
             this.Layer = Layer;
             this.Width = Width;
@@ -56,41 +55,9 @@ namespace SharpSprint.Elements
 
             this.Clear = new Distance(ClearDefault);
             this.Cutout = CutoutDefault;
-            this.Soldermask = Soldermask;
+            this.Soldermask = SoldermaskDefault;
             this.Start = new FineAngle(StartDefault);
             this.Stop = new FineAngle(StopDefault);
-            this.Fill = Fill;
-        }
-
-        public Circle(Layer Layer, Distance Width, Position Center, Distance Radius, FineAngle Start, FineAngle Stop,
-            bool Fill = FillDefault, bool Soldermask = SoldermaskDefault)
-        {
-            this.Layer = Layer;
-            this.Width = Width;
-            this.Center = Center;
-            this.Radius = Radius;
-
-            this.Clear = new Distance(ClearDefault);
-            this.Cutout = CutoutDefault;
-            this.Soldermask = Soldermask;
-            this.Start = Start;
-            this.Stop = Stop;
-            this.Fill = Fill;
-        }
-
-        public Circle(Layer Layer, Distance Width, Position Center, Distance Radius, FineAngle Start, FineAngle Stop,
-            Distance Clear, bool Fill = FillDefault, bool Soldermask = SoldermaskDefault, bool Cutout = CutoutDefault)
-        {
-            this.Layer = Layer;
-            this.Width = Width;
-            this.Center = Center;
-            this.Radius = Radius;
-
-            this.Clear = Clear;
-            this.Cutout = CutoutDefault;
-            this.Soldermask = Soldermask;
-            this.Start = Start;
-            this.Stop = Stop;
             this.Fill = Fill;
         }
 

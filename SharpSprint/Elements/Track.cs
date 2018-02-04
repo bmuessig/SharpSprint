@@ -28,6 +28,32 @@ namespace SharpSprint.Elements
         private const bool FlatStartDefault = false;
         private const bool FlatEndDefault = false;
 
+        public Track(Layer Layer, Distance Width, params Position[] Path)
+        {
+            this.Layer = Layer;
+            this.Width = Width;
+            this.Path = new List<Position>(Path);
+
+            this.Clear = new Distance(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.FlatStart = FlatStartDefault;
+            this.FlatEnd = FlatEndDefault;
+        }
+
+        public Track(Layer Layer, Distance Width, bool FlatStart, bool FlatEnd, params Position[] Path)
+        {
+            this.Layer = Layer;
+            this.Width = Width;
+            this.Path = new List<Position>(Path);
+
+            this.Clear = new Distance(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.FlatStart = FlatStart;
+            this.FlatEnd = FlatEnd;
+        }
+
         public bool Read(IO.Token[][] Tokens, ref uint Pointer)
         {
             throw new NotImplementedException();

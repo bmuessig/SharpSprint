@@ -15,20 +15,24 @@ namespace SharpSprint.Elements
             set { IsVisible = value; }
         }
 
-        public IDText(Layer Layer, Position Position, string Content, Distance Height, bool Visible = VisibleDefault)
-            : base(Layer, Position, Content, Height)
+        public IDText(Layer Layer, Position Position, string Content, Distance Height, bool Visible = VisibleDefault,
+            TextStyle Style = StyleDefault, TextThickness Thickness = ThicknessDefault,
+            bool MirrorHorizontal = MirrorHorizontalDefault, bool MirrorVertical = MirrorVerticalDefault)
+            : base(Layer, Position, Content, Height, Style, Thickness, MirrorHorizontal, MirrorVertical)
         {
             this.Keyword = "ID_TEXT";
             this.IsComponentText = true;
-            this.Visible = Visible;
-            this.Clear = new Distance(ClearDefault);
-            this.Cutout = CutoutDefault;
-            this.Soldermask = SoldermaskDefault;
-            this.Style = StyleDefault;
-            this.Thickness = ThicknessDefault;
-            this.Rotation = new CoarseAngle(RotationDefault);
-            this.MirrorHorizontal = MirrorHorizontalDefault;
-            this.MirrorVertical = MirrorVerticalDefault;
+            this.IsVisible = Visible;
+        }
+
+        public IDText(Layer Layer, Position Position, string Content, Distance Height, CoarseAngle Rotation,
+            bool Visible = VisibleDefault, TextStyle Style = StyleDefault, TextThickness Thickness = ThicknessDefault,
+            bool MirrorHorizontal = MirrorHorizontalDefault, bool MirrorVertical = MirrorVerticalDefault)
+            : base(Layer, Position, Content, Height, Rotation, Style,Thickness, MirrorHorizontal, MirrorVertical)
+        {
+            this.Keyword = "ID_TEXT";
+            this.IsComponentText = true;
+            this.IsVisible = Visible;
         }
     }
 }

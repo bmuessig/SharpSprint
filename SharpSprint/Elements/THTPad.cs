@@ -37,6 +37,66 @@ namespace SharpSprint.Elements
         private const ushort ThermalTracksWidthDefault = 100;
         private const bool ThermalTracksIndividualDefault = false;
 
+        public THTPad(Layer Layer, Position Position, Distance Size, Distance Drill, THTPadForm Form, ulong PadId = 0,
+            params Pad[] Connections)
+        {
+            this.Clear = new Distance(ClearDefault);
+            this.Soldermask = SoldermaskDefault;
+            this.Rotation = new CoarseAngle(RotationDefault);
+            this.Via = ViaDefault;
+            this.Thermal = ThermalDefault;
+            this.ThermalTracksWidth = ThermalTracksWidthDefault;
+            this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
+            this.ThermalTracks = THTPadThermalTracks.None;
+            this.PadID = PadId;
+            this.Connections = new List<Pad>(Connections);
+        }
+
+        public THTPad(Layer Layer, Position Position, Distance Size, Distance Drill, THTPadForm Form, CoarseAngle Rotation,
+            ulong PadId = 0, params Pad[] Connections)
+        {
+            this.Clear = new Distance(ClearDefault);
+            this.Soldermask = SoldermaskDefault;
+            this.Rotation = Rotation;
+            this.Via = ViaDefault;
+            this.Thermal = ThermalDefault;
+            this.ThermalTracksWidth = ThermalTracksWidthDefault;
+            this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
+            this.ThermalTracks = THTPadThermalTracks.None;
+            this.PadID = PadId;
+            this.Connections = new List<Pad>(Connections);
+        }
+
+        public THTPad(Layer Layer, Position Position, Distance Size, Distance Drill, THTPadForm Form, bool Via, ulong PadId = 0,
+            params Pad[] Connections)
+        {
+            this.Clear = new Distance(ClearDefault);
+            this.Soldermask = SoldermaskDefault;
+            this.Rotation = new CoarseAngle(RotationDefault);
+            this.Via = Via;
+            this.Thermal = ThermalDefault;
+            this.ThermalTracksWidth = ThermalTracksWidthDefault;
+            this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
+            this.ThermalTracks = THTPadThermalTracks.None;
+            this.PadID = PadId;
+            this.Connections = new List<Pad>(Connections);
+        }
+
+        public THTPad(Layer Layer, Position Position, Distance Size, Distance Drill, THTPadForm Form, CoarseAngle Rotation,
+            bool Via, ulong PadId = 0, params Pad[] Connections)
+        {
+            this.Clear = new Distance(ClearDefault);
+            this.Soldermask = SoldermaskDefault;
+            this.Rotation = Rotation;
+            this.Via = Via;
+            this.Thermal = ThermalDefault;
+            this.ThermalTracksWidth = ThermalTracksWidthDefault;
+            this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
+            this.ThermalTracks = THTPadThermalTracks.None;
+            this.PadID = PadId;
+            this.Connections = new List<Pad>(Connections);
+        }
+
         public bool Read(IO.Token[][] Tokens, ref uint Pointer)
         {
             throw new NotImplementedException();

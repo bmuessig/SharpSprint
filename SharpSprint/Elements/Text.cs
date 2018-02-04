@@ -41,7 +41,9 @@ namespace SharpSprint.Elements
         protected bool IsComponentText;
         protected bool IsVisible;
 
-        public Text(Layer Layer, Position Position, string Content, Distance Height)
+        public Text(Layer Layer, Position Position, string Content, Distance Height, TextStyle Style = StyleDefault,
+            TextThickness Thickness = ThicknessDefault, bool MirrorHorizontal = MirrorHorizontalDefault,
+                bool MirrorVertical = MirrorVerticalDefault)
         {
             this.IsComponentText = false;
             this.Layer = Layer;
@@ -52,11 +54,31 @@ namespace SharpSprint.Elements
             this.Clear = new Distance(ClearDefault);
             this.Cutout = CutoutDefault;
             this.Soldermask = SoldermaskDefault;
-            this.Style = StyleDefault;
-            this.Thickness = ThicknessDefault;
+            this.Style = Style;
+            this.Thickness = Thickness;
             this.Rotation = new CoarseAngle(RotationDefault);
-            this.MirrorHorizontal = MirrorHorizontalDefault;
-            this.MirrorVertical = MirrorVerticalDefault;
+            this.MirrorHorizontal = MirrorHorizontal;
+            this.MirrorVertical = MirrorVertical;
+        }
+
+        public Text(Layer Layer, Position Position, string Content, Distance Height, CoarseAngle Rotation,
+            TextStyle Style = StyleDefault, TextThickness Thickness = ThicknessDefault,
+            bool MirrorHorizontal = MirrorHorizontalDefault, bool MirrorVertical = MirrorVerticalDefault)
+        {
+            this.IsComponentText = false;
+            this.Layer = Layer;
+            this.Position = Position;
+            this.Content = Content;
+            this.Height = Height;
+
+            this.Clear = new Distance(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.Style = Style;
+            this.Thickness = Thickness;
+            this.Rotation = Rotation;
+            this.MirrorHorizontal = MirrorHorizontal;
+            this.MirrorVertical = MirrorVertical;
         }
 
         public bool Read(IO.Token[][] Tokens, ref uint Pointer)
