@@ -46,16 +46,12 @@ namespace SharpSprint.Primitives
 
         public static Size FromMillimeters(float Millimeters)
         {
-            Size s = new Size();
-            s.Millimeters = Millimeters;
-            return s;
+            return new Size() { Millimeters = Millimeters };
         }
 
         public static Size FromInches(float Inches)
         {
-            Size s = new Size();
-            s.Inches = Inches;
-            return s;
+            return new Size() { Inches = Inches };
         }
     }
 }

@@ -22,5 +22,15 @@ namespace SharpSprint.Primitives
                 Value = (uint)Math.Round((float)(Value * 1000), 0);
             }
         }
+
+        public FineAngle(uint Value)
+        {
+            this.Value = Value;
+        }
+
+        public static FineAngle FromAngle(float Angle)
+        {
+            return new FineAngle() { Angle = Angle };
+        }
     }
 }
