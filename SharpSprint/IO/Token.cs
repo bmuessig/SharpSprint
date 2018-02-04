@@ -32,7 +32,7 @@ namespace SharpSprint.IO
                     case TokenType.Bool:
                         return string.Format("{0}={1}", Handle, BoolValue ? "true" : "false");
                     case TokenType.Text:
-                        return string.Format("{0}=|{1}|", Handle, TextValue.Replace('|', '-'));
+                        return string.Format("{0}=|{1}|", Handle, TextValue.Replace('|', '-')); // Strings may not contain the pipe symbol, so replace it
                     default:
                         return null;
                 }

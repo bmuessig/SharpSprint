@@ -43,7 +43,7 @@ namespace SharpSprint.Elements
             // Check for any optional arguments to be added
             // Comment
             if (!string.IsNullOrEmpty(Comment))
-                writer.Write(new Token("COMMENT", Comment.Replace('|', '-'))); // Strings may not contain the pipe symbol, so replace it
+                writer.Write(new Token("COMMENT", Comment));
 
             // UsePickplace
             if (UsePickplace != UsePickplaceDefault)
@@ -51,7 +51,7 @@ namespace SharpSprint.Elements
 
             // Package
             if (!string.IsNullOrEmpty(Package))
-                writer.Write(new Token("PACKAGE", Package.Replace('|', '-'))); // Strings may not contain the pipe symbol, so replace it
+                writer.Write(new Token("PACKAGE", Package));
 
             // End the begin line
             writer.NewLine();
