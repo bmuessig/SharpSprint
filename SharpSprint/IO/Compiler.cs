@@ -7,34 +7,79 @@ namespace SharpSprint.IO
 {
     public class Compiler
     {
-        // 
-        public string CompileLine(Token[] Tokens)
+        public bool CompileBlock(Token[][] Lines, ref ushort Indent, out string Result)
         {
             StringBuilder sb = new StringBuilder();
+            Result = null;
+            
+            foreach (Token[] line in Lines)
+            {
+                string lineContent;
+
+                // Compile the line
+                if (!CompileLine(line, ref Indent, out lineContent))
+                    return false;
+
+                // Check if the line is null
+                if(lineContent == null)
+                    return false;
+
+                // Skip the line if it is empty
+                if (lineContent.Length == 0 || lineContent.Trim() == ";")
+                    continue;
+
+                // Append the content
+                sb.Append(lineContent);
+
+                // Create a new line at the end
+                sb.Append("\r\n");
+            }
+
+            Result = sb.ToString();
+            return true;
+        }
+
+        public bool CompileLine(Token[] Tokens, ref ushort Indent, out string Result)
+        {
+            StringBuilder sb = new StringBuilder();
+            Result = null;
+
+            // Indent the output
+            for(int tab = 0; tab < Indent; tab++)
+                sb.Append("   ");
 
             foreach (Token token in Tokens)
             {
-                switch (token.Type)
-                {
-                    case Token.TokenType.Keyword:
+                // Get the encoded representation
+                string encoded = token.Encoded;
 
-                        break;
-                    case Token.TokenType.Value:
+                // Fail if we have got nothing
+                if(encoded == null)
+                    return false;
 
-                        break;
-                    case Token.TokenType.Tuple:
+                // Skip it if it is just empty
+                if (string.IsNullOrWhiteSpace(encoded))
+                    continue;
 
-                        break;
-                    case Token.TokenType.Bool:
+                // Handle indenting
+                if(token.Indent == Token.IndentTransition.In)
+                    Indent++;
+                else if(token.Indent == Token.IndentTransition.Out)
+                    Indent--;
 
-                        break;
-                    case Token.TokenType.Text:
+                // If neccessairy, append a comma
+                if (sb.Length > 0)
+                    sb.Append(", ");
 
-                        break;
-                }
+                // Write the encoded content
+                sb.Append(encoded);
             }
 
-            return sb.ToString();
+            // Terminate the line with a semicolon
+            sb.Append(';');
+
+            Result = sb.ToString();
+            return true;
         }
     }
 }
