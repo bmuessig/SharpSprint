@@ -9,13 +9,13 @@ namespace SharpSprint.Elements
 {
     public class Circle : Element
     {
-        // Required Parameters
+        // Required parameters
         public Layer Layer { get; set; }
         public Size Width { get; set; }
         public Position Center { get; set; }
         public Size Radius { get; set; }
 
-        // Optional Parameters
+        // Optional parameters
         public Size Clear { get; set; } // 4000
         public bool Cutout { get; set; } // False
         public bool Soldermask { get; set; } // False
@@ -61,7 +61,6 @@ namespace SharpSprint.Elements
             writer.Write(new Token("RADIUS", Radius.Value));
 
             // Then write the optional values
-
             // Clear
             if (Clear.Value != ClearDefault)
                 writer.Write(new Token("CLEAR", Clear.Value));
