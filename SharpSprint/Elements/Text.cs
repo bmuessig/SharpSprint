@@ -46,7 +46,7 @@ namespace SharpSprint.Elements
             Tokens = null;
 
             // Write the type first
-            writer.Write(new Token("CIRCLE", Token.IndentTransition.None));
+            writer.Write(new Token("TEXT", Token.IndentTransition.None));
 
             // Now write the required values
             // Layer
