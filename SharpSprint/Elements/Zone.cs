@@ -12,7 +12,7 @@ namespace SharpSprint.Elements
         // Required parameters
         public Layer Layer { get; set; }
         public Distance Width { get; set; }
-        public List<Position> Points { get; set; }
+        public List<Position> Path { get; set; }
 
         // Optional parameters
         public Distance Clear { get; set; } // 4000
@@ -53,16 +53,16 @@ namespace SharpSprint.Elements
             writer.Write(new Token("WIDTH", Width.Value));
 
             // Points
-            if (Points.Count >= 3)
+            if (Path.Count >= 3)
             {
-                for (int counter = 0; counter < Points.Count; counter++)
+                for (int counter = 0; counter < Path.Count; counter++)
                 {
                     if (counter > 0)
                     {
-                        if ((Points[counter].X.Value == Points[counter - 1].X.Value) && (Points[counter].Y.Value == Points[counter - 1].Y.Value))
+                        if ((Path[counter].X.Value == Path[counter - 1].X.Value) && (Path[counter].Y.Value == Path[counter - 1].Y.Value))
                             continue;
                     }
-                    writer.Write(new Token(string.Format("P{0}", counter), Points[counter].X.Value, Points[counter].Y.Value));
+                    writer.Write(new Token(string.Format("P{0}", counter), Path[counter].X.Value, Path[counter].Y.Value));
                     counter++;
                 }
             }
