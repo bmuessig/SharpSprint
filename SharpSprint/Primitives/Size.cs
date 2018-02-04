@@ -19,7 +19,7 @@ namespace SharpSprint.Primitives
             set
             {
                 if (value < 0)
-                    return;
+                    value = 0; // Clip value to 0
                 Value = (ulong)Math.Round(value * 10000, 0);
             }
         }
@@ -34,7 +34,7 @@ namespace SharpSprint.Primitives
             set
             {
                 if (value < 0)
-                    return;
+                    value = 0; // Clip value to 0
                 Value = (ulong)Math.Round(value * 393.701, 0);
             }
         }

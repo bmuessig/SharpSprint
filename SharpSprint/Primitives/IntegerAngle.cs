@@ -18,8 +18,7 @@ namespace SharpSprint.Primitives
 
             set
             {
-                if (Value < 0)
-                    return;
+                value = Math.Abs(value % 360); // Convert the angle to a valid one
                 Value = (uint)Math.Round((float)Value, 0);
             }
         }
