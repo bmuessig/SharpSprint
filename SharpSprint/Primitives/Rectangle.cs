@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SharpSprint.Primitives
 {
-    public struct Rectangle
+    public class Rectangle
     {
         public Size Width;
         public Size Height;

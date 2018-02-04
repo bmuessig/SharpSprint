@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SharpSprint.Primitives
 {
-    public struct Position
+    public class Position
     {
         public Size X;
         public Size Y;
