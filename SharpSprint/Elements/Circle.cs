@@ -31,6 +31,67 @@ namespace SharpSprint.Elements
         private const uint StopDefault = 0;
         private const bool FillDefault = false;
 
+        public Circle(Layer Layer, Size Width, Position Center, Size Radius)
+        {
+            this.Layer = Layer;
+            this.Width = Width;
+            this.Center = Center;
+            this.Radius = Radius;
+
+            this.Clear = new Size(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.Start = new FineAngle(StartDefault);
+            this.Stop = new FineAngle(StopDefault);
+            this.Fill = FillDefault;
+        }
+
+        public Circle(Layer Layer, Size Width, Position Center, Size Radius, bool Fill = FillDefault, bool Soldermask = SoldermaskDefault)
+        {
+            this.Layer = Layer;
+            this.Width = Width;
+            this.Center = Center;
+            this.Radius = Radius;
+
+            this.Clear = new Size(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = Soldermask;
+            this.Start = new FineAngle(StartDefault);
+            this.Stop = new FineAngle(StopDefault);
+            this.Fill = Fill;
+        }
+
+        public Circle(Layer Layer, Size Width, Position Center, Size Radius, FineAngle Start, FineAngle Stop, bool Fill = FillDefault, bool Soldermask = SoldermaskDefault)
+        {
+            this.Layer = Layer;
+            this.Width = Width;
+            this.Center = Center;
+            this.Radius = Radius;
+
+            this.Clear = new Size(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = Soldermask;
+            this.Start = Start;
+            this.Stop = Stop;
+            this.Fill = Fill;
+        }
+
+        public Circle(Layer Layer, Size Width, Position Center, Size Radius, FineAngle Start, FineAngle Stop, Size Clear,
+            bool Fill = FillDefault, bool Soldermask = SoldermaskDefault, bool Cutout = CutoutDefault)
+        {
+            this.Layer = Layer;
+            this.Width = Width;
+            this.Center = Center;
+            this.Radius = Radius;
+
+            this.Clear = Clear;
+            this.Cutout = CutoutDefault;
+            this.Soldermask = Soldermask;
+            this.Start = Start;
+            this.Stop = Stop;
+            this.Fill = Fill;
+        }
+
         public bool Read(Token[][] Tokens, ref uint Pointer)
         {
             throw new NotImplementedException();
