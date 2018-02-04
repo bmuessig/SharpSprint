@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elements\IDText.cs" />
+    <Compile Include="Elements\ValueText.cs" />
     <Compile Include="IO\TokenWriter.cs" />
     <Compile Include="Primitives\Angle.cs" />
     <Compile Include="Canvas.cs" />

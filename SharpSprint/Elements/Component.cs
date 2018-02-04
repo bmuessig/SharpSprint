@@ -11,104 +11,74 @@ namespace SharpSprint.Elements
     {
         // Required parameters
         public List<Entity> Entities { get; private set; }
-        public Text IDText { get; set; }
-        public Text ValueText { get; set; }
+        public IDText IDText { get; set; }
+        public ValueText ValueText { get; set; }
 
         // Optional parameters
-        public bool IDVisible { get; set; } // True
-        public bool ValueVisible { get; set; } // True
         public string Comment { get; set; }
         public bool UsePickplace { get; set; } // False
         public string Package { get; set; }
         public IntegerAngle Rotation { get; set; }
 
         // Default optional parameters
-        private const bool IDVisibleDefault = true;
-        private const bool ValueVisibleDefault = true;
         private const bool UsePickplaceDefault = false;
+        private const uint RotationDefault = 0;
 
-        public Component(Text IDText, Text ValueText, params Entity[] Entities)
+        public Component(IDText IDText, ValueText ValueText, params Entity[] Entities)
         {
             this.Entities = new List<Entity>(Entities);
             this.IDText = IDText;
             this.ValueText = ValueText;
 
-            this.IDVisible = IDVisibleDefault;
-            this.ValueVisible = ValueVisibleDefault;
             this.Comment = string.Empty;
             this.UsePickplace = UsePickplaceDefault;
             this.Package = string.Empty;
-            this.Rotation = new IntegerAngle(0);
+            this.Rotation = new IntegerAngle(RotationDefault);
         }
 
-        public Component(Text IDText, bool IDVisible, Text ValueText, bool ValueVisible, params Entity[] Entities)
+        public Component(IDText IDText, ValueText ValueText, bool UsePickplace, params Entity[] Entities)
         {
             this.Entities = new List<Entity>(Entities);
             this.IDText = IDText;
             this.ValueText = ValueText;
 
-            this.IDVisible = IDVisible;
-            this.ValueVisible = ValueVisible;
-            this.Comment = string.Empty;
-            this.UsePickplace = UsePickplaceDefault;
-            this.Package = string.Empty;
-            this.Rotation = new IntegerAngle(0);
-        }
-
-        public Component(Text IDText, bool IDVisible, Text ValueText, bool ValueVisible, bool UsePickplace,
-            params Entity[] Entities)
-        {
-            this.Entities = new List<Entity>(Entities);
-            this.IDText = IDText;
-            this.ValueText = ValueText;
-
-            this.IDVisible = IDVisible;
-            this.ValueVisible = ValueVisible;
             this.Comment = string.Empty;
             this.UsePickplace = UsePickplace;
             this.Package = string.Empty;
-            this.Rotation = new IntegerAngle(0);
+            this.Rotation = new IntegerAngle(RotationDefault);
         }
 
-        public Component(Text IDText, bool IDVisible, Text ValueText, bool ValueVisible, string Package,
-            params Entity[] Entities)
+        public Component(IDText IDText, ValueText ValueText, string Package, params Entity[] Entities)
         {
             this.Entities = new List<Entity>(Entities);
             this.IDText = IDText;
             this.ValueText = ValueText;
 
-            this.IDVisible = IDVisible;
-            this.ValueVisible = ValueVisible;
             this.Comment = string.Empty;
             this.UsePickplace = true;
             this.Package = Package;
-            this.Rotation = new IntegerAngle(0);
+            this.Rotation = new IntegerAngle(RotationDefault);
         }
 
-        public Component(Text IDText, bool IDVisible, Text ValueText, bool ValueVisible, string Package,
-            IntegerAngle Rotation, params Entity[] Entities)
+        public Component(IDText IDText, ValueText ValueText, string Package, IntegerAngle Rotation, params Entity[] Entities)
         {
             this.Entities = new List<Entity>(Entities);
             this.IDText = IDText;
             this.ValueText = ValueText;
 
-            this.IDVisible = IDVisible;
-            this.ValueVisible = ValueVisible;
             this.Comment = string.Empty;
             this.UsePickplace = true;
             this.Package = Package;
             this.Rotation = Rotation;
         }
 
-        public Component(Text IDText, bool IDVisible, Text ValueText, bool ValueVisible, string Package,
-            IntegerAngle Rotation, string Comment, params Entity[] Entities)
+        public Component(IDText IDText, ValueText ValueText, string Package, IntegerAngle Rotation, string Comment,
+            params Entity[] Entities)
         {
             this.Entities = new List<Entity>(Entities);
             this.IDText = IDText;
             this.ValueText = ValueText;
 
-            this.IDVisible = IDVisible;
-            this.ValueVisible = ValueVisible;
             this.Comment = Comment;
             this.UsePickplace = true;
             this.Package = Package;
@@ -141,6 +111,10 @@ namespace SharpSprint.Elements
             if (!string.IsNullOrEmpty(Package))
                 writer.Write(new Token("PACKAGE", Package));
 
+            // Rotation
+            if (Rotation.Value != RotationDefault)
+                writer.Write(new Token("ROTATION", Rotation.Value));
+
             // End the begin line
             writer.NewLine();
 
@@ -153,8 +127,6 @@ namespace SharpSprint.Elements
                     if (IDTokens.Length == 1)
                     {
                         writer.Write(IDTokens[0]);
-                        if (IDVisible != IDVisibleDefault)
-                            writer.Write(new Token("VISIBLE", IDVisible));
                         writer.NewLine();
                     }
                     else
@@ -175,8 +147,6 @@ namespace SharpSprint.Elements
                     if (ValueTokens.Length == 1)
                     {
                         writer.Write(ValueTokens[0]);
-                        if (ValueVisible != ValueVisibleDefault)
-                            writer.Write(new Token("VISIBLE", ValueVisible));
                         writer.NewLine();
                     }
                     else

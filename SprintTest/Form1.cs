@@ -33,11 +33,15 @@ namespace SprintTest
             Test.Entities.Add(C1);
             Test.Entities.Add(C2);
 
+            var cmp = new SharpSprint.Elements.Component(
+                new IDText(SharpSprint.Layer.CopperTop, Position.FromMillimeters(0,0), "", Distance.FromMillimeters(0)),
+                new ValueText(SharpSprint.Layer.CopperTop, Position.FromMillimeters(0, 0), "", Distance.FromMillimeters(0)), Test);
+
             Token[][] lines;
             ushort indent = 0;
             string output;
 
-            if (Test.Write(out lines))
+            if (cmp.Write(out lines))
             {
                 if (Compiler.CompileBlock(lines, ref indent, out output))
                     textBox1.Text = output;

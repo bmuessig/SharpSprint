@@ -26,14 +26,38 @@ namespace SharpSprint.Elements
         public bool MirrorVertical { get; set; } // False
 
         // Default optional parameters
-        private const uint ClearDefault = 4000;
-        private const bool CutoutDefault = false;
-        private const bool SoldermaskDefault = false;
-        private const TextStyle StyleDefault = TextStyle.Normal;
-        private const TextThickness ThicknessDefault = TextThickness.Normal;
-        private const uint RotationDefault = 0;
-        private const bool MirrorHorizontalDefault = false;
-        private const bool MirrorVerticalDefault = false;
+        protected const uint ClearDefault = 4000;
+        protected const bool CutoutDefault = false;
+        protected const bool SoldermaskDefault = false;
+        protected const TextStyle StyleDefault = TextStyle.Normal;
+        protected const TextThickness ThicknessDefault = TextThickness.Normal;
+        protected const uint RotationDefault = 0;
+        protected const bool MirrorHorizontalDefault = false;
+        protected const bool MirrorVerticalDefault = false;
+        protected const bool VisibleDefault = true;
+
+        // Internal parameters for compatibility with ID_TEXT and VALUE_TEXT
+        protected string Keyword;
+        protected bool IsComponentText;
+        protected bool IsVisible;
+
+        public Text(Layer Layer, Position Position, string Content, Distance Height)
+        {
+            this.IsComponentText = false;
+            this.Layer = Layer;
+            this.Position = Position;
+            this.Content = Content;
+            this.Height = Height;
+
+            this.Clear = new Distance(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.Style = StyleDefault;
+            this.Thickness = ThicknessDefault;
+            this.Rotation = new CoarseAngle(RotationDefault);
+            this.MirrorHorizontal = MirrorHorizontalDefault;
+            this.MirrorVertical = MirrorVerticalDefault;
+        }
 
         public bool Read(IO.Token[][] Tokens, ref uint Pointer)
         {
@@ -45,8 +69,11 @@ namespace SharpSprint.Elements
             TokenWriter writer = new TokenWriter();
             Tokens = null;
 
+            if (string.IsNullOrWhiteSpace(Keyword))
+                Keyword = "TEXT";
+
             // Write the type first
-            writer.Write(new Token("TEXT", Token.IndentTransition.None));
+            writer.Write(new Token(Keyword, Token.IndentTransition.None));
 
             // Now write the required values
             // Layer
@@ -96,6 +123,10 @@ namespace SharpSprint.Elements
             // MirrorVertical
             if (MirrorVertical != MirrorVerticalDefault)
                 writer.Write(new Token("MIRROR_VERT", MirrorVertical));
+
+            // ComponentVisible
+            if (IsComponentText && IsVisible != VisibleDefault)
+                writer.Write(new Token("VISIBLE", IsVisible));
 
             Tokens = writer.Compile();
             return true;
