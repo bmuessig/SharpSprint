@@ -85,7 +85,7 @@ namespace SharpSprint.IO
 
         public Token(string Handle, bool Value)
         {
-            this.Type = TokenType.Value;
+            this.Type = TokenType.Bool;
             this.Indent = IndentTransition.None;
             this.Handle = Handle;
             this.FirstValue = 0;
