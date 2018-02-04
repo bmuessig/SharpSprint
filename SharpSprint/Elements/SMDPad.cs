@@ -15,7 +15,7 @@ namespace SharpSprint.Elements
         public Size Size { get; set; }
 
         // Optional parameters
-        public Dist Clear { get; set; } // 4000
+        public Distance Clear { get; set; } // 4000
         public bool Soldermask { get; set; } // True
         public CoarseAngle Rotation { get; set; } // 0
         public bool Thermal { get; set; } // False

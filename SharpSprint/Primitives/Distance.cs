@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SharpSprint.Primitives
 {
-    public struct Dist
+    public struct Distance
     {
         public ulong Value;
 
@@ -39,19 +39,19 @@ namespace SharpSprint.Primitives
             }
         }
 
-        public Dist(ulong Value)
+        public Distance(ulong Value)
         {
             this.Value = Value;
         }
 
-        public static Dist FromMillimeters(float Millimeters)
+        public static Distance FromMillimeters(float Millimeters)
         {
-            return new Dist() { Millimeters = Millimeters };
+            return new Distance() { Millimeters = Millimeters };
         }
 
-        public static Dist FromInches(float Inches)
+        public static Distance FromInches(float Inches)
         {
-            return new Dist() { Inches = Inches };
+            return new Distance() { Inches = Inches };
         }
     }
 }

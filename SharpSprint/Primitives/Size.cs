@@ -7,10 +7,10 @@ namespace SharpSprint.Primitives
 {
     public class Size
     {
-        public Dist Width;
-        public Dist Height;
+        public Distance Width;
+        public Distance Height;
 
-        public Size(Dist Width, Dist Height)
+        public Size(Distance Width, Distance Height)
         {
             this.Width = Width;
             this.Height = Height;
@@ -18,12 +18,12 @@ namespace SharpSprint.Primitives
 
         public static Size FromMillimeters(float Width, float Height)
         {
-            return new Size(Dist.FromMillimeters(Width), Dist.FromMillimeters(Height));
+            return new Size(Distance.FromMillimeters(Width), Distance.FromMillimeters(Height));
         }
 
         public static Size FromInches(float Width, float Height)
         {
-            return new Size(Dist.FromInches(Width), Dist.FromInches(Height));
+            return new Size(Distance.FromInches(Width), Distance.FromInches(Height));
         }
     }
 }
