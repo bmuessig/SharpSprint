@@ -7,7 +7,7 @@ using SharpSprint.Primitives;
 
 namespace SharpSprint.Elements
 {
-    public class Circle : Entity
+    public class Circle : Element
     {
         // Required Parameters
         public Layer Layer { get; set; }
