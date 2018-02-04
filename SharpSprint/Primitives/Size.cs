@@ -5,53 +5,25 @@ using System.Text;
 
 namespace SharpSprint.Primitives
 {
-    public struct Size
+    public class Size
     {
-        public ulong Value;
+        public Dist Width;
+        public Dist Height;
 
-        public float Millimeters
+        public Size(Dist Width, Dist Height)
         {
-            get
-            {
-                return Value / 10000;
-            }
-
-            set
-            {
-                if (value < 0)
-                    value = 0; // Clip value to 0
-                Value = (ulong)Math.Round(value * 10000, 0);
-            }
-        }
-    
-        public float Inches
-        {
-            get
-            {
-                return (float)((Value * 0.0393701) / 10000);
-            }
-
-            set
-            {
-                if (value < 0)
-                    value = 0; // Clip value to 0
-                Value = (ulong)Math.Round(value * 393.701, 0);
-            }
+            this.Width = Width;
+            this.Height = Height;
         }
 
-        public Size(ulong Value)
+        public static Size FromMillimeters(float Width, float Height)
         {
-            this.Value = Value;
+            return new Size(Dist.FromMillimeters(Width), Dist.FromMillimeters(Height));
         }
 
-        public static Size FromMillimeters(float Millimeters)
+        public static Size FromInches(float Width, float Height)
         {
-            return new Size() { Millimeters = Millimeters };
-        }
-
-        public static Size FromInches(float Inches)
-        {
-            return new Size() { Inches = Inches };
+            return new Size(Dist.FromInches(Width), Dist.FromInches(Height));
         }
     }
 }

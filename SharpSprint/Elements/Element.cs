@@ -9,7 +9,7 @@ namespace SharpSprint.Elements
     public interface Element : Entity
     {
         Layer Layer { get; set; }
-        Size Clear { get; set; }
+        Dist Clear { get; set; }
         bool Soldermask { get; set; }
     }
 }

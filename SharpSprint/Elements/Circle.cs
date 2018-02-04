@@ -11,12 +11,12 @@ namespace SharpSprint.Elements
     {
         // Required parameters
         public Layer Layer { get; set; }
-        public Size Width { get; set; }
+        public Dist Width { get; set; }
         public Position Center { get; set; }
-        public Size Radius { get; set; }
+        public Dist Radius { get; set; }
 
         // Optional parameters
-        public Size Clear { get; set; } // 4000
+        public Dist Clear { get; set; } // 4000
         public bool Cutout { get; set; } // False
         public bool Soldermask { get; set; } // False
         public FineAngle Start { get; set; } // 0
@@ -31,14 +31,14 @@ namespace SharpSprint.Elements
         private const uint StopDefault = 0;
         private const bool FillDefault = false;
 
-        public Circle(Layer Layer, Size Width, Position Center, Size Radius)
+        public Circle(Layer Layer, Dist Width, Position Center, Dist Radius)
         {
             this.Layer = Layer;
             this.Width = Width;
             this.Center = Center;
             this.Radius = Radius;
 
-            this.Clear = new Size(ClearDefault);
+            this.Clear = new Dist(ClearDefault);
             this.Cutout = CutoutDefault;
             this.Soldermask = SoldermaskDefault;
             this.Start = new FineAngle(StartDefault);
@@ -46,7 +46,7 @@ namespace SharpSprint.Elements
             this.Fill = FillDefault;
         }
 
-        public Circle(Layer Layer, Size Width, Position Center, Size Radius, bool Fill = FillDefault,
+        public Circle(Layer Layer, Dist Width, Position Center, Dist Radius, bool Fill = FillDefault,
             bool Soldermask = SoldermaskDefault)
         {
             this.Layer = Layer;
@@ -54,7 +54,7 @@ namespace SharpSprint.Elements
             this.Center = Center;
             this.Radius = Radius;
 
-            this.Clear = new Size(ClearDefault);
+            this.Clear = new Dist(ClearDefault);
             this.Cutout = CutoutDefault;
             this.Soldermask = Soldermask;
             this.Start = new FineAngle(StartDefault);
@@ -62,7 +62,7 @@ namespace SharpSprint.Elements
             this.Fill = Fill;
         }
 
-        public Circle(Layer Layer, Size Width, Position Center, Size Radius, FineAngle Start, FineAngle Stop,
+        public Circle(Layer Layer, Dist Width, Position Center, Dist Radius, FineAngle Start, FineAngle Stop,
             bool Fill = FillDefault, bool Soldermask = SoldermaskDefault)
         {
             this.Layer = Layer;
@@ -70,7 +70,7 @@ namespace SharpSprint.Elements
             this.Center = Center;
             this.Radius = Radius;
 
-            this.Clear = new Size(ClearDefault);
+            this.Clear = new Dist(ClearDefault);
             this.Cutout = CutoutDefault;
             this.Soldermask = Soldermask;
             this.Start = Start;
@@ -78,8 +78,8 @@ namespace SharpSprint.Elements
             this.Fill = Fill;
         }
 
-        public Circle(Layer Layer, Size Width, Position Center, Size Radius, FineAngle Start, FineAngle Stop,
-            Size Clear, bool Fill = FillDefault, bool Soldermask = SoldermaskDefault, bool Cutout = CutoutDefault)
+        public Circle(Layer Layer, Dist Width, Position Center, Dist Radius, FineAngle Start, FineAngle Stop,
+            Dist Clear, bool Fill = FillDefault, bool Soldermask = SoldermaskDefault, bool Cutout = CutoutDefault)
         {
             this.Layer = Layer;
             this.Width = Width;

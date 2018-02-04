@@ -11,16 +11,16 @@ namespace SharpSprint.Elements
     {
         // Required parameters
         public Layer Layer { get; set; }
-        public Size Width { get; set; }
+        public Dist Width { get; set; }
         public List<Position> Points { get; set; }
 
         // Optional parameters
-        public Size Clear { get; set; } // 4000
+        public Dist Clear { get; set; } // 4000
         public bool Cutout { get; set; } // False
         public bool Soldermask { get; set; } // False
         public bool Hatch { get; set; } // False
         public bool HatchAuto { get; set; } // True
-        public Size HatchWidth { get; set; }
+        public Dist HatchWidth { get; set; }
 
         // Default optional parameters
         private const uint ClearDefault = 4000;

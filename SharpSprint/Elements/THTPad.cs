@@ -12,12 +12,12 @@ namespace SharpSprint.Elements
         // Required parameters
         public Layer Layer { get; set; }
         public Position Position { get; set; }
-        public Size Size { get; set; }
-        public Size Drill { get; set; }
+        public Dist Size { get; set; }
+        public Dist Drill { get; set; }
         public THTPadForm Form { get; set; }
 
         // Optional parameters
-        public Size Clear { get; set; } // 4000
+        public Dist Clear { get; set; } // 4000
         public bool Soldermask { get; set; } // True
         public CoarseAngle Rotation { get; set; } // 0
         public bool Via { get; set; } // False

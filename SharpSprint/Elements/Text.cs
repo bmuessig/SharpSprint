@@ -13,10 +13,10 @@ namespace SharpSprint.Elements
         public Layer Layer { get; set; }
         public Position Position { get; set; }
         public string Content { get; set; }
-        public Size Height { get; set; }
+        public Dist Height { get; set; }
 
         // Optional parameters
-        public Size Clear { get; set; } // 4000
+        public Dist Clear { get; set; } // 4000
         public bool Cutout { get; set; } // False
         public bool Soldermask { get; set; } // False
         public TextStyle Style { get; set; } // Normal

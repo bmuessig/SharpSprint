@@ -21,10 +21,10 @@ namespace SprintTest
         private void button1_Click(object sender, EventArgs e)
         {
             Group Test = new Group();
-            Circle C1 = new Circle(SharpSprint.Layer.CopperTop, SharpSprint.Primitives.Size.FromMillimeters(1),
-                SharpSprint.Primitives.Position.FromMillimeters(10, 10), SharpSprint.Primitives.Size.FromMillimeters(20));
-            Circle C2 = new Circle(SharpSprint.Layer.CopperTop, SharpSprint.Primitives.Size.FromMillimeters(3),
-                SharpSprint.Primitives.Position.FromMillimeters(15, 20), SharpSprint.Primitives.Size.FromMillimeters(30));
+            Circle C1 = new Circle(SharpSprint.Layer.CopperTop, SharpSprint.Primitives.Dist.FromMillimeters(1),
+                SharpSprint.Primitives.Position.FromMillimeters(10, 10), SharpSprint.Primitives.Dist.FromMillimeters(20));
+            Circle C2 = new Circle(SharpSprint.Layer.CopperTop, SharpSprint.Primitives.Dist.FromMillimeters(3),
+                SharpSprint.Primitives.Position.FromMillimeters(15, 20), SharpSprint.Primitives.Dist.FromMillimeters(30));
 
             C2.Fill = true;
             C2.Center.X.Millimeters += 5;

@@ -64,9 +64,9 @@
     <Compile Include="IO\Token.cs" />
     <Compile Include="Primitives\IntegerAngle.cs" />
     <Compile Include="Primitives\Position.cs" />
-    <Compile Include="Primitives\Rectangle.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Primitives\Size.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Primitives\Dist.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

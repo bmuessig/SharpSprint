@@ -7,10 +7,10 @@ namespace SharpSprint.Primitives
 {
     public class Position
     {
-        public Size X;
-        public Size Y;
+        public Dist X;
+        public Dist Y;
 
-        public Position(Size X, Size Y)
+        public Position(Dist X, Dist Y)
         {
             this.X = X;
             this.Y = Y;
@@ -18,12 +18,12 @@ namespace SharpSprint.Primitives
 
         public static Position FromMillimeters(float X, float Y)
         {
-            return new Position(Size.FromMillimeters(X), Size.FromMillimeters(Y));
+            return new Position(Dist.FromMillimeters(X), Dist.FromMillimeters(Y));
         }
 
         public static Position FromInches(float X, float Y)
         {
-            return new Position(Size.FromInches(X), Size.FromInches(Y));
+            return new Position(Dist.FromInches(X), Dist.FromInches(Y));
         }
     }
 }

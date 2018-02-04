@@ -12,10 +12,10 @@ namespace SharpSprint.Elements
         // Required parameters
         public Layer Layer { get; set; }
         public Position Position { get; set; }
-        public Rectangle Size { get; set; }
+        public Size Size { get; set; }
 
         // Optional parameters
-        public Size Clear { get; set; } // 4000
+        public Dist Clear { get; set; } // 4000
         public bool Soldermask { get; set; } // True
         public CoarseAngle Rotation { get; set; } // 0
         public bool Thermal { get; set; } // False
