@@ -82,11 +82,12 @@ namespace SharpSprint.Elements
             else
                 return false;
 
+            // ComponentVisible
+            if (IsComponentText && IsVisible != VisibleDefault)
+                writer.Write(new Token("VISIBLE", IsVisible));
+
             // Position
             writer.Write(new Token("POS", Position.X.Value, Position.Y.Value));
-
-            // Content
-            writer.Write(new Token("TEXT", Content));
 
             // Height
             writer.Write(new Token("HEIGHT", Height.Value));
@@ -124,9 +125,8 @@ namespace SharpSprint.Elements
             if (MirrorVertical != MirrorVerticalDefault)
                 writer.Write(new Token("MIRROR_VERT", MirrorVertical));
 
-            // ComponentVisible
-            if (IsComponentText && IsVisible != VisibleDefault)
-                writer.Write(new Token("VISIBLE", IsVisible));
+            // Content
+            writer.Write(new Token("TEXT", Content));
 
             Tokens = writer.Compile();
             return true;
