@@ -27,6 +27,94 @@ namespace SharpSprint.Elements
         private const bool ValueVisibleDefault = true;
         private const bool UsePickplaceDefault = false;
 
+        public Component(Text IDText, Text ValueText, params Entity[] Entities)
+        {
+            this.Entities = new List<Entity>(Entities);
+            this.IDText = IDText;
+            this.ValueText = ValueText;
+
+            this.IDVisible = IDVisibleDefault;
+            this.ValueVisible = ValueVisibleDefault;
+            this.Comment = string.Empty;
+            this.UsePickplace = UsePickplaceDefault;
+            this.Package = string.Empty;
+            this.Rotation = new IntegerAngle(0);
+        }
+
+        public Component(Text IDText, bool IDVisible, Text ValueText, bool ValueVisible, params Entity[] Entities)
+        {
+            this.Entities = new List<Entity>(Entities);
+            this.IDText = IDText;
+            this.ValueText = ValueText;
+
+            this.IDVisible = IDVisible;
+            this.ValueVisible = ValueVisible;
+            this.Comment = string.Empty;
+            this.UsePickplace = UsePickplaceDefault;
+            this.Package = string.Empty;
+            this.Rotation = new IntegerAngle(0);
+        }
+
+        public Component(Text IDText, bool IDVisible, Text ValueText, bool ValueVisible, bool UsePickplace,
+            params Entity[] Entities)
+        {
+            this.Entities = new List<Entity>(Entities);
+            this.IDText = IDText;
+            this.ValueText = ValueText;
+
+            this.IDVisible = IDVisible;
+            this.ValueVisible = ValueVisible;
+            this.Comment = string.Empty;
+            this.UsePickplace = UsePickplace;
+            this.Package = string.Empty;
+            this.Rotation = new IntegerAngle(0);
+        }
+
+        public Component(Text IDText, bool IDVisible, Text ValueText, bool ValueVisible, string Package,
+            params Entity[] Entities)
+        {
+            this.Entities = new List<Entity>(Entities);
+            this.IDText = IDText;
+            this.ValueText = ValueText;
+
+            this.IDVisible = IDVisible;
+            this.ValueVisible = ValueVisible;
+            this.Comment = string.Empty;
+            this.UsePickplace = true;
+            this.Package = Package;
+            this.Rotation = new IntegerAngle(0);
+        }
+
+        public Component(Text IDText, bool IDVisible, Text ValueText, bool ValueVisible, string Package,
+            IntegerAngle Rotation, params Entity[] Entities)
+        {
+            this.Entities = new List<Entity>(Entities);
+            this.IDText = IDText;
+            this.ValueText = ValueText;
+
+            this.IDVisible = IDVisible;
+            this.ValueVisible = ValueVisible;
+            this.Comment = string.Empty;
+            this.UsePickplace = true;
+            this.Package = Package;
+            this.Rotation = Rotation;
+        }
+
+        public Component(Text IDText, bool IDVisible, Text ValueText, bool ValueVisible, string Package,
+            IntegerAngle Rotation, string Comment, params Entity[] Entities)
+        {
+            this.Entities = new List<Entity>(Entities);
+            this.IDText = IDText;
+            this.ValueText = ValueText;
+
+            this.IDVisible = IDVisible;
+            this.ValueVisible = ValueVisible;
+            this.Comment = Comment;
+            this.UsePickplace = true;
+            this.Package = Package;
+            this.Rotation = Rotation;
+        }
+
         public bool Read(Token[][] Tokens, ref uint Pointer)
         {
             throw new NotImplementedException();
