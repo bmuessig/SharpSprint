@@ -44,7 +44,7 @@
     <Compile Include="Elements\ValueText.cs" />
     <Compile Include="IO\TokenWriter.cs" />
     <Compile Include="Primitives\Angle.cs" />
-    <Compile Include="Canvas.cs" />
+    <Compile Include="Board.cs" />
     <Compile Include="Primitives\CoarseAngle.cs" />
     <Compile Include="Elements\Component.cs" />
     <Compile Include="Elements\Circle.cs" />

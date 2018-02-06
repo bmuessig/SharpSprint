@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using SharpSprint.Elements;
 using SharpSprint.IO;
 using SharpSprint.Primitives;
+using SharpSprint;
 
 namespace SprintTest
 {
@@ -21,7 +22,12 @@ namespace SprintTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Group Test = new Group();
+            Token[] test;
+            test = Token.LineFromString("CIRCLE, LAYER=3, WIDTH=6000, TEXT=|Hello world!|, BOOL=True, CENTER=350000 / 250000, RADIUS=80000, START=90000, STOP=270000;");
+
+            Board testBoard = new Board();
+            
+            Group G1 = new Group();
             Circle C1 = new Circle(SharpSprint.Layer.CopperTop, Distance.FromMillimeters(1),
                 Position.FromMillimeters(10, 10), Distance.FromMillimeters(20));
             Circle C2 = new Circle(SharpSprint.Layer.CopperTop, Distance.FromMillimeters(3),
@@ -30,14 +36,23 @@ namespace SprintTest
             C2.Fill = true;
             C2.Center.X.Millimeters += 5;
 
-            Test.Entities.Add(C1);
-            Test.Entities.Add(C2);
+            G1.Entities.Add(C1);
+            G1.Entities.Add(C2);
 
             var cmp = new SharpSprint.Elements.Component(
                 new IDText(SharpSprint.Layer.CopperTop, Position.FromMillimeters(0,0), "", Distance.FromMillimeters(0)),
-                new ValueText(SharpSprint.Layer.CopperTop, Position.FromMillimeters(0, 0), "", Distance.FromMillimeters(0)), Test);
+                new ValueText(SharpSprint.Layer.CopperTop, Position.FromMillimeters(0, 0), "", Distance.FromMillimeters(0)), G1);
 
-            Token[][] lines;
+            testBoard.Canvas.Add(cmp);
+
+            string output;
+
+            if (testBoard.Compile(out output))
+                textBox1.Text = output;
+            else
+                textBox1.Text = "Compile FAIL!";
+
+            /*Token[][] lines;
             ushort indent = 0;
             string output;
 
@@ -49,7 +64,7 @@ namespace SprintTest
                     textBox1.Text = "Compile FAIL!";
             }
             else
-                textBox1.Text = "Write FAIL!";
+                textBox1.Text = "Write FAIL!";*/
         }
     }
 }
