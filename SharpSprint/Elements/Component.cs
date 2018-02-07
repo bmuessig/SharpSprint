@@ -85,7 +85,7 @@ namespace SharpSprint.Elements
             this.Rotation = Rotation;
         }
 
-        public bool Read(Token[][] Tokens, ref uint Pointer)
+        public static bool Create(Token[][] Tokens, ref uint Pointer, out Component Result)
         {
             throw new NotImplementedException();
         }

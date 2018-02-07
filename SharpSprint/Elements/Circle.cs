@@ -61,7 +61,7 @@ namespace SharpSprint.Elements
             this.Fill = Fill;
         }
 
-        public bool Read(Token[][] Tokens, ref uint Pointer)
+        public static bool Create(Token[][] Tokens, ref uint Pointer, out Circle Result)
         {
             throw new NotImplementedException();
         }

@@ -16,7 +16,7 @@ namespace SharpSprint.Elements
             this.Entities = new List<Entity>(Entities);
         }
 
-        public bool Read(Token[][] Tokens, ref uint Pointer)
+        public static bool Create(Token[][] Tokens, ref uint Pointer, out Component Group)
         {
             throw new NotImplementedException();
         }

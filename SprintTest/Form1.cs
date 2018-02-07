@@ -23,7 +23,12 @@ namespace SprintTest
         private void button1_Click(object sender, EventArgs e)
         {
             Token[][] test;
-            Parser.Tokenize("CIRCLE, LAYER=3, WIDTH=6000, TEXT=|Hello world!|, BOOL=True, CENTER=350000 / 250000, RADIUS=80000, START=90000, STOP=270000;", out test);
+            if (Parser.Tokenize("CIRCLE, LAYER=3, WIDTH=6000, TEXT=|Hello world!|, BOOL=True, CENTER=350000 / 250000, RADIUS=80000, START=90000, STOP=270000;", out test) == 0)
+            {
+            }
+
+
+
 
             Board testBoard = new Board();
             

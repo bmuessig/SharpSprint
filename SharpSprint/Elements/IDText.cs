@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SharpSprint.Primitives;
+using SharpSprint.IO;
 
 namespace SharpSprint.Elements
 {
@@ -33,6 +34,11 @@ namespace SharpSprint.Elements
             this.Keyword = "ID_TEXT";
             this.IsComponentText = true;
             this.IsVisible = Visible;
+        }
+
+        public static bool Create(Token[][] Tokens, ref uint Pointer, out IDText Result)
+        {
+            throw new NotImplementedException();
         }
     }
 }

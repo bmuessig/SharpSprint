@@ -55,7 +55,7 @@ namespace SharpSprint.Elements
             this.Connections = new List<Pad>(Connections);
         }
 
-        public bool Read(IO.Token[][] Tokens, ref uint Pointer)
+        public static bool Create(Token[][] Tokens, ref uint Pointer, out SMDPad Result)
         {
             throw new NotImplementedException();
         }

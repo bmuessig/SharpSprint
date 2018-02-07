@@ -54,7 +54,7 @@ namespace SharpSprint.Elements
             this.FlatEnd = FlatEnd;
         }
 
-        public bool Read(IO.Token[][] Tokens, ref uint Pointer)
+        public static bool Create(Token[][] Tokens, ref uint Pointer, out Track Result)
         {
             throw new NotImplementedException();
         }

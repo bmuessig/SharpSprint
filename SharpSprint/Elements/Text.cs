@@ -81,7 +81,7 @@ namespace SharpSprint.Elements
             this.MirrorVertical = MirrorVertical;
         }
 
-        public bool Read(IO.Token[][] Tokens, ref uint Pointer)
+        public static bool Create(Token[][] Tokens, ref uint Pointer, out Text Result)
         {
             throw new NotImplementedException();
         }
