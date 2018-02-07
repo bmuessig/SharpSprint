@@ -29,6 +29,10 @@ namespace SharpSprint.Elements
         private const bool HatchDefault = false;
         private const bool HatchAutoDefault = true;
 
+        // Required and optional count
+        private const byte RequiredArgCount = 3;
+        private const byte OptionalArgCount = 6;
+
         public Zone(Layer Layer, Distance Width, params Position[] Path)
         {
             this.Layer = Layer;
@@ -57,9 +61,63 @@ namespace SharpSprint.Elements
             this.HatchWidth = new Distance(0);
         }
 
-        public bool Read(IO.Token[][] Tokens, ref uint Pointer)
+        public static bool Create(Token[][] Tokens, ref uint Pointer, out Zone Result)
         {
-            throw new NotImplementedException();
+            Result = null;
+
+            // First, make sure we have met the amount of required arguments
+            if (Tokens[Pointer].Length < RequiredArgCount + 1)
+                return false;
+
+            // Then, make sure we actually have a ZONE element next
+            if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
+                || Tokens[Pointer][0].Handle.ToUpper().Trim() != "ZONE")
+                return false;
+
+            // If so, increase the internal pointer and start looping
+            for (int linePtr = 1; linePtr < Tokens[Pointer].Length; linePtr++)
+            {
+                string keyword = Tokens[Pointer][linePtr].Handle.ToUpper().Trim();
+
+                if (keyword.StartsWith("P"))
+                {
+
+                }
+                else if (keyword == "WIDTH")
+                {
+
+                }
+                else if (keyword == "LAYER")
+                {
+
+                }
+                else if (keyword == "CLEAR")
+                {
+
+                }
+                else if (keyword == "CUTOUT")
+                {
+
+                }
+                else if (keyword == "SOLDERMASK")
+                {
+
+                }
+                else if (keyword == "HATCH")
+                {
+
+                }
+                else if (keyword == "HATCH_AUTO")
+                {
+
+                }
+                else if (keyword == "HATCH_WIDTH")
+                {
+
+                }
+            }
+
+            return true;
         }
 
         public bool Write(out IO.Token[][] Tokens)
