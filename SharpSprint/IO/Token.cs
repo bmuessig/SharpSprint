@@ -114,6 +114,7 @@ namespace SharpSprint.IO
         }
 
         private static Regex RegexLineParser = new Regex(@"(\w+)(?:[ \t]*=[ \t]*(?:(\d+)(?:[ \t]*\/[ \t]*(\d+))?|(true|false)|\|(.*?)\|))?[ \t]*(?:,|;[ \t]*$)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static Regex RegexParser = new Regex(@"^(\w+)(?:[ \t]*=[ \t]*(?:(\d+)(?:[ \t]*\/[ \t]*(\d+))?|(true|false)|\|(.*?)\|))?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public static Token[] LineFromString(string Input, bool AllowDropValues = false)
         {
@@ -125,7 +126,7 @@ namespace SharpSprint.IO
             // Make sure the entire string is consumed
             if (!AllowDropValues)
             {
-                if (RegexLineParser.Replace(Input, "").Trim().Length > 0)
+                if (RegexLineParser.Replace(Input, string.Empty).Trim().Length > 0)
                     return null;
             }
 
@@ -189,9 +190,61 @@ namespace SharpSprint.IO
 
         public static bool FromString(string Input, out Token Result)
         {
-            Regex regex = new Regex(@"^[ \t]*(\w+)(?:[ \t]*=[ \t]*(?:(\d+)(?:[ \t]*\/[ \t]*(\d+))?|(true|false)|\|(.*?)\|))?[ \t]*$", RegexOptions.IgnoreCase);
             Result = new Token();
-            return false;
+
+            Match match = RegexParser.Match(Input);
+            if (!match.Success)
+                return false;
+
+            // Now evaluate the result
+            // Group 1: Keyword
+            // Group 2: First Value
+            // Group 3: Second Value
+            // Group 4: true/false
+            // Group 5: Text
+
+            // We don't have a keyword
+            if (string.IsNullOrWhiteSpace(match.Groups[1].Value))
+                return false;
+
+            string keyword = match.Groups[1].Value.Trim();
+
+            // One number
+            if (match.Groups[2].Length > 0)
+            {
+                ulong val1;
+
+                if (!ulong.TryParse(match.Groups[2].Value.Trim(), out val1))
+                    return false; // Invalid number
+
+                // Is it a pair?
+                if (match.Groups[3].Length > 0)
+                {
+                    ulong val2;
+
+                    if (!ulong.TryParse(match.Groups[3].Value.Trim(), out val2))
+                        return false; // Invalid number
+
+                    Result = new Token(keyword, val1, val2);
+                }
+                else
+                    Result = new Token(keyword, val1);
+            }
+            else if (match.Groups[4].Length > 0)
+            { // We have got a boolean
+                if (match.Groups[4].Value.ToUpper() == "TRUE")
+                    Result = new Token(keyword, true);
+                else if (match.Groups[4].Value.ToUpper() == "FALSE")
+                    Result = new Token(keyword, false);
+                else
+                    return false; // Invalid bool
+            }
+            else if (match.Groups[5].Length > 0) // We have got a string
+                Result = new Token(keyword, match.Groups[5].Value);
+            else // We have a keyword on it's own without a value
+                Result = new Token(keyword);
+
+            return true;
         }
 
         public enum TokenType : byte
