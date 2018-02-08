@@ -22,13 +22,14 @@ namespace SprintTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Token[][] test;
-            if (Parser.Tokenize("CIRCLE, LAYER=3, WIDTH=6000, TEXT=|Hello world!|, BOOL=True, CENTER=350000 / 250000, RADIUS=80000, START=90000, STOP=270000;", out test) == 0)
+            TokenRow[] testRows;
+            if (Parser.Tokenize("ZONE, LAYER=3, WIDTH=8000, HATCH=true, P0=150000 / 250000, P1=150000 / 450000, P2=250000 / 450000, P3=250000 / 650000;", out testRows) == 0)
             {
+                Zone testZone;
+                uint ptr = 0;
+
+                Zone.Read(testRows, ref ptr, out testZone);
             }
-
-
-
 
             Board testBoard = new Board();
             

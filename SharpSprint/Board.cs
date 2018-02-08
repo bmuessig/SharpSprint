@@ -25,7 +25,7 @@ namespace SharpSprint
         {
             Result = null;
 
-            Token[][] tokens;
+            TokenRow[] tokens;
             if (!Entities.Write(out tokens))
                 return false;
 

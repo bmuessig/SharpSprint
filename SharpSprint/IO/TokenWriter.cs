@@ -7,13 +7,13 @@ namespace SharpSprint.IO
 {
     public class TokenWriter
     {
-        private List<Token[]> Collection;
-        private List<Token> Line;
+        private List<TokenRow> Collection;
+        private TokenRow Line;
 
         public TokenWriter()
         {
-            Collection = new List<Token[]>();
-            Line = new List<Token>();
+            Collection = new List<TokenRow>();
+            Line = new TokenRow();
         }
 
         public uint LineCount
@@ -53,7 +53,7 @@ namespace SharpSprint.IO
         {
             if (Line.Count == 0)
                 return;
-            Collection.Add(Line.ToArray());
+            Collection.Add(Line);
             Line.Clear();
         }
 
@@ -62,21 +62,21 @@ namespace SharpSprint.IO
             Line.Add(Token);
         }
 
-        public void Write(Token[] Tokens)
+        public void Write(TokenRow Tokens)
         {
             Line.AddRange(Tokens);
         }
 
-        public void Write(Token[][] Lines)
+        public void Write(TokenRow[] Lines)
         {
-            foreach (Token[] Line in Lines)
+            foreach (TokenRow Line in Lines)
             {
                 Write(Line);
                 NewLine();
             }
         }
 
-        public Token[][] Compile()
+        public TokenRow[] Compile()
         {
             NewLine();
             return Collection.ToArray();

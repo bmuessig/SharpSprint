@@ -16,6 +16,9 @@ namespace SharpSprint.Elements
             set { IsVisible = value; }
         }
 
+        // Optional count
+        private const byte OptionalArgCount = 9;
+
         public ValueText(Layer Layer, Position Position, string Content, Distance Height, bool Visible = VisibleDefault,
             TextStyle Style = StyleDefault, TextThickness Thickness = ThicknessDefault,
             bool MirrorHorizontal = MirrorHorizontalDefault, bool MirrorVertical = MirrorVerticalDefault)
@@ -36,7 +39,22 @@ namespace SharpSprint.Elements
             this.IsVisible = Visible;
         }
 
-        public static bool Create(Token[][] Tokens, ref uint Pointer, out ValueText Result)
+        public static new bool Identify(TokenRow[] Tokens, uint Pointer)
+        {
+            // First, make sure we have met the amount of required arguments
+            if (Tokens[Pointer].Count < RequiredArgCount + 1)
+                return false;
+
+            // Then, make sure we actually have a VALUE_TEXT element next
+            if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
+                || Tokens[Pointer][0].Handle.ToUpper().Trim() != "VALUE_TEXT")
+                return false;
+
+            // Otherwise, it looks alright
+            return true;
+        }
+
+        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out ValueText Result)
         {
             throw new NotImplementedException();
         }

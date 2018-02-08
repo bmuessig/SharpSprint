@@ -28,6 +28,21 @@ namespace SharpSprint.Elements
         private const bool FlatStartDefault = false;
         private const bool FlatEndDefault = false;
 
+        // Required and optional count
+        private const byte RequiredArgCount = 4; // 2 Properties + 1 Path (min. 2 points)
+        private const byte OptionalArgCount = 5;
+
+        private Track()
+        {
+            this.Path = new List<Position>(Path);
+
+            this.Clear = new Distance(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.FlatStart = FlatStartDefault;
+            this.FlatEnd = FlatEndDefault;
+        }
+
         public Track(Layer Layer, Distance Width, params Position[] Path)
         {
             this.Layer = Layer;
@@ -54,12 +69,136 @@ namespace SharpSprint.Elements
             this.FlatEnd = FlatEnd;
         }
 
-        public static bool Create(Token[][] Tokens, ref uint Pointer, out Track Result)
+        public static bool Identify(TokenRow[] Tokens, uint Pointer)
         {
-            throw new NotImplementedException();
+            // First, make sure we have met the amount of required arguments
+            if (Tokens[Pointer].Count < RequiredArgCount + 1)
+                return false;
+
+            // Then, make sure we actually have a TRACK element next
+            if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
+                || Tokens[Pointer][0].Handle.ToUpper().Trim() != "TRACK")
+                return false;
+
+            // Otherwise, it looks alright
+            return true;
         }
 
-        public bool Write(out IO.Token[][] Tokens)
+        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Track Result)
+        {
+            Result = null;
+
+            // Check if we have got a valid signature
+            if (!Identify(Tokens, Pointer))
+                return false;
+
+            // Now, check if we have got any duplicates. This would be a syntax error.
+            if (Tokens[Pointer].HasDuplicates())
+                return false;
+
+            // Define the working variables
+            Track track = new Track();
+            Token token;
+
+            // Now, locate the required argument tokens and make sure they are present
+            // LAYER
+            if (!Tokens[Pointer].Get("LAYER", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Make sure the value is in range
+            if (token.FirstValue < (ulong)Layer.CopperTop || token.FirstValue > (ulong)Layer.Mechanical)
+                return false;
+            // Store the value
+            track.Layer = (Layer)token.FirstValue;
+
+            // WIDTH
+            if (!Tokens[Pointer].Get("WIDTH", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Store the value
+            track.Width = new Distance(token.FirstValue);
+
+            // PATH
+            // Set up the array
+            Tokens[Pointer].ArrayPointer = 0;
+            Tokens[Pointer].ArrayPrefix = "P";
+            // Loop through all points
+            uint pointCount = 0;
+            while (Tokens[Pointer].ArrayGet(out token))
+            {
+                // Increase the point counter
+                pointCount++;
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Tuple)
+                    return false;
+                // Add the new point to the list
+                track.Path.Add(new Position(new Distance(token.FirstValue), new Distance(token.SecondValue)));
+            }
+            // Make sure that we have at least 3 path points
+            if (pointCount < 2)
+                return false;
+
+            // Now to the optional parameters
+            // CLEAR
+            if (Tokens[Pointer].Get("CLEAR", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Store the value
+                track.Clear = new Distance(token.FirstValue);
+            }
+
+            // CUTOUT
+            if (Tokens[Pointer].Get("CUTOUT", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                track.Cutout = token.BoolValue;
+            }
+
+            // SOLDERMASK
+            if (Tokens[Pointer].Get("SOLDERMASK", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                track.Soldermask = token.BoolValue;
+            }
+
+            // FLATSTART
+            if (Tokens[Pointer].Get("FLATSTART", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                track.FlatStart = token.BoolValue;
+            }
+
+            // FLATEND
+            if (Tokens[Pointer].Get("FLATEND", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                track.FlatEnd = token.BoolValue;
+            }
+
+            // Return the successful new element
+            Result = track;
+            return true;
+        }
+
+        public bool Write(out TokenRow[] Tokens)
         {
             TokenWriter writer = new TokenWriter();
             Tokens = null;

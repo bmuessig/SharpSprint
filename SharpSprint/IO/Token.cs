@@ -69,7 +69,7 @@ namespace SharpSprint.IO
 
         public Token(string Handle, bool Value)
         {
-            this.Type = TokenType.Bool;
+            this.Type = TokenType.Boolean;
             this.Indent = IndentTransition.None;
             this.Handle = Handle;
             this.FirstValue = 0;
@@ -104,7 +104,7 @@ namespace SharpSprint.IO
                     return string.Format("{0}={1}", Token.Handle, Token.FirstValue);
                 case TokenType.Tuple:
                     return string.Format("{0}={1}/{2}", Token.Handle, Token.FirstValue, Token.SecondValue);
-                case TokenType.Bool:
+                case TokenType.Boolean:
                     return string.Format("{0}={1}", Token.Handle, Token.BoolValue ? "true" : "false");
                 case TokenType.Text:
                     return string.Format("{0}=|{1}|", Token.Handle, Token.TextValue.Replace('|', '-')); // Strings may not contain the pipe symbol, so replace it
@@ -253,7 +253,7 @@ namespace SharpSprint.IO
             Keyword,
             Value,
             Tuple,
-            Bool,
+            Boolean,
             Text
         }
 

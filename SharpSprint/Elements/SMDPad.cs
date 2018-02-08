@@ -31,6 +31,10 @@ namespace SharpSprint.Elements
         private const bool ThermalDefault = false;
         private const ushort ThermalTracksWidthDefault = 100;
 
+        // Required and optional count
+        private const byte RequiredArgCount = 3;
+        private const byte OptionalArgCount = 8;
+
         public SMDPad(Layer Layer, Position Position, Size Size, ulong PadId = 0, params Pad[] Connections)
         {
             this.Clear = new Distance(ClearDefault);
@@ -55,12 +59,27 @@ namespace SharpSprint.Elements
             this.Connections = new List<Pad>(Connections);
         }
 
-        public static bool Create(Token[][] Tokens, ref uint Pointer, out SMDPad Result)
+        public static bool Identify(TokenRow[] Tokens, uint Pointer)
+        {
+            // First, make sure we have met the amount of required arguments
+            if (Tokens[Pointer].Count < RequiredArgCount + 1)
+                return false;
+
+            // Then, make sure we actually have a SMDPAD element next
+            if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
+                || Tokens[Pointer][0].Handle.ToUpper().Trim() != "SMDPAD")
+                return false;
+
+            // Otherwise, it looks alright
+            return true;
+        }
+        
+        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out SMDPad Result)
         {
             throw new NotImplementedException();
         }
 
-        public bool Write(out IO.Token[][] Tokens)
+        public bool Write(out TokenRow[] Tokens)
         {
             TokenWriter writer = new TokenWriter();
             Tokens = null;

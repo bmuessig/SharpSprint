@@ -30,8 +30,20 @@ namespace SharpSprint.Elements
         private const bool HatchAutoDefault = true;
 
         // Required and optional count
-        private const byte RequiredArgCount = 3;
+        private const byte RequiredArgCount = 5; // 2 Properties + 1 Path (3 points min)
         private const byte OptionalArgCount = 6;
+
+        private Zone()
+        {
+            this.Path = new List<Position>();
+
+            this.Clear = new Distance(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.Hatch = HatchDefault;
+            this.HatchAuto = HatchAutoDefault;
+            this.HatchWidth = new Distance(0);
+        }
 
         public Zone(Layer Layer, Distance Width, params Position[] Path)
         {
@@ -61,12 +73,10 @@ namespace SharpSprint.Elements
             this.HatchWidth = new Distance(0);
         }
 
-        public static bool Create(Token[][] Tokens, ref uint Pointer, out Zone Result)
+        public static bool Identify(TokenRow[] Tokens, uint Pointer)
         {
-            Result = null;
-
             // First, make sure we have met the amount of required arguments
-            if (Tokens[Pointer].Length < RequiredArgCount + 1)
+            if (Tokens[Pointer].Count < RequiredArgCount + 1)
                 return false;
 
             // Then, make sure we actually have a ZONE element next
@@ -74,53 +84,137 @@ namespace SharpSprint.Elements
                 || Tokens[Pointer][0].Handle.ToUpper().Trim() != "ZONE")
                 return false;
 
-            // If so, increase the internal pointer and start looping
-            for (int linePtr = 1; linePtr < Tokens[Pointer].Length; linePtr++)
+            // Otherwise, it looks alright
+            return true;
+        }
+        
+        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Zone Result)
+        {
+            Result = null;
+
+            // Check if we have got a valid signature
+            if (!Identify(Tokens, Pointer))
+                return false;
+
+            // Now, check if we have got any duplicates. This would be a syntax error.
+            if (Tokens[Pointer].HasDuplicates())
+                return false;
+
+            // Define the working variables
+            Zone zone = new Zone();
+            Token token;
+
+            // Now, locate the required argument tokens and make sure they are present
+            // LAYER
+            if (!Tokens[Pointer].Get("LAYER", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Make sure the value is in range
+            if (token.FirstValue < (ulong)Layer.CopperTop || token.FirstValue > (ulong)Layer.Mechanical)
+                return false;
+            // Store the value
+            zone.Layer = (Layer)token.FirstValue;
+
+            // WIDTH
+            if (!Tokens[Pointer].Get("WIDTH", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Store the value
+            zone.Width = new Distance(token.FirstValue);
+
+            // PATH
+            // Set up the array
+            Tokens[Pointer].ArrayPointer = 0;
+            Tokens[Pointer].ArrayPrefix = "P";
+            // Loop through all points
+            uint pointCount = 0;
+            while (Tokens[Pointer].ArrayGet(out token))
             {
-                string keyword = Tokens[Pointer][linePtr].Handle.ToUpper().Trim();
+                // Increase the point counter
+                pointCount++;
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Tuple)
+                    return false;
+                // Add the new point to the list
+                zone.Path.Add(new Position(new Distance(token.FirstValue), new Distance(token.SecondValue)));
+            }
+            // Make sure that we have at least 3 path points
+            if (pointCount < 3)
+                return false;
 
-                if (keyword.StartsWith("P"))
-                {
-
-                }
-                else if (keyword == "WIDTH")
-                {
-
-                }
-                else if (keyword == "LAYER")
-                {
-
-                }
-                else if (keyword == "CLEAR")
-                {
-
-                }
-                else if (keyword == "CUTOUT")
-                {
-
-                }
-                else if (keyword == "SOLDERMASK")
-                {
-
-                }
-                else if (keyword == "HATCH")
-                {
-
-                }
-                else if (keyword == "HATCH_AUTO")
-                {
-
-                }
-                else if (keyword == "HATCH_WIDTH")
-                {
-
-                }
+            // Now to the optional parameters
+            // CLEAR
+            if (Tokens[Pointer].Get("CLEAR", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Store the value
+                zone.Clear = new Distance(token.FirstValue);
             }
 
+            // CUTOUT
+            if (Tokens[Pointer].Get("CUTOUT", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                zone.Cutout = token.BoolValue;
+            }
+
+            // SOLDERMASK
+            if (Tokens[Pointer].Get("SOLDERMASK", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                zone.Soldermask = token.BoolValue;
+            }
+
+            // HATCH
+            if (Tokens[Pointer].Get("HATCH", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                zone.Hatch = token.BoolValue;
+            }
+
+            // HATCH_AUTO
+            if (Tokens[Pointer].Get("HATCH_AUTO", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                zone.HatchAuto = token.BoolValue;
+            }
+
+            // HATCH_WIDTH
+            if (Tokens[Pointer].Get("HATCH_WIDTH", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Store the value
+                zone.HatchWidth = new Distance(token.FirstValue);
+            }
+            else if (!zone.HatchAuto) // If HATCH_AUTO is manually disabled, HATCH_WIDTH is required
+                return false;
+
+            // Return the successful new element
+            Result = zone;
             return true;
         }
 
-        public bool Write(out IO.Token[][] Tokens)
+        public bool Write(out TokenRow[] Tokens)
         {
             TokenWriter writer = new TokenWriter();
             Tokens = null;

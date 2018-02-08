@@ -24,6 +24,10 @@ namespace SharpSprint.Elements
         private const bool UsePickplaceDefault = false;
         private const uint RotationDefault = 0;
 
+        // Required and optional count
+        private const byte RequiredArgCount = 0;
+        private const byte OptionalArgCount = 4;
+
         public Component(IDText IDText, ValueText ValueText, params Entity[] Entities)
         {
             this.Entities = new List<Entity>(Entities);
@@ -85,12 +89,27 @@ namespace SharpSprint.Elements
             this.Rotation = Rotation;
         }
 
-        public static bool Create(Token[][] Tokens, ref uint Pointer, out Component Result)
+        public static bool Identify(TokenRow[] Tokens, uint Pointer)
+        {
+            // First, make sure we have met the amount of required arguments
+            if (Tokens[Pointer].Count < RequiredArgCount + 1)
+                return false;
+
+            // Then, make sure we actually have a BEGIN_COMPONENT element next
+            if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
+                || Tokens[Pointer][0].Handle.ToUpper().Trim() != "BEGIN_COMPONENT")
+                return false;
+
+            // Otherwise, it looks alright
+            return true;
+        }
+        
+        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Component Result)
         {
             throw new NotImplementedException();
         }
 
-        public bool Write(out Token[][] Tokens)
+        public bool Write(out TokenRow[] Tokens)
         {
             TokenWriter writer = new TokenWriter();
             Tokens = null;
@@ -121,7 +140,7 @@ namespace SharpSprint.Elements
             // ID Text
             if (IDText != null)
             {
-                Token[][] IDTokens;
+                TokenRow[] IDTokens;
                 if (IDText.Write(out IDTokens))
                 {
                     if (IDTokens.Length == 1)
@@ -141,7 +160,7 @@ namespace SharpSprint.Elements
             // Value Text
             if (ValueText != null)
             {
-                Token[][] ValueTokens;
+                TokenRow[] ValueTokens;
                 if (ValueText.Write(out ValueTokens))
                 {
                     if (ValueTokens.Length == 1)
@@ -163,7 +182,7 @@ namespace SharpSprint.Elements
             {
                 foreach (Entity entity in Entities)
                 {
-                    Token[][] EntityTokens;
+                    TokenRow[] EntityTokens;
                     if (entity.Write(out EntityTokens))
                     {
                         writer.Write(EntityTokens);

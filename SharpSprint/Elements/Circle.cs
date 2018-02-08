@@ -31,6 +31,10 @@ namespace SharpSprint.Elements
         private const uint StopDefault = 0;
         private const bool FillDefault = false;
 
+        // Required and optional count
+        private const byte RequiredArgCount = 4;
+        private const byte OptionalArgCount = 6;
+
         public Circle(Layer Layer, Distance Width, Position Center, Distance Radius, bool Fill = FillDefault)
         {
             this.Layer = Layer;
@@ -61,12 +65,27 @@ namespace SharpSprint.Elements
             this.Fill = Fill;
         }
 
-        public static bool Create(Token[][] Tokens, ref uint Pointer, out Circle Result)
+        public static bool Identify(TokenRow[] Tokens, uint Pointer)
+        {
+            // First, make sure we have met the amount of required arguments
+            if (Tokens[Pointer].Count < RequiredArgCount + 1)
+                return false;
+
+            // Then, make sure we actually have a CIRCLE element next
+            if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
+                || Tokens[Pointer][0].Handle.ToUpper().Trim() != "CIRCLE")
+                return false;
+
+            // Otherwise, it looks alright
+            return true;
+        }
+        
+        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Circle Result)
         {
             throw new NotImplementedException();
         }
         
-        public bool Write(out Token[][] Tokens)
+        public bool Write(out TokenRow[] Tokens)
         {
             TokenWriter writer = new TokenWriter();
             Tokens = null;

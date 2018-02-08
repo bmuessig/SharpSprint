@@ -9,10 +9,10 @@ namespace SharpSprint.IO
     public class Parser
     {
 
-        public static uint Tokenize(string InputLines, out Token[][] OutputTokens)
+        public static uint Tokenize(string InputLines, out TokenRow[] OutputTokens)
         {
-            List<Token[]> lines = new List<Token[]>();
-            List<Token> line = new List<Token>();
+            List<TokenRow> lines = new List<TokenRow>();
+            TokenRow line = new TokenRow();
 
             OutputTokens = null;
 
@@ -56,7 +56,7 @@ namespace SharpSprint.IO
                     if (line.Count > 0)
                     {
                         // Add the line to the set if it is not empty
-                        lines.Add(line.ToArray());
+                        lines.Add(line);
 
                         // And clear the line
                         line.Clear();
@@ -125,7 +125,7 @@ namespace SharpSprint.IO
 
             // Add the line to the set if it is not empty
             if (line.Count > 0)
-                lines.Add(line.ToArray());
+                lines.Add(line);
 
             // Write the output array
             OutputTokens = lines.ToArray();

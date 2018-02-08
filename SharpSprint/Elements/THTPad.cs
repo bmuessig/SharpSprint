@@ -37,6 +37,10 @@ namespace SharpSprint.Elements
         private const ushort ThermalTracksWidthDefault = 100;
         private const bool ThermalTracksIndividualDefault = false;
 
+        // Required and optional count
+        private const byte RequiredArgCount = 5;
+        private const byte OptionalArgCount = 10;
+
         public THTPad(Layer Layer, Position Position, Distance Size, Distance Drill, THTPadForm Form, ulong PadId = 0,
             params Pad[] Connections)
         {
@@ -97,12 +101,27 @@ namespace SharpSprint.Elements
             this.Connections = new List<Pad>(Connections);
         }
 
-        public static bool Create(Token[][] Tokens, ref uint Pointer, out THTPad Result)
+        public static bool Identify(TokenRow[] Tokens, uint Pointer)
+        {
+            // First, make sure we have met the amount of required arguments
+            if (Tokens[Pointer].Count < RequiredArgCount + 1)
+                return false;
+
+            // Then, make sure we actually have a PAD element next
+            if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
+                || Tokens[Pointer][0].Handle.ToUpper().Trim() != "PAD")
+                return false;
+
+            // Otherwise, it looks alright
+            return true;
+        }
+
+        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out THTPad Result)
         {
             throw new NotImplementedException();
         }
 
-        public bool Write(out IO.Token[][] Tokens)
+        public bool Write(out TokenRow[] Tokens)
         {
             TokenWriter writer = new TokenWriter();
             Tokens = null;

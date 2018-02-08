@@ -7,12 +7,12 @@ namespace SharpSprint.IO
 {
     public class Compiler
     {
-        public static bool CompileBlock(Token[][] Lines, ref ushort Indent, out string Result)
+        public static bool CompileBlock(TokenRow[] Lines, ref ushort Indent, out string Result)
         {
             StringBuilder sb = new StringBuilder();
             Result = null;
             
-            foreach (Token[] line in Lines)
+            foreach (TokenRow line in Lines)
             {
                 string lineContent;
 
@@ -39,13 +39,13 @@ namespace SharpSprint.IO
             return true;
         }
 
-        public static bool CompileLine(Token[] Tokens, ref ushort Indent, out string Result)
+        public static bool CompileLine(TokenRow Tokens, ref ushort Indent, out string Result)
         {
             StringBuilder sb = new StringBuilder();
             Result = null;
 
             // Check for empty lines
-            if (Tokens.Length == 0)
+            if (Tokens.Count == 0)
             {
                 Result = string.Empty;
                 return true;

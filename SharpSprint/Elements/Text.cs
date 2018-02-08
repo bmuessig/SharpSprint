@@ -36,6 +36,10 @@ namespace SharpSprint.Elements
         protected const bool MirrorVerticalDefault = false;
         protected const bool VisibleDefault = true;
 
+        // Required and optional count
+        protected const byte RequiredArgCount = 4;
+        private const byte OptionalArgCount = 8;
+
         // Internal parameters for compatibility with ID_TEXT and VALUE_TEXT
         protected string Keyword;
         protected bool IsComponentText;
@@ -81,12 +85,27 @@ namespace SharpSprint.Elements
             this.MirrorVertical = MirrorVertical;
         }
 
-        public static bool Create(Token[][] Tokens, ref uint Pointer, out Text Result)
+        public static bool Identify(TokenRow[] Tokens, uint Pointer)
+        {
+            // First, make sure we have met the amount of required arguments
+            if (Tokens[Pointer].Count < RequiredArgCount + 1)
+                return false;
+
+            // Then, make sure we actually have a TEXT element next
+            if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
+                || Tokens[Pointer][0].Handle.ToUpper().Trim() != "TEXT")
+                return false;
+
+            // Otherwise, it looks alright
+            return true;
+        }
+
+        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Text Result)
         {
             throw new NotImplementedException();
         }
 
-        public bool Write(out IO.Token[][] Tokens)
+        public bool Write(out TokenRow[] Tokens)
         {
             TokenWriter writer = new TokenWriter();
             Tokens = null;

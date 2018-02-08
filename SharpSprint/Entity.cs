@@ -8,6 +8,6 @@ namespace SharpSprint
 {
     public interface Entity
     {
-        bool Write(out Token[][] Tokens);
+        bool Write(out TokenRow[] Tokens);
     }
 }
