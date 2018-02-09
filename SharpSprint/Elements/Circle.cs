@@ -35,6 +35,16 @@ namespace SharpSprint.Elements
         private const byte RequiredArgCount = 4;
         private const byte OptionalArgCount = 6;
 
+        private Circle()
+        {
+            this.Clear = new Distance(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.Start = new FineAngle(StartDefault);
+            this.Stop = new FineAngle(StopDefault);
+            this.Fill = Fill;
+        }
+
         public Circle(Layer Layer, Distance Width, Position Center, Distance Radius, bool Fill = FillDefault)
         {
             this.Layer = Layer;
@@ -82,7 +92,128 @@ namespace SharpSprint.Elements
         
         public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Circle Result)
         {
-            throw new NotImplementedException();
+            Result = null;
+
+            // Check if we have got a valid signature
+            if (!Identify(Tokens, Pointer))
+                return false;
+
+            // Now, check if we have got any duplicates. This would be a syntax error.
+            if (Tokens[Pointer].HasDuplicates())
+                return false;
+
+            // Define the working variables
+            Circle circle = new Circle();
+            Token token;
+
+            // Now, locate the required argument tokens and make sure they are present
+            // LAYER
+            if (!Tokens[Pointer].Get("LAYER", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Make sure the value is in range
+            if (token.FirstValue < (ulong)Layer.CopperTop || token.FirstValue > (ulong)Layer.Mechanical)
+                return false;
+            // Store the value
+            circle.Layer = (Layer)token.FirstValue;
+
+            // WIDTH
+            if (!Tokens[Pointer].Get("WIDTH", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Store the value
+            circle.Width = new Distance(token.FirstValue);
+
+            // CENTER
+            if (!Tokens[Pointer].Get("CENTER", out token))
+                return false;
+            // Make sure it is a point
+            if (token.Type != Token.TokenType.Tuple)
+                return false;
+            // Store the value
+            circle.Center = new Position(new Distance(token.FirstValue), new Distance(token.SecondValue));
+
+            // RADIUS
+            if (!Tokens[Pointer].Get("RADIUS", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Store the value
+            circle.Radius = new Distance(token.FirstValue);
+
+            // Now to the optional parameters
+            // CLEAR
+            if (Tokens[Pointer].Get("CLEAR", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Store the value
+                circle.Clear = new Distance(token.FirstValue);
+            }
+
+            // CUTOUT
+            if (Tokens[Pointer].Get("CUTOUT", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                circle.Cutout = token.BoolValue;
+            }
+
+            // SOLDERMASK
+            if (Tokens[Pointer].Get("SOLDERMASK", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                circle.Soldermask = token.BoolValue;
+            }
+
+            // START
+            if (Tokens[Pointer].Get("START", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                if (token.FirstValue > uint.MaxValue)
+                    return false;
+                // Store the value
+                circle.Start = new FineAngle((uint)token.FirstValue);
+            }
+
+            // STOP
+            if (Tokens[Pointer].Get("STOP", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                if (token.FirstValue > uint.MaxValue)
+                    return false;
+                // Store the value
+                circle.Stop = new FineAngle((uint)token.FirstValue);
+            }
+
+            // FILL
+            if (Tokens[Pointer].Get("FILL", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                circle.Fill = token.BoolValue;
+            }
+
+            // Return the successful new element
+            Result = circle;
+            return true;
         }
         
         public bool Write(out TokenRow[] Tokens)
