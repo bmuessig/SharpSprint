@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Elements\IDText.cs" />
     <Compile Include="Elements\ValueText.cs" />
+    <Compile Include="IO\Tokenizer.cs" />
     <Compile Include="IO\TokenRow.cs" />
     <Compile Include="IO\TokenWriter.cs" />
     <Compile Include="Primitives\Angle.cs" />
@@ -61,7 +62,6 @@
     <Compile Include="Primitives\FineAngle.cs" />
     <Compile Include="IO\Compiler.cs" />
     <Compile Include="Layer.cs" />
-    <Compile Include="IO\Parser.cs" />
     <Compile Include="IO\Token.cs" />
     <Compile Include="Primitives\IntegerAngle.cs" />
     <Compile Include="Primitives\Position.cs" />

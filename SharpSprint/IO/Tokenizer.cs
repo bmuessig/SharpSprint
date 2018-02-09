@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
 
 namespace SharpSprint.IO
 {
-    public class Parser
+    public class Tokenizer
     {
-
         public static uint Tokenize(string InputLines, out TokenRow[] OutputTokens)
         {
             List<TokenRow> lines = new List<TokenRow>();
@@ -30,7 +28,7 @@ namespace SharpSprint.IO
                 // Make sure we have proper line endings
                 // If there was a carriage return, we want a linefeed
                 // Unix-style, linefeed-only endings are just fine too
-                if(lastChr == '\r' && chr != '\n')
+                if (lastChr == '\r' && chr != '\n')
                     return lineNumber;
 
                 // Handle line endings first, so that they don't slip though

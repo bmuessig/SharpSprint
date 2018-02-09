@@ -35,7 +35,7 @@ namespace SharpSprint.Elements
             return true;
         }
 
-        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Component Group)
+        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Group Group)
         {
             throw new NotImplementedException();
         }
