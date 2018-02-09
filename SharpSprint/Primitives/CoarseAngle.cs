@@ -7,20 +7,18 @@ namespace SharpSprint.Primitives
 {
     public struct CoarseAngle : Angle
     {
-        public uint Value { get; set; }
+        private uint RawAngle;
+
+        public uint Value
+        {
+            get { return RawAngle; }
+            set { RawAngle = value % 36000; }
+        }
 
         public float Angle
         {
-            get
-            {
-                return (float)(Value / 100);
-            }
-
-            set
-            {
-                value = Math.Abs(value % 360); // Convert the angle to a valid one
-                Value = (uint)Math.Round((float)(Value * 100), 0);
-            }
+            get { return (float)(Value / 100); }
+            set { Value = (uint)Math.Round((float)(value * 100), 0); }
         }
 
         public CoarseAngle(uint Value)
