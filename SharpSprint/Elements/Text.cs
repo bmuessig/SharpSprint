@@ -45,6 +45,20 @@ namespace SharpSprint.Elements
         protected bool IsComponentText;
         protected bool IsVisible;
 
+        private Text()
+        {
+            this.Content = string.Empty;
+
+            this.Clear = new Distance(ClearDefault);
+            this.Cutout = CutoutDefault;
+            this.Soldermask = SoldermaskDefault;
+            this.Style = StyleDefault;
+            this.Thickness = ThicknessDefault;
+            this.Rotation = new CoarseAngle(RotationDefault);
+            this.MirrorHorizontal = MirrorHorizontalDefault;
+            this.MirrorVertical = MirrorVerticalDefault;
+        }
+
         public Text(Layer Layer, Position Position, string Content, Distance Height, TextStyle Style = StyleDefault,
             TextThickness Thickness = ThicknessDefault, bool MirrorHorizontal = MirrorHorizontalDefault,
                 bool MirrorVertical = MirrorVerticalDefault)
@@ -102,7 +116,150 @@ namespace SharpSprint.Elements
 
         public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Text Result)
         {
-            throw new NotImplementedException();
+            Result = null;
+
+            // Check if we have got a valid signature
+            if (!Identify(Tokens, Pointer))
+                return false;
+
+            // Now, check if we have got any duplicates. This would be a syntax error.
+            if (Tokens[Pointer].HasDuplicates())
+                return false;
+
+            // Define the working variables
+            Text text = new Text();
+            Token token;
+
+            // Now, locate the required argument tokens and make sure they are present
+            // LAYER
+            if (!Tokens[Pointer].Get("LAYER", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Make sure the value is in range
+            if (token.FirstValue < (ulong)Layer.CopperTop || token.FirstValue > (ulong)Layer.Mechanical)
+                return false;
+            // Store the value
+            text.Layer = (Layer)token.FirstValue;
+
+            // POSITION
+            if (!Tokens[Pointer].Get("POS", out token))
+                return false;
+            // Make sure it is a point
+            if (token.Type != Token.TokenType.Tuple)
+                return false;
+            // Store the value
+            text.Position = new Position(new Distance(token.FirstValue), new Distance(token.SecondValue));
+
+            // CONTENT
+            if (!Tokens[Pointer].Get("TEXT", out token))
+                return false;
+            // Make sure it is a text value
+            if (token.Type != Token.TokenType.Text)
+                return false;
+            // Store the value
+            text.Content = token.TextValue;
+
+            // HEIGHT
+            if (!Tokens[Pointer].Get("HEIGHT", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Store the value
+            text.Height = new Distance(token.FirstValue);
+
+            // Now to the optional parameters
+            // CLEAR
+            if (Tokens[Pointer].Get("CLEAR", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Store the value
+                text.Clear = new Distance(token.FirstValue);
+            }
+
+            // CUTOUT
+            if (Tokens[Pointer].Get("CUTOUT", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                text.Cutout = token.BoolValue;
+            }
+
+            // SOLDERMASK
+            if (Tokens[Pointer].Get("SOLDERMASK", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                text.Soldermask = token.BoolValue;
+            }
+
+            // STYLE
+            if (!Tokens[Pointer].Get("STYLE", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Make sure the value is in range
+            if (token.FirstValue < (ulong)TextStyle.Narrow || token.FirstValue > (ulong)TextStyle.Wide)
+                return false;
+            // Store the value
+            text.Style = (TextStyle)token.FirstValue;
+
+            // THICKNESS
+            if (!Tokens[Pointer].Get("THICKNESS", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Make sure the value is in range
+            if (token.FirstValue < (ulong)TextThickness.Thin || token.FirstValue > (ulong)TextThickness.Thick)
+                return false;
+            // Store the value
+            text.Thickness = (TextThickness)token.FirstValue;
+
+            // ROTATION
+            if (Tokens[Pointer].Get("ROTATION", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                if (token.FirstValue > uint.MaxValue)
+                    return false;
+                // Store the value
+                text.Rotation = new CoarseAngle((uint)token.FirstValue);
+            }
+
+            // MIRROR_HORZ
+            if (Tokens[Pointer].Get("MIRROR_HORZ", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                text.MirrorHorizontal = token.BoolValue;
+            }
+
+            // MIRROR_VERT
+            if (Tokens[Pointer].Get("MIRROR_VERT", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                text.MirrorVertical = token.BoolValue;
+            }
+
+            // Return the successful new element
+            Result = text;
+            return true;
         }
 
         public bool Write(out TokenRow[] Tokens)
