@@ -22,7 +22,7 @@ namespace SharpSprint.Elements
         public ushort ThermalTracksWidth { get; set; } // 100
         public SMDPadThermalTracks ThermalTracks { get; set; }
         public ulong PadID { get; set; }
-        public List<Pad> Connections { get; set; }
+        public List<ulong> Connections { get; set; }
 
         // Default optional parameters
         private const uint ClearDefault = 4000;
@@ -35,7 +35,7 @@ namespace SharpSprint.Elements
         private const byte RequiredArgCount = 3;
         private const byte OptionalArgCount = 8;
 
-        public SMDPad(Layer Layer, Position Position, Size Size, ulong PadId = 0, params Pad[] Connections)
+        private SMDPad()
         {
             this.Clear = new Distance(ClearDefault);
             this.Soldermask = SoldermaskDefault;
@@ -43,12 +43,32 @@ namespace SharpSprint.Elements
             this.Thermal = ThermalDefault;
             this.ThermalTracksWidth = ThermalTracksWidthDefault;
             this.ThermalTracks = SMDPadThermalTracks.None;
-            this.PadID = PadId;
-            this.Connections = new List<Pad>(Connections);
+            this.PadID = 0;
+            this.Connections = new List<ulong>();
         }
 
-        public SMDPad(Layer Layer, Position Position, Size Size, CoarseAngle Rotation, ulong PadId = 0, params Pad[] Connections)
+        public SMDPad(Layer Layer, Position Position, Size Size, ulong PadId = 0, params ulong[] Connections)
         {
+            this.Layer = Layer;
+            this.Position = Position;
+            this.Size = Size;
+
+            this.Clear = new Distance(ClearDefault);
+            this.Soldermask = SoldermaskDefault;
+            this.Rotation = new CoarseAngle(RotationDefault);
+            this.Thermal = ThermalDefault;
+            this.ThermalTracksWidth = ThermalTracksWidthDefault;
+            this.ThermalTracks = SMDPadThermalTracks.None;
+            this.PadID = PadId;
+            this.Connections = new List<ulong>(Connections);
+        }
+
+        public SMDPad(Layer Layer, Position Position, Size Size, CoarseAngle Rotation, ulong PadId = 0, params ulong[] Connections)
+        {
+            this.Layer = Layer;
+            this.Position = Position;
+            this.Size = Size;
+
             this.Clear = new Distance(ClearDefault);
             this.Soldermask = SoldermaskDefault;
             this.Rotation = Rotation;
@@ -56,7 +76,7 @@ namespace SharpSprint.Elements
             this.ThermalTracksWidth = ThermalTracksWidthDefault;
             this.ThermalTracks = SMDPadThermalTracks.None;
             this.PadID = PadId;
-            this.Connections = new List<Pad>(Connections);
+            this.Connections = new List<ulong>(Connections);
         }
 
         public static bool Identify(TokenRow[] Tokens, uint Pointer)
@@ -76,7 +96,162 @@ namespace SharpSprint.Elements
         
         public static bool Read(TokenRow[] Tokens, ref uint Pointer, out SMDPad Result)
         {
-            throw new NotImplementedException();
+            Result = null;
+
+            // Check if we have got a valid signature
+            if (!Identify(Tokens, Pointer))
+                return false;
+
+            // Now, check if we have got any duplicates. This would be a syntax error.
+            if (Tokens[Pointer].HasDuplicates())
+                return false;
+
+            // Define the working variables
+            SMDPad smdpad = new SMDPad();
+            Token token;
+
+            // Now, locate the required argument tokens and make sure they are present
+            // LAYER
+            if (!Tokens[Pointer].Get("LAYER", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Make sure the value is in range
+            if (token.FirstValue < (ulong)Layer.CopperTop || token.FirstValue > (ulong)Layer.Mechanical)
+                return false;
+            // Store the value
+            smdpad.Layer = (Layer)token.FirstValue;
+
+            // POSITION
+            if (!Tokens[Pointer].Get("POS", out token))
+                return false;
+            // Make sure it is a point
+            if (token.Type != Token.TokenType.Tuple)
+                return false;
+            // Store the value
+            smdpad.Position = new Position(new Distance(token.FirstValue), new Distance(token.SecondValue));
+
+            // SIZE
+            Distance sdx, sdy;
+
+            // SIZE_X
+            if (!Tokens[Pointer].Get("SIZE_X", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Store the value
+            sdx = new Distance(token.FirstValue);
+
+            // SIZE_Y
+            if (!Tokens[Pointer].Get("SIZE_Y", out token))
+                return false;
+            // Make sure it is a numeric value
+            if (token.Type != Token.TokenType.Value)
+                return false;
+            // Store the value
+            sdy = new Distance(token.FirstValue);
+
+            // SIZE
+            smdpad.Size = new Size(sdx, sdy);
+
+            // Now to the optional parameters
+            // CLEAR
+            if (Tokens[Pointer].Get("CLEAR", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Store the value
+                smdpad.Clear = new Distance(token.FirstValue);
+            }
+
+            // SOLDERMASK
+            if (Tokens[Pointer].Get("SOLDERMASK", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                smdpad.Soldermask = token.BoolValue;
+            }
+
+            // ROTATION
+            if (Tokens[Pointer].Get("ROTATION", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                if (token.FirstValue > uint.MaxValue)
+                    return false;
+                // Store the value
+                smdpad.Rotation = new CoarseAngle((uint)token.FirstValue);
+            }
+
+            // THERMAL
+            if (Tokens[Pointer].Get("THERMAL", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                smdpad.Thermal = token.BoolValue;
+            }
+
+            // THERMAL_TRACKS_WIDTH
+            if (Tokens[Pointer].Get("THERMAL_TRACKS_WIDTH", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Check range
+                if (token.FirstValue > ushort.MaxValue)
+                    return false;
+                // Store the value
+                smdpad.ThermalTracksWidth = (ushort)token.FirstValue;
+            }
+
+            // THERMAL_TRACKS
+            if (Tokens[Pointer].Get("THERMAL_TRACKS", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Check range
+                if (token.FirstValue > byte.MaxValue)
+                    return false;
+                // Store the value
+                smdpad.ThermalTracks = (SMDPadThermalTracks)token.FirstValue;
+            }
+
+            // PAD_ID
+            if (Tokens[Pointer].Get("PAD_ID", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Store the value
+                smdpad.PadID = token.FirstValue;
+            }
+
+            // CONx
+            // Set up the array
+            Tokens[Pointer].ArrayPointer = 0;
+            Tokens[Pointer].ArrayPrefix = "CON";
+            // Loop through all connections
+            while (Tokens[Pointer].ArrayGet(out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Add the new connection to the list
+                smdpad.Connections.Add(token.FirstValue);
+            }
+
+            // Return the successful new element
+            Result = smdpad;
+            return true;
         }
 
         public bool Write(out TokenRow[] Tokens)
@@ -134,12 +309,13 @@ namespace SharpSprint.Elements
             // Connections
             if (Connections != null)
             {
+                // Write all connections
                 uint counter = 0;
-                foreach (Pad pad in Connections)
+                foreach (ulong conn in Connections)
                 {
-                    if (pad.PadID == 0)
+                    if (conn == 0)
                         return false;
-                    writer.Write(new Token(string.Format("CON{0}", counter), pad.PadID));
+                    writer.Write(new Token(string.Format("CON{0}", counter), conn));
                     counter++;
                 }
             }

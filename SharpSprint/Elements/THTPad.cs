@@ -26,7 +26,7 @@ namespace SharpSprint.Elements
         public bool ThermalTracksIndividual { get; set; } // False
         public THTPadThermalTracks ThermalTracks { get; set; }
         public ulong PadID { get; set; }
-        public List<Pad> Connections { get; set; }
+        public List<ulong> Connections { get; set; }
 
         // Default optional parameters
         private const uint ClearDefault = 4000;
@@ -52,11 +52,11 @@ namespace SharpSprint.Elements
             this.ThermalTracksWidth = ThermalTracksWidthDefault;
             this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
             this.ThermalTracks = ThermalTracksDefault;
-            this.Connections = new List<Pad>();
+            this.Connections = new List<ulong>();
         }
 
         public THTPad(Layer Layer, Position Position, Distance Size, Distance Drill, THTPadForm Form, ulong PadId = 0,
-            params Pad[] Connections)
+            params ulong[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -73,11 +73,11 @@ namespace SharpSprint.Elements
             this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
             this.ThermalTracks = ThermalTracksDefault;
             this.PadID = PadId;
-            this.Connections = new List<Pad>(Connections);
+            this.Connections = new List<ulong>(Connections);
         }
 
         public THTPad(Layer Layer, Position Position, Distance Size, Distance Drill, THTPadForm Form, CoarseAngle Rotation,
-            ulong PadId = 0, params Pad[] Connections)
+            ulong PadId = 0, params ulong[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -94,11 +94,11 @@ namespace SharpSprint.Elements
             this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
             this.ThermalTracks = ThermalTracksDefault;
             this.PadID = PadId;
-            this.Connections = new List<Pad>(Connections);
+            this.Connections = new List<ulong>(Connections);
         }
 
         public THTPad(Layer Layer, Position Position, Distance Size, Distance Drill, THTPadForm Form, bool Via, ulong PadId = 0,
-            params Pad[] Connections)
+            params ulong[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -115,11 +115,11 @@ namespace SharpSprint.Elements
             this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
             this.ThermalTracks = ThermalTracksDefault;
             this.PadID = PadId;
-            this.Connections = new List<Pad>(Connections);
+            this.Connections = new List<ulong>(Connections);
         }
 
         public THTPad(Layer Layer, Position Position, Distance Size, Distance Drill, THTPadForm Form, CoarseAngle Rotation,
-            bool Via, ulong PadId = 0, params Pad[] Connections)
+            bool Via, ulong PadId = 0, params ulong[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -136,7 +136,7 @@ namespace SharpSprint.Elements
             this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
             this.ThermalTracks = ThermalTracksDefault;
             this.PadID = PadId;
-            this.Connections = new List<Pad>(Connections);
+            this.Connections = new List<ulong>(Connections);
         }
 
         public static bool Identify(TokenRow[] Tokens, uint Pointer)
@@ -222,30 +222,6 @@ namespace SharpSprint.Elements
             // Store the value
             pad.Form = (THTPadForm)token.FirstValue;
 
-
-
-            // TODO down below
-            /*
-            // PATH
-            // Set up the array
-            Tokens[Pointer].ArrayPointer = 0;
-            Tokens[Pointer].ArrayPrefix = "P";
-            // Loop through all points
-            uint pointCount = 0;
-            while (Tokens[Pointer].ArrayGet(out token))
-            {
-                // Increase the point counter
-                pointCount++;
-                // Make sure we have got the correct type
-                if (token.Type != Token.TokenType.Tuple)
-                    return false;
-                // Add the new point to the list
-                track.Path.Add(new Position(new Distance(token.FirstValue), new Distance(token.SecondValue)));
-            }
-            // Make sure that we have at least 3 path points
-            if (pointCount < 2)
-                return false;
-
             // Now to the optional parameters
             // CLEAR
             if (Tokens[Pointer].Get("CLEAR", out token))
@@ -254,17 +230,7 @@ namespace SharpSprint.Elements
                 if (token.Type != Token.TokenType.Value)
                     return false;
                 // Store the value
-                track.Clear = new Distance(token.FirstValue);
-            }
-
-            // CUTOUT
-            if (Tokens[Pointer].Get("CUTOUT", out token))
-            {
-                // Make sure we have got the correct type
-                if (token.Type != Token.TokenType.Boolean)
-                    return false;
-                // Store the value
-                track.Cutout = token.BoolValue;
+                pad.Clear = new Distance(token.FirstValue);
             }
 
             // SOLDERMASK
@@ -274,28 +240,100 @@ namespace SharpSprint.Elements
                 if (token.Type != Token.TokenType.Boolean)
                     return false;
                 // Store the value
-                track.Soldermask = token.BoolValue;
+                pad.Soldermask = token.BoolValue;
             }
 
-            // FLATSTART
-            if (Tokens[Pointer].Get("FLATSTART", out token))
+            // ROTATION
+            if (Tokens[Pointer].Get("ROTATION", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                if (token.FirstValue > uint.MaxValue)
+                    return false;
+                // Store the value
+                pad.Rotation = new CoarseAngle((uint)token.FirstValue);
+            }
+
+            // VIA
+            if (Tokens[Pointer].Get("VIA", out token))
             {
                 // Make sure we have got the correct type
                 if (token.Type != Token.TokenType.Boolean)
                     return false;
                 // Store the value
-                track.FlatStart = token.BoolValue;
+                pad.Via = token.BoolValue;
             }
 
-            // FLATEND
-            if (Tokens[Pointer].Get("FLATEND", out token))
+            // THERMAL
+            if (Tokens[Pointer].Get("THERMAL", out token))
             {
                 // Make sure we have got the correct type
                 if (token.Type != Token.TokenType.Boolean)
                     return false;
                 // Store the value
-                track.FlatEnd = token.BoolValue;
-            }*/
+                pad.Thermal = token.BoolValue;
+            }
+
+            // THERMAL_TRACKS_WIDTH
+            if (Tokens[Pointer].Get("THERMAL_TRACKS_WIDTH", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Check range
+                if (token.FirstValue > ushort.MaxValue)
+                    return false;
+                // Store the value
+                pad.ThermalTracksWidth = (ushort)token.FirstValue;
+            }
+
+            // THERMAL_TRACKS_INDIVIDUAL
+            if (Tokens[Pointer].Get("THERMAL_TRACKS_INDIVIDUAL", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Boolean)
+                    return false;
+                // Store the value
+                pad.ThermalTracksIndividual = token.BoolValue;
+            }
+
+            // THERMAL_TRACKS
+            if (Tokens[Pointer].Get("THERMAL_TRACKS", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Check range
+                if (token.FirstValue > uint.MaxValue)
+                    return false;
+                // Store the value
+                pad.ThermalTracks = (THTPadThermalTracks)token.FirstValue;
+            }
+
+            // PAD_ID
+            if (Tokens[Pointer].Get("PAD_ID", out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Store the value
+                pad.PadID = token.FirstValue;
+            }
+
+            // CONx
+            // Set up the array
+            Tokens[Pointer].ArrayPointer = 0;
+            Tokens[Pointer].ArrayPrefix = "CON";
+            // Loop through all connections
+            while (Tokens[Pointer].ArrayGet(out token))
+            {
+                // Make sure we have got the correct type
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Add the new connection to the list
+                pad.Connections.Add(token.FirstValue);
+            }
 
             // Return the successful new element
             Result = pad;
@@ -373,12 +411,13 @@ namespace SharpSprint.Elements
             // Connections
             if (Connections != null)
             {
+                // Write all connections
                 uint counter = 0;
-                foreach (Pad pad in Connections)
+                foreach (ulong conn in Connections)
                 {
-                    if (pad.PadID == 0)
+                    if (conn == 0)
                         return false;
-                    writer.Write(new Token(string.Format("CON{0}", counter), pad.PadID));
+                    writer.Write(new Token(string.Format("CON{0}", counter), conn));
                     counter++;
                 }
             }
