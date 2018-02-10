@@ -79,6 +79,10 @@ namespace SharpSprint.Elements
             if (Tokens[Pointer].Count < RequiredArgCount + 1)
                 return false;
 
+            // Also, check if the pointer is within range
+            if (Pointer >= Tokens.Length)
+                return false;
+
             // Then, make sure we actually have a ZONE element next
             if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
                 || Tokens[Pointer][0].Handle.ToUpper().Trim() != "ZONE")
@@ -147,6 +151,8 @@ namespace SharpSprint.Elements
                 return false;
 
             // Now to the optional parameters
+            uint optCount = 0;
+
             // CLEAR
             if (Tokens[Pointer].Get("CLEAR", out token))
             {
@@ -155,6 +161,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 zone.Clear = new Distance(token.FirstValue);
+                // Increment the optional argument count
+                optCount++;
             }
 
             // CUTOUT
@@ -165,6 +173,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 zone.Cutout = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // SOLDERMASK
@@ -175,6 +185,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 zone.Soldermask = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // HATCH
@@ -185,6 +197,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 zone.Hatch = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // HATCH_AUTO
@@ -195,6 +209,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 zone.HatchAuto = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // HATCH_WIDTH
@@ -205,8 +221,14 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 zone.HatchWidth = new Distance(token.FirstValue);
+                // Increment the optional argument count
+                optCount++;
             }
             else if (!zone.HatchAuto) // If HATCH_AUTO is manually disabled, HATCH_WIDTH is required
+                return false;
+
+            // Make sure all tokens have been consumed
+            if (Tokens[Pointer].Count > RequiredArgCount + pointCount - 3 + optCount + 1)
                 return false;
 
             // Return the successful new element

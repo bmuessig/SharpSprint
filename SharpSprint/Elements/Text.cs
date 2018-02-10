@@ -45,7 +45,7 @@ namespace SharpSprint.Elements
         protected bool IsComponentText;
         protected bool IsVisible;
 
-        private Text()
+        protected Text()
         {
             this.Content = string.Empty;
 
@@ -122,6 +122,17 @@ namespace SharpSprint.Elements
             if (!Identify(Tokens, Pointer))
                 return false;
 
+            return Read(Tokens, false, ref Pointer, out Result);
+        }
+
+        protected static bool Read(TokenRow[] Tokens, bool AllowVisibility, ref uint Pointer, out Text Result)
+        {
+            Result = null;
+
+            // Check if the pointer is within range
+            if (Pointer >= Tokens.Length)
+                return false;
+
             // Now, check if we have got any duplicates. This would be a syntax error.
             if (Tokens[Pointer].HasDuplicates())
                 return false;
@@ -171,6 +182,8 @@ namespace SharpSprint.Elements
             text.Height = new Distance(token.FirstValue);
 
             // Now to the optional parameters
+            uint optCount = 0;
+
             // CLEAR
             if (Tokens[Pointer].Get("CLEAR", out token))
             {
@@ -179,6 +192,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 text.Clear = new Distance(token.FirstValue);
+                // Increment the optional argument count
+                optCount++;
             }
 
             // CUTOUT
@@ -189,6 +204,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 text.Cutout = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // SOLDERMASK
@@ -199,31 +216,39 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 text.Soldermask = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // STYLE
-            if (!Tokens[Pointer].Get("STYLE", out token))
-                return false;
-            // Make sure it is a numeric value
-            if (token.Type != Token.TokenType.Value)
-                return false;
-            // Make sure the value is in range
-            if (token.FirstValue < (ulong)TextStyle.Narrow || token.FirstValue > (ulong)TextStyle.Wide)
-                return false;
-            // Store the value
-            text.Style = (TextStyle)token.FirstValue;
+            if (Tokens[Pointer].Get("STYLE", out token))
+            {
+                // Make sure it is a numeric value
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Make sure the value is in range
+                if (token.FirstValue > (ulong)TextStyle.Wide)
+                    return false;
+                // Store the value
+                text.Style = (TextStyle)token.FirstValue;
+                // Increment the optional argument count
+                optCount++;
+            }
 
             // THICKNESS
-            if (!Tokens[Pointer].Get("THICKNESS", out token))
-                return false;
-            // Make sure it is a numeric value
-            if (token.Type != Token.TokenType.Value)
-                return false;
-            // Make sure the value is in range
-            if (token.FirstValue < (ulong)TextThickness.Thin || token.FirstValue > (ulong)TextThickness.Thick)
-                return false;
-            // Store the value
-            text.Thickness = (TextThickness)token.FirstValue;
+            if (Tokens[Pointer].Get("THICKNESS", out token))
+            {
+                // Make sure it is a numeric value
+                if (token.Type != Token.TokenType.Value)
+                    return false;
+                // Make sure the value is in range
+                if (token.FirstValue > (ulong)TextThickness.Thick)
+                    return false;
+                // Store the value
+                text.Thickness = (TextThickness)token.FirstValue;
+                // Increment the optional argument count
+                optCount++;
+            }
 
             // ROTATION
             if (Tokens[Pointer].Get("ROTATION", out token))
@@ -235,6 +260,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 text.Rotation = new CoarseAngle((uint)token.FirstValue);
+                // Increment the optional argument count
+                optCount++;
             }
 
             // MIRROR_HORZ
@@ -245,6 +272,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 text.MirrorHorizontal = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // MIRROR_VERT
@@ -255,7 +284,28 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 text.MirrorVertical = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
+
+            // VISIBLE
+            if (AllowVisibility)
+            {
+                if (Tokens[Pointer].Get("VISIBLE", out token))
+                {
+                    // Make sure we have got the correct type
+                    if (token.Type != Token.TokenType.Boolean)
+                        return false;
+                    // Store the value
+                    text.IsVisible = token.BoolValue;
+                    // Increment the optional argument count
+                    optCount++;
+                }
+            }
+
+            // Make sure all tokens have been consumed
+            if (Tokens[Pointer].Count > RequiredArgCount + optCount + 1)
+                return false;
 
             // Return the successful new element
             Result = text;

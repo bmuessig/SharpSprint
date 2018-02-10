@@ -23,7 +23,11 @@ namespace SharpSprint.Elements
         public static bool Identify(TokenRow[] Tokens, uint Pointer)
         {
             // First, make sure we have met the amount of required arguments
-            if (Tokens[Pointer].Count < RequiredArgCount + 1)
+            if (Tokens[Pointer].Count != RequiredArgCount + 1)
+                return false;
+
+            // Also, check if the pointer is within range
+            if (Pointer >= Tokens.Length)
                 return false;
 
             // Then, make sure we actually have a GROUP element next
@@ -35,9 +39,36 @@ namespace SharpSprint.Elements
             return true;
         }
 
-        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Group Group)
+        public static bool Read(TokenRow[] Tokens, ref uint Pointer, out Group Result)
         {
-            throw new NotImplementedException();
+            Result = null;
+
+            // Check if we have got a valid signature
+            if (!Identify(Tokens, Pointer))
+                return false;
+
+            // Define the working variables
+            Group group = new Group();
+            Token token;
+
+            // Now, consume all inner arguments, until we hit our END_GROUP token
+            while (Pointer < Tokens.Length)
+            {
+                if (Tokens[Pointer].Count == 1)
+                {
+                    if (Tokens[Pointer][0].Type == Token.TokenType.Keyword
+                        && Tokens[Pointer][0].Handle.ToUpper().Trim() == "END_GROUP")
+                        break;
+                }
+            }
+
+            // Make sure all tokens have been consumed
+            //if (Tokens[Pointer].Count > RequiredArgCount + optCount + 1)
+                //return false;
+
+            // Return the successful new element
+            Result = group;
+            return true;
         }
 
         public bool Write(out TokenRow[] Tokens)

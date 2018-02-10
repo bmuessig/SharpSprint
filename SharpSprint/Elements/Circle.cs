@@ -81,6 +81,10 @@ namespace SharpSprint.Elements
             if (Tokens[Pointer].Count < RequiredArgCount + 1)
                 return false;
 
+            // Also, check if the pointer is within range
+            if (Pointer >= Tokens.Length)
+                return false;
+
             // Then, make sure we actually have a CIRCLE element next
             if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
                 || Tokens[Pointer][0].Handle.ToUpper().Trim() != "CIRCLE")
@@ -147,6 +151,8 @@ namespace SharpSprint.Elements
             circle.Radius = new Distance(token.FirstValue);
 
             // Now to the optional parameters
+            uint optCount = 0;
+
             // CLEAR
             if (Tokens[Pointer].Get("CLEAR", out token))
             {
@@ -155,6 +161,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 circle.Clear = new Distance(token.FirstValue);
+                // Increment the optional argument count
+                optCount++;
             }
 
             // CUTOUT
@@ -165,6 +173,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 circle.Cutout = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // SOLDERMASK
@@ -175,6 +185,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 circle.Soldermask = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // START
@@ -187,6 +199,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 circle.Start = new FineAngle((uint)token.FirstValue);
+                // Increment the optional argument count
+                optCount++;
             }
 
             // STOP
@@ -199,6 +213,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 circle.Stop = new FineAngle((uint)token.FirstValue);
+                // Increment the optional argument count
+                optCount++;
             }
 
             // FILL
@@ -209,7 +225,13 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 circle.Fill = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
+
+            // Make sure all tokens have been consumed
+            if (Tokens[Pointer].Count > RequiredArgCount + optCount + 1)
+                return false;
 
             // Return the successful new element
             Result = circle;

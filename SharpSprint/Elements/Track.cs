@@ -75,6 +75,10 @@ namespace SharpSprint.Elements
             if (Tokens[Pointer].Count < RequiredArgCount + 1)
                 return false;
 
+            // Also, check if the pointer is within range
+            if (Pointer >= Tokens.Length)
+                return false;
+
             // Then, make sure we actually have a TRACK element next
             if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
                 || Tokens[Pointer][0].Handle.ToUpper().Trim() != "TRACK")
@@ -143,6 +147,8 @@ namespace SharpSprint.Elements
                 return false;
 
             // Now to the optional parameters
+            uint optCount = 0;
+
             // CLEAR
             if (Tokens[Pointer].Get("CLEAR", out token))
             {
@@ -151,6 +157,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 track.Clear = new Distance(token.FirstValue);
+                // Increment the optional argument count
+                optCount++;
             }
 
             // CUTOUT
@@ -161,6 +169,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 track.Cutout = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // SOLDERMASK
@@ -171,6 +181,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 track.Soldermask = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // FLATSTART
@@ -181,6 +193,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 track.FlatStart = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // FLATEND
@@ -191,7 +205,13 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 track.FlatEnd = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
+
+            // Make sure all tokens have been consumed
+            if (Tokens[Pointer].Count > RequiredArgCount + pointCount - 2 + optCount + 1)
+                return false;
 
             // Return the successful new element
             Result = track;

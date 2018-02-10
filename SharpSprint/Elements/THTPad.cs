@@ -40,7 +40,7 @@ namespace SharpSprint.Elements
 
         // Required and optional count
         private const byte RequiredArgCount = 5;
-        private const byte OptionalArgCount = 10;
+        private const byte OptionalArgCount = 9;
 
         private THTPad()
         {
@@ -145,6 +145,10 @@ namespace SharpSprint.Elements
             if (Tokens[Pointer].Count < RequiredArgCount + 1)
                 return false;
 
+            // Also, check if the pointer is within range
+            if (Pointer >= Tokens.Length)
+                return false;
+
             // Then, make sure we actually have a PAD element next
             if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
                 || Tokens[Pointer][0].Handle.ToUpper().Trim() != "PAD")
@@ -223,6 +227,8 @@ namespace SharpSprint.Elements
             pad.Form = (THTPadForm)token.FirstValue;
 
             // Now to the optional parameters
+            uint optCount = 0;
+
             // CLEAR
             if (Tokens[Pointer].Get("CLEAR", out token))
             {
@@ -231,6 +237,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 pad.Clear = new Distance(token.FirstValue);
+                // Increment the optional argument count
+                optCount++;
             }
 
             // SOLDERMASK
@@ -241,6 +249,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 pad.Soldermask = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // ROTATION
@@ -253,6 +263,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 pad.Rotation = new CoarseAngle((uint)token.FirstValue);
+                // Increment the optional argument count
+                optCount++;
             }
 
             // VIA
@@ -263,6 +275,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 pad.Via = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // THERMAL
@@ -273,6 +287,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 pad.Thermal = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // THERMAL_TRACKS_WIDTH
@@ -286,6 +302,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 pad.ThermalTracksWidth = (ushort)token.FirstValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // THERMAL_TRACKS_INDIVIDUAL
@@ -296,6 +314,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 pad.ThermalTracksIndividual = token.BoolValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // THERMAL_TRACKS
@@ -309,6 +329,8 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 pad.ThermalTracks = (THTPadThermalTracks)token.FirstValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // PAD_ID
@@ -319,21 +341,31 @@ namespace SharpSprint.Elements
                     return false;
                 // Store the value
                 pad.PadID = token.FirstValue;
+                // Increment the optional argument count
+                optCount++;
             }
 
             // CONx
             // Set up the array
             Tokens[Pointer].ArrayPointer = 0;
             Tokens[Pointer].ArrayPrefix = "CON";
+            // Loop through all points
+            uint connCount = 0;
             // Loop through all connections
             while (Tokens[Pointer].ArrayGet(out token))
             {
+                // Increase the connection count
+                connCount++;
                 // Make sure we have got the correct type
                 if (token.Type != Token.TokenType.Value)
                     return false;
                 // Add the new connection to the list
                 pad.Connections.Add(token.FirstValue);
             }
+
+            // Make sure all tokens have been consumed
+            if (Tokens[Pointer].Count > RequiredArgCount + optCount + connCount + 1)
+                return false;
 
             // Return the successful new element
             Result = pad;

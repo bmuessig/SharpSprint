@@ -95,6 +95,10 @@ namespace SharpSprint.Elements
             if (Tokens[Pointer].Count < RequiredArgCount + 1)
                 return false;
 
+            // Also, check if the pointer is within range
+            if (Pointer >= Tokens.Length)
+                return false;
+
             // Then, make sure we actually have a BEGIN_COMPONENT element next
             if (Tokens[Pointer][0].Type != Token.TokenType.Keyword
                 || Tokens[Pointer][0].Handle.ToUpper().Trim() != "BEGIN_COMPONENT")

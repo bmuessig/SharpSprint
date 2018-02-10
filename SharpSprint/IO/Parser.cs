@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SharpSprint.Elements;
 
 namespace SharpSprint.IO
 {
-    public class Tokenizer
+    public class Parser
     {
         public static uint Tokenize(string InputLines, out TokenRow[] OutputTokens)
         {
@@ -127,6 +128,149 @@ namespace SharpSprint.IO
 
             // Write the output array
             OutputTokens = lines.ToArray();
+            return 0;
+        }
+
+        public static uint Parse(TokenRow[] Rows, out Entity[] Result)
+        {
+            // Working variables
+            uint line = 0;
+            List<Entity> entities = new List<Entity>();
+
+            // Assign a value to result ahead of time to allow early exiting
+            Result = null;
+
+            // Now, try all element signatures on the input
+            // The elements are arranged by most used first for speed
+            while (line < Rows.Length)
+            {
+                // Track
+                if (Track.Identify(Rows, line))
+                {
+                    // Try parsing the element
+                    Track e;
+                    if (!Track.Read(Rows, ref line, out e))
+                        return line;
+
+                    // Finally add it
+                    entities.Add(e);
+
+                    // And proceed
+                    continue;
+                }
+
+                // SMDPad
+                if (SMDPad.Identify(Rows, line))
+                {
+                    // Try parsing the element
+                    SMDPad e;
+                    if (!SMDPad.Read(Rows, ref line, out e))
+                        return line;
+
+                    // Finally add it
+                    entities.Add(e);
+
+                    // And proceed
+                    continue;
+                }
+
+                // THTPad
+                if (THTPad.Identify(Rows, line))
+                {
+                    // Try parsing the element
+                    THTPad e;
+                    if (!THTPad.Read(Rows, ref line, out e))
+                        return line;
+
+                    // Finally add it
+                    entities.Add(e);
+
+                    // And proceed
+                    continue;
+                }
+
+                // Group
+                if (Group.Identify(Rows, line))
+                {
+                    // Try parsing the element
+                    Group e;
+                    if (!Group.Read(Rows, ref line, out e))
+                        return line;
+
+                    // Finally add it
+                    entities.Add(e);
+
+                    // And proceed
+                    continue;
+                }
+
+                // Zone
+                if (Zone.Identify(Rows, line))
+                {
+                    // Try parsing the element
+                    Zone e;
+                    if (!Zone.Read(Rows, ref line, out e))
+                        return line;
+
+                    // Finally add it
+                    entities.Add(e);
+
+                    // And proceed
+                    continue;
+                }
+
+                // Text
+                if (Text.Identify(Rows, line))
+                {
+                    // Try parsing the element
+                    Text e;
+                    if (!Text.Read(Rows, ref line, out e))
+                        return line;
+
+                    // Finally add it
+                    entities.Add(e);
+
+                    // And proceed
+                    continue;
+                }
+
+                // Circle
+                if (Circle.Identify(Rows, line))
+                {
+                    // Try parsing the element
+                    Circle e;
+                    if (!Circle.Read(Rows, ref line, out e))
+                        return line;
+
+                    // Finally add it
+                    entities.Add(e);
+
+                    // And proceed
+                    continue;
+                }
+
+                // Component
+                if (Component.Identify(Rows, line))
+                {
+                    // Try parsing the element
+                    Component e;
+                    if (!Component.Read(Rows, ref line, out e))
+                        return line;
+
+                    // Finally add it
+                    entities.Add(e);
+
+                    // And proceed
+                    continue;
+                }
+
+                // Maybe add plugins in the future?
+                // They would go here
+
+                // Unknown element => fail
+                return line;
+            }
+
             return 0;
         }
     }
