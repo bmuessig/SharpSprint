@@ -23,7 +23,7 @@ namespace SprintTest
         private void button1_Click(object sender, EventArgs e)
         {
             TokenRow[] testRows;
-            if (Tokenizer.Tokenize("ZONE, LAYER=3, WIDTH=8000, HATCH=true, P0=150000 / 250000, P1=150000 / 450000, P2=250000 / 450000, P3=250000 / 650000;", out testRows) == 0)
+            if (Parser.Tokenize("ZONE, LAYER=3, WIDTH=8000, HATCH=true, P0=150000 / 250000, P1=150000 / 450000, P2=250000 / 450000, P3=250000 / 650000;", out testRows) == 0)
             {
                 Zone testZone;
                 uint ptr = 0;
