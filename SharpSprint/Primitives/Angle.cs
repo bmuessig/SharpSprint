@@ -8,6 +8,6 @@ namespace SharpSprint.Primitives
     public interface Angle
     {
         uint Value { get; set; }
-        float Angle { get; set; }
+        decimal Angle { get; set; }
     }
 }

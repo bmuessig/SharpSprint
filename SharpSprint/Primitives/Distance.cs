@@ -9,11 +9,11 @@ namespace SharpSprint.Primitives
     {
         public ulong Value;
 
-        public float Millimeters
+        public decimal Millimeters
         {
             get
             {
-                return Value / 10000;
+                return (decimal)(Value / 10000);
             }
 
             set
@@ -24,18 +24,18 @@ namespace SharpSprint.Primitives
             }
         }
     
-        public float Inches
+        public decimal Inches
         {
             get
             {
-                return (float)((Value * 0.0393701) / 10000);
+                return (decimal)((Value * 0.0393701) / 10000);
             }
 
             set
             {
                 if (value < 0)
                     value = 0; // Clip value to 0
-                Value = (ulong)Math.Round(value * 393.701, 0);
+                Value = (ulong)Math.Round(value * 393.701m, 0);
             }
         }
 
@@ -44,12 +44,12 @@ namespace SharpSprint.Primitives
             this.Value = Value;
         }
 
-        public static Distance FromMillimeters(float Millimeters)
+        public static Distance FromMillimeters(decimal Millimeters)
         {
             return new Distance() { Millimeters = Millimeters };
         }
 
-        public static Distance FromInches(float Inches)
+        public static Distance FromInches(decimal Inches)
         {
             return new Distance() { Inches = Inches };
         }

@@ -15,10 +15,10 @@ namespace SharpSprint.Primitives
             set { RawAngle = value % 36000; }
         }
 
-        public float Angle
+        public decimal Angle
         {
-            get { return (float)(Value / 100); }
-            set { Value = (uint)Math.Round((float)(value * 100), 0); }
+            get { return (decimal)(Value / 100); }
+            set { Value = (uint)Math.Round((decimal)(value * 100), 0); }
         }
 
         public CoarseAngle(uint Value)
@@ -27,7 +27,7 @@ namespace SharpSprint.Primitives
             this.Value = Value;
         }
 
-        public static CoarseAngle FromAngle(float Angle)
+        public static CoarseAngle FromAngle(decimal Angle)
         {
             return new CoarseAngle() { Angle = Angle };
         }
