@@ -35,9 +35,9 @@ namespace SprintTest
             
             Group G1 = new Group();
             Circle C1 = new Circle(SharpSprint.Layer.CopperTop, Distance.FromMillimeters(1),
-                Position.FromMillimeters(10, 10), Distance.FromMillimeters(20));
+                Vector.FromMillimeters(10, 10), Distance.FromMillimeters(20));
             Circle C2 = new Circle(SharpSprint.Layer.CopperTop, Distance.FromMillimeters(3),
-                Position.FromMillimeters(15, 20), Distance.FromMillimeters(30));
+                Vector.FromMillimeters(15, 20), Distance.FromMillimeters(30));
 
             C2.Fill = true;
             C2.Center.X.Millimeters += 5;
@@ -46,8 +46,8 @@ namespace SprintTest
             G1.Entities.Add(C2);
 
             var cmp = new SharpSprint.Elements.Component(
-                new IDText(SharpSprint.Layer.CopperTop, Position.FromMillimeters(0,0), "", Distance.FromMillimeters(0)),
-                new ValueText(SharpSprint.Layer.CopperTop, Position.FromMillimeters(0, 0), "", Distance.FromMillimeters(0)), G1);
+                new IDText(SharpSprint.Layer.CopperTop, Vector.FromMillimeters(0,0), "", Distance.FromMillimeters(0)),
+                new ValueText(SharpSprint.Layer.CopperTop, Vector.FromMillimeters(0, 0), "", Distance.FromMillimeters(0)), G1);
 
             testBoard.Canvas.Add(cmp);
 

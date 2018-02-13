@@ -12,7 +12,7 @@ namespace SharpSprint.Elements
         // Required parameters
         public Layer Layer { get; set; }
         public Distance Width { get; set; }
-        public Position Center { get; set; }
+        public Vector Center { get; set; }
         public Distance Radius { get; set; }
 
         // Optional parameters
@@ -45,7 +45,7 @@ namespace SharpSprint.Elements
             this.Fill = Fill;
         }
 
-        public Circle(Layer Layer, Distance Width, Position Center, Distance Radius, bool Fill = FillDefault)
+        public Circle(Layer Layer, Distance Width, Vector Center, Distance Radius, bool Fill = FillDefault)
         {
             this.Layer = Layer;
             this.Width = Width;
@@ -60,7 +60,7 @@ namespace SharpSprint.Elements
             this.Fill = Fill;
         }
 
-        public Circle(Layer Layer, Distance Width, Position Center, Distance Radius, FineAngle Start, FineAngle Stop, bool Fill = FillDefault)
+        public Circle(Layer Layer, Distance Width, Vector Center, Distance Radius, FineAngle Start, FineAngle Stop, bool Fill = FillDefault)
         {
             this.Layer = Layer;
             this.Width = Width;
@@ -136,10 +136,10 @@ namespace SharpSprint.Elements
             if (!Tokens[Pointer].Get("CENTER", out token))
                 return false;
             // Make sure it is a point
-            if (token.Type != Token.TokenType.Tuple)
+            if (token.Type != Token.TokenType.Vector)
                 return false;
             // Store the value
-            circle.Center = new Position(new Distance(token.FirstValue), new Distance(token.SecondValue));
+            circle.Center = new Vector(new Distance(token.FirstValue), new Distance(token.SecondValue));
 
             // RADIUS
             if (!Tokens[Pointer].Get("RADIUS", out token))

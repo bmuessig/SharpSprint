@@ -12,7 +12,7 @@ namespace SharpSprint.Elements
         // Required parameters
         public Layer Layer { get; set; }
         public Distance Width { get; set; }
-        public List<Position> Path { get; set; }
+        public List<Vector> Path { get; set; }
 
         // Optional parameters
         public Distance Clear { get; set; } // 4000
@@ -34,7 +34,7 @@ namespace SharpSprint.Elements
 
         private Track()
         {
-            this.Path = new List<Position>(Path);
+            this.Path = new List<Vector>(Path);
 
             this.Clear = new Distance(ClearDefault);
             this.Cutout = CutoutDefault;
@@ -43,11 +43,11 @@ namespace SharpSprint.Elements
             this.FlatEnd = FlatEndDefault;
         }
 
-        public Track(Layer Layer, Distance Width, params Position[] Path)
+        public Track(Layer Layer, Distance Width, params Vector[] Path)
         {
             this.Layer = Layer;
             this.Width = Width;
-            this.Path = new List<Position>(Path);
+            this.Path = new List<Vector>(Path);
 
             this.Clear = new Distance(ClearDefault);
             this.Cutout = CutoutDefault;
@@ -56,11 +56,11 @@ namespace SharpSprint.Elements
             this.FlatEnd = FlatEndDefault;
         }
 
-        public Track(Layer Layer, Distance Width, bool FlatStart, bool FlatEnd, params Position[] Path)
+        public Track(Layer Layer, Distance Width, bool FlatStart, bool FlatEnd, params Vector[] Path)
         {
             this.Layer = Layer;
             this.Width = Width;
-            this.Path = new List<Position>(Path);
+            this.Path = new List<Vector>(Path);
 
             this.Clear = new Distance(ClearDefault);
             this.Cutout = CutoutDefault;
@@ -137,10 +137,10 @@ namespace SharpSprint.Elements
                 // Increase the point counter
                 pointCount++;
                 // Make sure we have got the correct type
-                if (token.Type != Token.TokenType.Tuple)
+                if (token.Type != Token.TokenType.Vector)
                     return false;
                 // Add the new point to the list
-                track.Path.Add(new Position(new Distance(token.FirstValue), new Distance(token.SecondValue)));
+                track.Path.Add(new Vector(new Distance(token.FirstValue), new Distance(token.SecondValue)));
             }
             // Make sure that we have at least 3 path points
             if (pointCount < 2)

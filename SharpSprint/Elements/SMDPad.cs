@@ -11,8 +11,8 @@ namespace SharpSprint.Elements
     {
         // Required parameters
         public Layer Layer { get; set; }
-        public Position Position { get; set; }
-        public Size Size { get; set; }
+        public Vector Position { get; set; }
+        public Vector Size { get; set; }
 
         // Optional parameters
         public Distance Clear { get; set; } // 4000
@@ -47,7 +47,7 @@ namespace SharpSprint.Elements
             this.Connections = new List<ulong>();
         }
 
-        public SMDPad(Layer Layer, Position Position, Size Size, ulong PadId = 0, params ulong[] Connections)
+        public SMDPad(Layer Layer, Vector Position, Vector Size, ulong PadId = 0, params ulong[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -63,7 +63,7 @@ namespace SharpSprint.Elements
             this.Connections = new List<ulong>(Connections);
         }
 
-        public SMDPad(Layer Layer, Position Position, Size Size, CoarseAngle Rotation, ulong PadId = 0, params ulong[] Connections)
+        public SMDPad(Layer Layer, Vector Position, Vector Size, CoarseAngle Rotation, ulong PadId = 0, params ulong[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -131,10 +131,10 @@ namespace SharpSprint.Elements
             if (!Tokens[Pointer].Get("POS", out token))
                 return false;
             // Make sure it is a point
-            if (token.Type != Token.TokenType.Tuple)
+            if (token.Type != Token.TokenType.Vector)
                 return false;
             // Store the value
-            smdpad.Position = new Position(new Distance(token.FirstValue), new Distance(token.SecondValue));
+            smdpad.Position = new Vector(new Distance(token.FirstValue), new Distance(token.SecondValue));
 
             // SIZE
             Distance sdx, sdy;
@@ -158,7 +158,7 @@ namespace SharpSprint.Elements
             sdy = new Distance(token.FirstValue);
 
             // SIZE
-            smdpad.Size = new Size(sdx, sdy);
+            smdpad.Size = new Vector(sdx, sdy);
 
             // Now to the optional parameters
             uint optCount = 0;
@@ -301,8 +301,8 @@ namespace SharpSprint.Elements
             writer.Write(new Token("POS", Position.X.Value, Position.Y.Value));
 
             // Size
-            writer.Write(new Token("SIZE_X", Size.Width.Value));
-            writer.Write(new Token("SIZE_Y", Size.Height.Value));
+            writer.Write(new Token("SIZE_X", Size.X.Value));
+            writer.Write(new Token("SIZE_Y", Size.Y.Value));
 
             // Then write the optional values
             // Clear

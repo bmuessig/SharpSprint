@@ -35,7 +35,7 @@ namespace SharpSprint.Elements
             this.MirrorVertical = Base.MirrorVertical;
         }
 
-        public IDText(Layer Layer, Position Position, string Content, Distance Height, bool Visible = VisibleDefault,
+        public IDText(Layer Layer, Vector Position, string Content, Distance Height, bool Visible = VisibleDefault,
             TextStyle Style = StyleDefault, TextThickness Thickness = ThicknessDefault,
             bool MirrorHorizontal = MirrorHorizontalDefault, bool MirrorVertical = MirrorVerticalDefault)
             : base(Layer, Position, Content, Height, Style, Thickness, MirrorHorizontal, MirrorVertical)
@@ -45,7 +45,7 @@ namespace SharpSprint.Elements
             this.IsVisible = Visible;
         }
 
-        public IDText(Layer Layer, Position Position, string Content, Distance Height, CoarseAngle Rotation,
+        public IDText(Layer Layer, Vector Position, string Content, Distance Height, CoarseAngle Rotation,
             bool Visible = VisibleDefault, TextStyle Style = StyleDefault, TextThickness Thickness = ThicknessDefault,
             bool MirrorHorizontal = MirrorHorizontalDefault, bool MirrorVertical = MirrorVerticalDefault)
             : base(Layer, Position, Content, Height, Rotation, Style,Thickness, MirrorHorizontal, MirrorVertical)

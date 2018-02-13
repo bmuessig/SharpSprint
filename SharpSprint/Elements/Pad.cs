@@ -8,7 +8,7 @@ namespace SharpSprint.Elements
 {
     public interface Pad : Element
     {
-        Position Position { get; set; }
+        Vector Position { get; set; }
         CoarseAngle Rotation { get; set; }
         bool Thermal { get; set; }
         ushort ThermalTracksWidth { get; set; }
