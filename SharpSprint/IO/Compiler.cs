@@ -67,7 +67,7 @@ namespace SharpSprint.IO
             foreach (Token token in Tokens)
             {
                 // Get the encoded representation
-                string encoded = token.Encoded;
+                string encoded = token.ToString();
 
                 // Fail if we have got nothing
                 if(encoded == null)

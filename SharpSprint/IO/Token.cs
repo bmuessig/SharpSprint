@@ -17,11 +17,6 @@ namespace SharpSprint.IO
         public ulong SecondValue;
         public bool BoolValue;
         public string TextValue;
-        
-        public string Encoded
-        {
-            get { return this.ToString(); }
-        }
 
         public Token(string Handle)
         {
