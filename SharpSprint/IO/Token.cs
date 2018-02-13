@@ -8,8 +8,6 @@ namespace SharpSprint.IO
 {
     public struct Token
     {
-        //CIRCLE, LAYER=3, WIDTH=6000, CENTER=350000 / 250000, RADIUS=80000, START=90000, STOP=270000;
-
         public TokenType Type;
         public IndentTransition Indent;
         public string Handle;
@@ -17,6 +15,8 @@ namespace SharpSprint.IO
         public ulong SecondValue;
         public bool BoolValue;
         public string TextValue;
+
+        private static Regex RegexParser = new Regex(@"^(\w+)(?:[ \t]*=[ \t]*(?:(\d+)(?:[ \t]*\/[ \t]*(\d+))?|(true|false)|\|(.*?)\|))?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public Token(string Handle)
         {
@@ -84,6 +84,9 @@ namespace SharpSprint.IO
             this.TextValue = TextValue;
         }
 
+        // Sample Circle definition
+        // CIRCLE, LAYER=3, WIDTH=6000, CENTER=350000 / 250000, RADIUS=80000, START=90000, STOP=270000;
+
         public override string ToString()
         {
             return Token.ToString(this);
@@ -106,81 +109,6 @@ namespace SharpSprint.IO
             }
 
             return null;
-        }
-
-        private static Regex RegexLineParser = new Regex(@"(\w+)(?:[ \t]*=[ \t]*(?:(\d+)(?:[ \t]*\/[ \t]*(\d+))?|(true|false)|\|(.*?)\|))?[ \t]*(?:,|;[ \t]*$)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static Regex RegexParser = new Regex(@"^(\w+)(?:[ \t]*=[ \t]*(?:(\d+)(?:[ \t]*\/[ \t]*(\d+))?|(true|false)|\|(.*?)\|))?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        public static Token[] LineFromString(string Input, bool AllowDropValues = false)
-        {
-            List<Token> tokens = new List<Token>();
-            MatchCollection matches = RegexLineParser.Matches(Input);
-            if (matches.Count == 0)
-                return null;
-
-            // Make sure the entire string is consumed
-            if (!AllowDropValues)
-            {
-                if (RegexLineParser.Replace(Input, string.Empty).Trim().Length > 0)
-                    return null;
-            }
-
-            foreach (Match match in matches)
-            {
-                // Not sure if this is really needed
-                if (!match.Success)
-                    return null;
-
-                // Now evaluate the result
-                // Group 1: Keyword
-                // Group 2: First Value
-                // Group 3: Second Value
-                // Group 4: true/false
-                // Group 5: Text
-
-                // We don't have a keyword
-                if (string.IsNullOrWhiteSpace(match.Groups[1].Value))
-                    return null;
-
-                string keyword = match.Groups[1].Value.Trim();
-                
-                // One number
-                if (match.Groups[2].Length > 0)
-                {
-                    ulong val1;
-
-                    if (!ulong.TryParse(match.Groups[2].Value.Trim(), out val1))
-                        return null; // Invalid number
-
-                    // Is it a pair?
-                    if (match.Groups[3].Length > 0)
-                    {
-                        ulong val2;
-
-                        if (!ulong.TryParse(match.Groups[3].Value.Trim(), out val2))
-                            return null; // Invalid number
-
-                        tokens.Add(new Token(keyword, val1, val2));
-                    }
-                    else
-                        tokens.Add(new Token(keyword, val1));
-                }
-                else if (match.Groups[4].Length > 0)
-                { // We have got a boolean
-                    if (match.Groups[4].Value.ToUpper() == "TRUE")
-                        tokens.Add(new Token(keyword, true));
-                    else if (match.Groups[4].Value.ToUpper() == "FALSE")
-                        tokens.Add(new Token(keyword, false));
-                    else
-                        return null; // Invalid bool
-                }
-                else if (match.Groups[5].Length > 0) // We have got a string
-                    tokens.Add(new Token(keyword, match.Groups[5].Value));
-                else // We have a keyword on it's own without a value
-                    tokens.Add(new Token(keyword));
-            }
-
-            return tokens.ToArray();
         }
 
         public static bool FromString(string Input, out Token Result)
