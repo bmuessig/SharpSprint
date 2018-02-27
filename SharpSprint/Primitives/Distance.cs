@@ -7,7 +7,7 @@ namespace SharpSprint.Primitives
 {
     public class Distance
     {
-        public ulong AbsoluteValue { get; set; }
+        private ulong AbsoluteValue;
 
         public Distance Relative { get; set; }
 

@@ -7,8 +7,11 @@ namespace SharpSprint.Primitives
 {
     public class Vector
     {
-        public Distance X;
-        public Distance Y;
+        //private Distance 
+
+        public Distance X { get; set; }
+        
+        public Distance Y { get; set; }
 
         public Vector(Distance X, Distance Y)
         {
