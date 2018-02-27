@@ -196,5 +196,21 @@ namespace SharpSprint.Primitives
         {
             return (A.Value != B.Value);
         }
+
+        public override bool Equals(Object O)
+        {
+            if (O == null)
+                return false;
+            if (O.GetType() != typeof(Distance))
+                return false;
+
+            Distance D = (Distance)O;
+            return (this.Value == D.Value);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
+        }
     }
 }

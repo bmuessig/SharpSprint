@@ -92,6 +92,11 @@ namespace SharpSprint.Primitives
             this.Y = Y;
         }
 
+        public override string ToString()
+        {
+            return string.Format("({0}; {1})", X.ToString(), Y.ToString());
+        }
+
         public static Vector FromMillimeters(decimal X, decimal Y)
         {
             return new Vector(Distance.FromMillimeters(X), Distance.FromMillimeters(Y));
@@ -135,6 +140,22 @@ namespace SharpSprint.Primitives
         public static bool operator !=(Vector A, Vector B)
         {
             return !(A == B);
+        }
+
+        public override bool Equals(Object O)
+        {
+            if (O == null)
+                return false;
+            if (O.GetType() != typeof(Vector))
+                return false;
+
+            Vector V = (Vector)O;
+            return (this.X == V.X && this.Y == V.Y && this.AdjustX == V.AdjustX);
+        }
+
+        public override int GetHashCode()
+        {
+            return (X.GetHashCode() ^ Y.GetHashCode());
         }
     }
 }
