@@ -141,5 +141,30 @@ namespace SharpSprint.Primitives
         {
             return new Distance(Relative) { RelativeOffsetInches = RelativeOffsetInches };
         }
+
+        public static Distance operator +(Distance A, Distance B)
+        {
+            return new Distance(A.Value + B.Value);
+        }
+
+        public static Distance operator -(Distance A, Distance B)
+        {
+            return new Distance(A.Value - B.Value);
+        }
+
+        public static Distance operator *(Distance D, uint N)
+        {
+            return new Distance((ulong)(N * D.Value));
+        }
+
+        public static Distance operator *(uint N, Distance D)
+        {
+            return (D * N);
+        }
+
+        public static Distance operator /(Distance D, uint N)
+        {
+            return new Distance((ulong)(D.Value / N));
+        }
     }
 }
