@@ -74,5 +74,15 @@ namespace SharpSprint.Primitives
         {
             return new Vector(V.X / N, V.Y / N);
         }
+
+        public static bool operator ==(Vector A, Vector B)
+        {
+            return ((A.X == B.X) && (A.Y == B.Y));
+        }
+
+        public static bool operator !=(Vector A, Vector B)
+        {
+            return !(A == B);
+        }
     }
 }

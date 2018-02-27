@@ -166,5 +166,35 @@ namespace SharpSprint.Primitives
         {
             return new Distance((ulong)(D.Value / N));
         }
+
+        public static bool operator >(Distance A, Distance B)
+        {
+            return (A.Value > B.Value);
+        }
+
+        public static bool operator >=(Distance A, Distance B)
+        {
+            return (A.Value >= B.Value);
+        }
+
+        public static bool operator <(Distance A, Distance B)
+        {
+            return (A.Value < B.Value);
+        }
+
+        public static bool operator <=(Distance A, Distance B)
+        {
+            return (A.Value <= B.Value);
+        }
+
+        public static bool operator ==(Distance A, Distance B)
+        {
+            return (A.Value == B.Value);
+        }
+
+        public static bool operator !=(Distance A, Distance B)
+        {
+            return (A.Value != B.Value);
+        }
     }
 }
