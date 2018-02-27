@@ -5,9 +5,39 @@ using System.Text;
 
 namespace SharpSprint.Primitives
 {
-    public struct Distance
+    public class Distance
     {
-        public ulong Value;
+        public ulong AbsoluteValue { get; set; }
+
+        public Distance Relative { get; set; }
+
+        public int RelativeOffset { get; set; }
+
+        public ulong Value
+        {
+            get
+            {
+                if (Relative == null)
+                    return AbsoluteValue;
+
+                if (RelativeOffset < 0)
+                    return (Relative.Value - (uint)(-RelativeOffset));
+                else
+                    return (Relative.Value + (uint)RelativeOffset);
+            }
+
+            set
+            {
+                if (Relative == null)
+                {
+                    AbsoluteValue = value;
+                    return;
+                }
+
+                int delta = (int)(value - Value);
+                RelativeOffset += delta;
+            }
+        }
 
         public decimal Millimeters
         {
@@ -39,9 +69,57 @@ namespace SharpSprint.Primitives
             }
         }
 
+        public decimal RelativeOffsetMillimeters
+        {
+            get
+            {
+                return (decimal)(RelativeOffset / 10000);
+            }
+
+            set
+            {
+                if (value < 0)
+                    value = 0; // Clip value to 0
+                RelativeOffset = (int)Math.Round(value * 10000, 0);
+            }
+        }
+
+        public decimal RelativeOffsetInches
+        {
+            get
+            {
+                return (decimal)((RelativeOffset * 0.0393701) / 10000);
+            }
+
+            set
+            {
+                if (value < 0)
+                    value = 0; // Clip value to 0
+                RelativeOffset = (int)Math.Round(value * 393.701m, 0);
+            }
+        }
+
+        public Distance()
+        {
+            AbsoluteValue = 0;
+            Relative = null;
+            RelativeOffset = 0;
+        }
+
         public Distance(ulong Value)
         {
             this.Value = Value;
+        }
+
+        public Distance(Distance Relative, int RelativeOffset = 0)
+        {
+            this.Relative = Relative;
+            this.RelativeOffset = RelativeOffset;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}mm", this.Millimeters);
         }
 
         public static Distance FromMillimeters(decimal Millimeters)
@@ -52,6 +130,16 @@ namespace SharpSprint.Primitives
         public static Distance FromInches(decimal Inches)
         {
             return new Distance() { Inches = Inches };
+        }
+
+        public static Distance FromRelativeMillimeters(Distance Relative, decimal RelativeOffsetMillimeters)
+        {
+            return new Distance(Relative) { RelativeOffsetMillimeters = RelativeOffsetMillimeters };
+        }
+
+        public static Distance FromRelativeInches(Distance Relative, decimal RelativeOffsetInches)
+        {
+            return new Distance(Relative) { RelativeOffsetInches = RelativeOffsetInches };
         }
     }
 }
