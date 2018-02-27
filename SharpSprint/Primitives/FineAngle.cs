@@ -42,6 +42,12 @@ namespace SharpSprint.Primitives
 
         public int RelativeOffset { get; set; }
 
+        public decimal RelativeOffsetAngle
+        {
+            get { return (decimal)((RelativeOffset % 360000) / 1000); }
+            set { RelativeOffset = (int)Math.Round((value % 360000) * 1000, 0); }
+        }
+
         public FineAngle()
         {
             this.AbsoluteAngle = 0;
@@ -56,7 +62,7 @@ namespace SharpSprint.Primitives
             this.RelativeOffset = 0;
         }
 
-        public FineAngle(FineAngle Relative, int RelativeOffset)
+        public FineAngle(FineAngle Relative, int RelativeOffset = 0)
         {
             this.AbsoluteAngle = 0;
             this.Relative = Relative;
@@ -66,6 +72,11 @@ namespace SharpSprint.Primitives
         public static FineAngle FromAngle(decimal Angle)
         {
             return new FineAngle() { Angle = Angle };
+        }
+
+        public static FineAngle FromRelativeAngle(FineAngle Relative, decimal RelativeOffsetAngle)
+        {
+            return new FineAngle(Relative) { RelativeOffsetAngle = RelativeOffsetAngle };
         }
     }
 }

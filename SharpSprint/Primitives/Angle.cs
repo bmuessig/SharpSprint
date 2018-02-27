@@ -9,5 +9,7 @@ namespace SharpSprint.Primitives
     {
         uint Value { get; set; }
         decimal Angle { get; set; }
+        int RelativeOffset { get; set; }
+        decimal RelativeOffsetAngle { get; set; }
     }
 }

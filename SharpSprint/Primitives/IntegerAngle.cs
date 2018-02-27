@@ -42,6 +42,12 @@ namespace SharpSprint.Primitives
 
         public int RelativeOffset { get; set; }
 
+        public decimal RelativeOffsetAngle
+        {
+            get { return (decimal)(RelativeOffset % 360); }
+            set { RelativeOffset = (int)Math.Round(value % 360, 0); }
+        }
+
         public IntegerAngle()
         {
             this.AbsoluteAngle = 0;
@@ -66,6 +72,11 @@ namespace SharpSprint.Primitives
         public static IntegerAngle FromAngle(decimal Angle)
         {
             return new IntegerAngle() { Angle = Angle };
+        }
+
+        public static IntegerAngle FromRelativeAngle(IntegerAngle Relative, decimal RelativeOffsetAngle)
+        {
+            return new IntegerAngle(Relative) { RelativeOffsetAngle = RelativeOffsetAngle };
         }
     }
 }
