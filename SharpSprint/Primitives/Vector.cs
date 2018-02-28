@@ -8,8 +8,12 @@ namespace SharpSprint.Primitives
     public class Vector
     {
         public Distance X { get; set; }
+
+        public bool MirrorX { get; set; }
         
         public Distance Y { get; set; }
+
+        public bool MirrorY { get; set; }
 
         public bool AdjustX { get; set; }
 
@@ -17,7 +21,7 @@ namespace SharpSprint.Primitives
         {
             get
             {
-                return new Distance((ulong)(Math.Sqrt(X.Value * X.Value + Y.Value * Y.Value)));
+                return new Distance((uint)(Math.Sqrt(X.Value * X.Value + Y.Value * Y.Value)));
             }
 
             set
@@ -28,9 +32,9 @@ namespace SharpSprint.Primitives
                     Y = new Distance();
 
                 if(AdjustX)
-                    X = new Distance((ulong)(Math.Sqrt(value.Value * value.Value - Y.Value * Y.Value)));
+                    X = new Distance((uint)(Math.Sqrt(value.Value * value.Value - Y.Value * Y.Value)));
                 else
-                    Y = new Distance((ulong)(Math.Sqrt(value.Value * value.Value - X.Value * X.Value)));
+                    Y = new Distance((uint)(Math.Sqrt(value.Value * value.Value - X.Value * X.Value)));
             }
         }
 
@@ -62,9 +66,9 @@ namespace SharpSprint.Primitives
                 // Calculate the remaining side
                 // Note, that C#'s trig functions are using radians
                 if(AdjustX)
-                    X = new Distance((ulong)Math.Round(Y.Value / Math.Tan(((double)value * Math.PI) / 180), 0));
+                    X = new Distance((uint)Math.Round(Y.Value / Math.Tan(((double)value * Math.PI) / 180), 0));
                 else
-                    Y = new Distance((ulong)Math.Round(X.Value * Math.Tan(((double)value * Math.PI) / 180), 0));
+                    Y = new Distance((uint)Math.Round(X.Value * Math.Tan(((double)value * Math.PI) / 180), 0));
             }
         }
 
@@ -125,6 +129,11 @@ namespace SharpSprint.Primitives
         public static Vector operator *(uint N, Vector V)
         {
             return (V * N);
+        }
+
+        public static Distance operator *(Vector A, Vector B)
+        {
+            return new Distance(A.X.Value * B.X.Value + A.Y.Value * B.Y.Value);
         }
 
         public static Vector operator /(Vector V, uint N)

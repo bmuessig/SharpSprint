@@ -249,7 +249,7 @@ namespace SharpSprint.Elements
             // Now write the required values
             // Layer
             if (Layer >= Layer.CopperTop && Layer <= Layer.Mechanical)
-                writer.Write(new Token("LAYER", (ulong)Layer));
+                writer.Write(new Token("LAYER", (uint)Layer));
             else
                 return false;
 

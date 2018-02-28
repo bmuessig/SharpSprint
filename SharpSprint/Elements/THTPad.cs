@@ -25,8 +25,8 @@ namespace SharpSprint.Elements
         public ushort ThermalTracksWidth { get; set; } // 100
         public bool ThermalTracksIndividual { get; set; } // False
         public THTPadThermalTracks ThermalTracks { get; set; }
-        public ulong PadID { get; set; }
-        public List<ulong> Connections { get; set; }
+        public uint PadID { get; set; }
+        public List<uint> Connections { get; set; }
 
         // Default optional parameters
         private const uint ClearDefault = 4000;
@@ -52,11 +52,11 @@ namespace SharpSprint.Elements
             this.ThermalTracksWidth = ThermalTracksWidthDefault;
             this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
             this.ThermalTracks = ThermalTracksDefault;
-            this.Connections = new List<ulong>();
+            this.Connections = new List<uint>();
         }
 
-        public THTPad(Layer Layer, Vector Position, Distance Size, Distance Drill, THTPadForm Form, ulong PadId = 0,
-            params ulong[] Connections)
+        public THTPad(Layer Layer, Vector Position, Distance Size, Distance Drill, THTPadForm Form, uint PadId = 0,
+            params uint[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -73,11 +73,11 @@ namespace SharpSprint.Elements
             this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
             this.ThermalTracks = ThermalTracksDefault;
             this.PadID = PadId;
-            this.Connections = new List<ulong>(Connections);
+            this.Connections = new List<uint>(Connections);
         }
 
         public THTPad(Layer Layer, Vector Position, Distance Size, Distance Drill, THTPadForm Form, CoarseAngle Rotation,
-            ulong PadId = 0, params ulong[] Connections)
+            uint PadId = 0, params uint[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -94,11 +94,11 @@ namespace SharpSprint.Elements
             this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
             this.ThermalTracks = ThermalTracksDefault;
             this.PadID = PadId;
-            this.Connections = new List<ulong>(Connections);
+            this.Connections = new List<uint>(Connections);
         }
 
-        public THTPad(Layer Layer, Vector Position, Distance Size, Distance Drill, THTPadForm Form, bool Via, ulong PadId = 0,
-            params ulong[] Connections)
+        public THTPad(Layer Layer, Vector Position, Distance Size, Distance Drill, THTPadForm Form, bool Via, uint PadId = 0,
+            params uint[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -115,11 +115,11 @@ namespace SharpSprint.Elements
             this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
             this.ThermalTracks = ThermalTracksDefault;
             this.PadID = PadId;
-            this.Connections = new List<ulong>(Connections);
+            this.Connections = new List<uint>(Connections);
         }
 
         public THTPad(Layer Layer, Vector Position, Distance Size, Distance Drill, THTPadForm Form, CoarseAngle Rotation,
-            bool Via, ulong PadId = 0, params ulong[] Connections)
+            bool Via, uint PadId = 0, params uint[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -136,7 +136,7 @@ namespace SharpSprint.Elements
             this.ThermalTracksIndividual = ThermalTracksIndividualDefault;
             this.ThermalTracks = ThermalTracksDefault;
             this.PadID = PadId;
-            this.Connections = new List<ulong>(Connections);
+            this.Connections = new List<uint>(Connections);
         }
 
         public static bool Identify(TokenRow[] Tokens, uint Pointer)
@@ -383,7 +383,7 @@ namespace SharpSprint.Elements
             // Now write the required values
             // Layer
             if (Layer >= Layer.CopperTop && Layer <= Layer.Mechanical)
-                writer.Write(new Token("LAYER", (ulong)Layer));
+                writer.Write(new Token("LAYER", (uint)Layer));
             else
                 return false;
 
@@ -398,7 +398,7 @@ namespace SharpSprint.Elements
 
             // Form
             if (Form >= THTPadForm.Round && Form <= THTPadForm.HighRectangular)
-                writer.Write(new Token("FORM", (ulong)Form));
+                writer.Write(new Token("FORM", (uint)Form));
             else
                 return false;
 
@@ -433,7 +433,7 @@ namespace SharpSprint.Elements
 
             // ThermalTracks
             if (ThermalTracks != 0)
-                writer.Write(new Token("THERMAL_TRACKS", (ulong)ThermalTracks));
+                writer.Write(new Token("THERMAL_TRACKS", (uint)ThermalTracks));
 
             // PadID
             // TODO: Maybe this needs some automation to prevent duplicates?
@@ -445,7 +445,7 @@ namespace SharpSprint.Elements
             {
                 // Write all connections
                 uint counter = 0;
-                foreach (ulong conn in Connections)
+                foreach (uint conn in Connections)
                 {
                     if (conn == 0)
                         return false;

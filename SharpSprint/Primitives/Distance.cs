@@ -7,13 +7,13 @@ namespace SharpSprint.Primitives
 {
     public class Distance
     {
-        private ulong AbsoluteValue;
+        private uint AbsoluteValue;
 
         public Distance Relative { get; set; }
 
         public int RelativeOffset { get; set; }
 
-        public ulong Value
+        public uint Value
         {
             get
             {
@@ -50,7 +50,7 @@ namespace SharpSprint.Primitives
             {
                 if (value < 0)
                     value = 0; // Clip value to 0
-                Value = (ulong)Math.Round(value * 10000, 0);
+                Value = (uint)Math.Round(value * 10000, 0);
             }
         }
     
@@ -65,7 +65,7 @@ namespace SharpSprint.Primitives
             {
                 if (value < 0)
                     value = 0; // Clip value to 0
-                Value = (ulong)Math.Round(value * 393.701m, 0);
+                Value = (uint)Math.Round(value * 393.701m, 0);
             }
         }
 
@@ -106,7 +106,7 @@ namespace SharpSprint.Primitives
             RelativeOffset = 0;
         }
 
-        public Distance(ulong Value)
+        public Distance(uint Value)
         {
             this.Value = Value;
         }
@@ -154,7 +154,7 @@ namespace SharpSprint.Primitives
 
         public static Distance operator *(Distance D, uint N)
         {
-            return new Distance((ulong)(N * D.Value));
+            return new Distance((uint)(N * D.Value));
         }
 
         public static Distance operator *(uint N, Distance D)
@@ -164,7 +164,7 @@ namespace SharpSprint.Primitives
 
         public static Distance operator /(Distance D, uint N)
         {
-            return new Distance((ulong)(D.Value / N));
+            return new Distance((uint)(D.Value / N));
         }
 
         public static bool operator >(Distance A, Distance B)

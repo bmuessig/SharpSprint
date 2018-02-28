@@ -11,8 +11,8 @@ namespace SharpSprint.IO
         public TokenType Type;
         public IndentTransition Indent;
         public string Handle;
-        public ulong FirstValue;
-        public ulong SecondValue;
+        public uint FirstValue;
+        public uint SecondValue;
         public bool BoolValue;
         public string TextValue;
 
@@ -40,7 +40,7 @@ namespace SharpSprint.IO
             this.TextValue = string.Empty;
         }
 
-        public Token(string Handle, ulong Value)
+        public Token(string Handle, uint Value)
         {
             this.Type = TokenType.Value;
             this.Indent = IndentTransition.None;
@@ -51,7 +51,7 @@ namespace SharpSprint.IO
             this.TextValue = string.Empty;
         }
 
-        public Token(string Handle, ulong FirstValue, ulong SecondValue)
+        public Token(string Handle, uint FirstValue, uint SecondValue)
         {
             this.Type = TokenType.Vector;
             this.Indent = IndentTransition.None;
@@ -135,17 +135,17 @@ namespace SharpSprint.IO
             // One number
             if (match.Groups[2].Length > 0)
             {
-                ulong val1;
+                uint val1;
 
-                if (!ulong.TryParse(match.Groups[2].Value.Trim(), out val1))
+                if (!uint.TryParse(match.Groups[2].Value.Trim(), out val1))
                     return false; // Invalid number
 
                 // Is it a pair?
                 if (match.Groups[3].Length > 0)
                 {
-                    ulong val2;
+                    uint val2;
 
-                    if (!ulong.TryParse(match.Groups[3].Value.Trim(), out val2))
+                    if (!uint.TryParse(match.Groups[3].Value.Trim(), out val2))
                         return false; // Invalid number
 
                     Result = new Token(keyword, val1, val2);

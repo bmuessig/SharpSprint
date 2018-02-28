@@ -12,7 +12,7 @@ namespace SharpSprint.Elements
         CoarseAngle Rotation { get; set; }
         bool Thermal { get; set; }
         ushort ThermalTracksWidth { get; set; }
-        ulong PadID { get; set; }
-        List<ulong> Connections { get; set; }
+        uint PadID { get; set; }
+        List<uint> Connections { get; set; }
     }
 }

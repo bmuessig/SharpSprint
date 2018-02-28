@@ -326,7 +326,7 @@ namespace SharpSprint.Elements
             // Now write the required values
             // Layer
             if (Layer >= Layer.CopperTop && Layer <= Layer.Mechanical)
-                writer.Write(new Token("LAYER", (ulong)Layer));
+                writer.Write(new Token("LAYER", (uint)Layer));
             else
                 return false;
 
@@ -355,11 +355,11 @@ namespace SharpSprint.Elements
 
             // Style
             if (Style != StyleDefault)
-                writer.Write(new Token("STYLE", (ulong)Style));
+                writer.Write(new Token("STYLE", (uint)Style));
 
             // Thickness
             if (Thickness != ThicknessDefault)
-                writer.Write(new Token("THICKNESS", (ulong)Thickness));
+                writer.Write(new Token("THICKNESS", (uint)Thickness));
 
             // Rotation
             if (Rotation.Value != RotationDefault)
