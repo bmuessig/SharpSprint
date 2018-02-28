@@ -118,7 +118,7 @@ namespace SharpSprint.Elements
             if (token.Type != Token.TokenType.Value)
                 return false;
             // Make sure the value is in range
-            if (token.FirstValue < (ulong)Layer.CopperTop || token.FirstValue > (ulong)Layer.Mechanical)
+            if (token.FirstValue < (uint)Layer.CopperTop || token.FirstValue > (uint)Layer.Mechanical)
                 return false;
             // Store the value
             circle.Layer = (Layer)token.FirstValue;

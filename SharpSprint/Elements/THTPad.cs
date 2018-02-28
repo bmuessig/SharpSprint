@@ -182,7 +182,7 @@ namespace SharpSprint.Elements
             if (token.Type != Token.TokenType.Value)
                 return false;
             // Make sure the value is in range
-            if (token.FirstValue < (ulong)Layer.CopperTop || token.FirstValue > (ulong)Layer.Mechanical)
+            if (token.FirstValue < (uint)Layer.CopperTop || token.FirstValue > (uint)Layer.Mechanical)
                 return false;
             // Store the value
             pad.Layer = (Layer)token.FirstValue;
@@ -221,7 +221,7 @@ namespace SharpSprint.Elements
             if (token.Type != Token.TokenType.Value)
                 return false;
             // Make sure the value is in range
-            if (token.FirstValue < (ulong)THTPadForm.Round || token.FirstValue > (ulong)THTPadForm.HighRectangular)
+            if (token.FirstValue < (uint)THTPadForm.Round || token.FirstValue > (uint)THTPadForm.HighRectangular)
                 return false;
             // Store the value
             pad.Form = (THTPadForm)token.FirstValue;

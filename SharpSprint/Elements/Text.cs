@@ -149,7 +149,7 @@ namespace SharpSprint.Elements
             if (token.Type != Token.TokenType.Value)
                 return false;
             // Make sure the value is in range
-            if (token.FirstValue < (ulong)Layer.CopperTop || token.FirstValue > (ulong)Layer.Mechanical)
+            if (token.FirstValue < (uint)Layer.CopperTop || token.FirstValue > (uint)Layer.Mechanical)
                 return false;
             // Store the value
             text.Layer = (Layer)token.FirstValue;
@@ -227,7 +227,7 @@ namespace SharpSprint.Elements
                 if (token.Type != Token.TokenType.Value)
                     return false;
                 // Make sure the value is in range
-                if (token.FirstValue > (ulong)TextStyle.Wide)
+                if (token.FirstValue > (uint)TextStyle.Wide)
                     return false;
                 // Store the value
                 text.Style = (TextStyle)token.FirstValue;
@@ -242,7 +242,7 @@ namespace SharpSprint.Elements
                 if (token.Type != Token.TokenType.Value)
                     return false;
                 // Make sure the value is in range
-                if (token.FirstValue > (ulong)TextThickness.Thick)
+                if (token.FirstValue > (uint)TextThickness.Thick)
                     return false;
                 // Store the value
                 text.Thickness = (TextThickness)token.FirstValue;
