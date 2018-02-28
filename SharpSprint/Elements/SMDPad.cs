@@ -12,7 +12,8 @@ namespace SharpSprint.Elements
         // Required parameters
         public Layer Layer { get; set; }
         public Vector Position { get; set; }
-        public Vector Size { get; set; }
+        public Distance Width { get; set; }
+        public Distance Height { get; set; }
 
         // Optional parameters
         public Distance Clear { get; set; } // 4000
@@ -32,7 +33,7 @@ namespace SharpSprint.Elements
         private const ushort ThermalTracksWidthDefault = 100;
 
         // Required and optional count
-        private const byte RequiredArgCount = 3;
+        private const byte RequiredArgCount = 4;
         private const byte OptionalArgCount = 7;
 
         private SMDPad()
@@ -47,11 +48,12 @@ namespace SharpSprint.Elements
             this.Connections = new List<uint>();
         }
 
-        public SMDPad(Layer Layer, Vector Position, Vector Size, uint PadId = 0, params uint[] Connections)
+        public SMDPad(Layer Layer, Vector Position, Distance Width, Distance Height, uint PadId = 0, params uint[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
-            this.Size = Size;
+            this.Width = Width;
+            this.Height = Height;
 
             this.Clear = new Distance(ClearDefault);
             this.Soldermask = SoldermaskDefault;
@@ -63,11 +65,12 @@ namespace SharpSprint.Elements
             this.Connections = new List<uint>(Connections);
         }
 
-        public SMDPad(Layer Layer, Vector Position, Vector Size, CoarseAngle Rotation, uint PadId = 0, params uint[] Connections)
+        public SMDPad(Layer Layer, Vector Position, Distance Width, Distance Height, CoarseAngle Rotation, uint PadId = 0, params uint[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
-            this.Size = Size;
+            this.Width = Width;
+            this.Height = Height;
 
             this.Clear = new Distance(ClearDefault);
             this.Soldermask = SoldermaskDefault;
@@ -136,9 +139,6 @@ namespace SharpSprint.Elements
             // Store the value
             smdpad.Position = new Vector(new Distance(token.FirstValue), new Distance(token.SecondValue));
 
-            // SIZE
-            Distance sdx, sdy;
-
             // SIZE_X
             if (!Tokens[Pointer].Get("SIZE_X", out token))
                 return false;
@@ -146,7 +146,7 @@ namespace SharpSprint.Elements
             if (token.Type != Token.TokenType.Value)
                 return false;
             // Store the value
-            sdx = new Distance(token.FirstValue);
+            smdpad.Width = new Distance(token.FirstValue);
 
             // SIZE_Y
             if (!Tokens[Pointer].Get("SIZE_Y", out token))
@@ -155,10 +155,7 @@ namespace SharpSprint.Elements
             if (token.Type != Token.TokenType.Value)
                 return false;
             // Store the value
-            sdy = new Distance(token.FirstValue);
-
-            // SIZE
-            smdpad.Size = new Vector(sdx, sdy);
+            smdpad.Height = new Distance(token.FirstValue);
 
             // Now to the optional parameters
             uint optCount = 0;
@@ -301,8 +298,8 @@ namespace SharpSprint.Elements
             writer.Write(new Token("POS", Position.X.Value, Position.Y.Value));
 
             // Size
-            writer.Write(new Token("SIZE_X", Size.X.Value));
-            writer.Write(new Token("SIZE_Y", Size.Y.Value));
+            writer.Write(new Token("SIZE_X", Width.Value));
+            writer.Write(new Token("SIZE_Y", Height.Value));
 
             // Then write the optional values
             // Clear
