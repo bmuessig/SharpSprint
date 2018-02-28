@@ -11,7 +11,7 @@ namespace SharpSprint.Elements
     {
         // Required parameters
         public Layer Layer { get; set; }
-        public Vector Position { get; set; }
+        public Point Position { get; set; }
         public Distance Size { get; set; }
         public Distance Drill { get; set; }
         public THTPadForm Form { get; set; }
@@ -55,7 +55,7 @@ namespace SharpSprint.Elements
             this.Connections = new List<uint>();
         }
 
-        public THTPad(Layer Layer, Vector Position, Distance Size, Distance Drill, THTPadForm Form, uint PadId = 0,
+        public THTPad(Layer Layer, Point Position, Distance Size, Distance Drill, THTPadForm Form, uint PadId = 0,
             params uint[] Connections)
         {
             this.Layer = Layer;
@@ -76,7 +76,7 @@ namespace SharpSprint.Elements
             this.Connections = new List<uint>(Connections);
         }
 
-        public THTPad(Layer Layer, Vector Position, Distance Size, Distance Drill, THTPadForm Form, CoarseAngle Rotation,
+        public THTPad(Layer Layer, Point Position, Distance Size, Distance Drill, THTPadForm Form, CoarseAngle Rotation,
             uint PadId = 0, params uint[] Connections)
         {
             this.Layer = Layer;
@@ -97,7 +97,7 @@ namespace SharpSprint.Elements
             this.Connections = new List<uint>(Connections);
         }
 
-        public THTPad(Layer Layer, Vector Position, Distance Size, Distance Drill, THTPadForm Form, bool Via, uint PadId = 0,
+        public THTPad(Layer Layer, Point Position, Distance Size, Distance Drill, THTPadForm Form, bool Via, uint PadId = 0,
             params uint[] Connections)
         {
             this.Layer = Layer;
@@ -118,7 +118,7 @@ namespace SharpSprint.Elements
             this.Connections = new List<uint>(Connections);
         }
 
-        public THTPad(Layer Layer, Vector Position, Distance Size, Distance Drill, THTPadForm Form, CoarseAngle Rotation,
+        public THTPad(Layer Layer, Point Position, Distance Size, Distance Drill, THTPadForm Form, CoarseAngle Rotation,
             bool Via, uint PadId = 0, params uint[] Connections)
         {
             this.Layer = Layer;
@@ -191,7 +191,7 @@ namespace SharpSprint.Elements
             if (!Tokens[Pointer].Get("POS", out token))
                 return false;
             // Make sure it is a point
-            if (token.Type != Token.TokenType.Vector)
+            if (token.Type != Token.TokenType.Tuple)
                 return false;
             // Store the value
             pad.Position = new Vector(new Distance(token.FirstValue), new Distance(token.SecondValue));

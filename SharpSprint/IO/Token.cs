@@ -53,7 +53,7 @@ namespace SharpSprint.IO
 
         public Token(string Handle, uint FirstValue, uint SecondValue)
         {
-            this.Type = TokenType.Vector;
+            this.Type = TokenType.Tuple;
             this.Indent = IndentTransition.None;
             this.Handle = Handle;
             this.FirstValue = FirstValue;
@@ -100,7 +100,7 @@ namespace SharpSprint.IO
                     return string.Format("{0}", Token.Handle);
                 case TokenType.Value:
                     return string.Format("{0}={1}", Token.Handle, Token.FirstValue);
-                case TokenType.Vector:
+                case TokenType.Tuple:
                     return string.Format("{0}={1}/{2}", Token.Handle, Token.FirstValue, Token.SecondValue);
                 case TokenType.Boolean:
                     return string.Format("{0}={1}", Token.Handle, Token.BoolValue ? "true" : "false");
@@ -175,7 +175,7 @@ namespace SharpSprint.IO
             Invalid,
             Keyword,
             Value,
-            Vector,
+            Tuple,
             Boolean,
             Text
         }

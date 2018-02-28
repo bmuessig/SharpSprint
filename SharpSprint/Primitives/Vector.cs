@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SharpSprint.Primitives
 {
-    public class Vector
+    public class Vector : Point
     {
         public Distance X { get; set; }
 

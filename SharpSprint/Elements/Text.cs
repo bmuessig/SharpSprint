@@ -11,7 +11,7 @@ namespace SharpSprint.Elements
     {
         // Required parameters
         public Layer Layer { get; set; }
-        public Vector Position { get; set; }
+        public Point Position { get; set; }
         public string Content { get; set; }
         public Distance Height { get; set; }
 
@@ -59,7 +59,7 @@ namespace SharpSprint.Elements
             this.MirrorVertical = MirrorVerticalDefault;
         }
 
-        public Text(Layer Layer, Vector Position, string Content, Distance Height, TextStyle Style = StyleDefault,
+        public Text(Layer Layer, Point Position, string Content, Distance Height, TextStyle Style = StyleDefault,
             TextThickness Thickness = ThicknessDefault, bool MirrorHorizontal = MirrorHorizontalDefault,
                 bool MirrorVertical = MirrorVerticalDefault)
         {
@@ -79,7 +79,7 @@ namespace SharpSprint.Elements
             this.MirrorVertical = MirrorVertical;
         }
 
-        public Text(Layer Layer, Vector Position, string Content, Distance Height, CoarseAngle Rotation,
+        public Text(Layer Layer, Point Position, string Content, Distance Height, CoarseAngle Rotation,
             TextStyle Style = StyleDefault, TextThickness Thickness = ThicknessDefault,
             bool MirrorHorizontal = MirrorHorizontalDefault, bool MirrorVertical = MirrorVerticalDefault)
         {
@@ -158,7 +158,7 @@ namespace SharpSprint.Elements
             if (!Tokens[Pointer].Get("POS", out token))
                 return false;
             // Make sure it is a point
-            if (token.Type != Token.TokenType.Vector)
+            if (token.Type != Token.TokenType.Tuple)
                 return false;
             // Store the value
             text.Position = new Vector(new Distance(token.FirstValue), new Distance(token.SecondValue));

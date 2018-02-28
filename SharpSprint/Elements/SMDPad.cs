@@ -11,7 +11,7 @@ namespace SharpSprint.Elements
     {
         // Required parameters
         public Layer Layer { get; set; }
-        public Vector Position { get; set; }
+        public Point Position { get; set; }
         public Distance Width { get; set; }
         public Distance Height { get; set; }
 
@@ -48,7 +48,7 @@ namespace SharpSprint.Elements
             this.Connections = new List<uint>();
         }
 
-        public SMDPad(Layer Layer, Vector Position, Distance Width, Distance Height, uint PadId = 0, params uint[] Connections)
+        public SMDPad(Layer Layer, Point Position, Distance Width, Distance Height, uint PadId = 0, params uint[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -65,7 +65,7 @@ namespace SharpSprint.Elements
             this.Connections = new List<uint>(Connections);
         }
 
-        public SMDPad(Layer Layer, Vector Position, Distance Width, Distance Height, CoarseAngle Rotation, uint PadId = 0, params uint[] Connections)
+        public SMDPad(Layer Layer, Point Position, Distance Width, Distance Height, CoarseAngle Rotation, uint PadId = 0, params uint[] Connections)
         {
             this.Layer = Layer;
             this.Position = Position;
@@ -134,7 +134,7 @@ namespace SharpSprint.Elements
             if (!Tokens[Pointer].Get("POS", out token))
                 return false;
             // Make sure it is a point
-            if (token.Type != Token.TokenType.Vector)
+            if (token.Type != Token.TokenType.Tuple)
                 return false;
             // Store the value
             smdpad.Position = new Vector(new Distance(token.FirstValue), new Distance(token.SecondValue));

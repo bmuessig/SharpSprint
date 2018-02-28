@@ -12,7 +12,7 @@ namespace SharpSprint.Elements
         // Required parameters
         public Layer Layer { get; set; }
         public Distance Width { get; set; }
-        public List<Vector> Path { get; set; }
+        public List<Point> Path { get; set; }
 
         // Optional parameters
         public Distance Clear { get; set; } // 4000
@@ -35,7 +35,7 @@ namespace SharpSprint.Elements
 
         private Zone()
         {
-            this.Path = new List<Vector>();
+            this.Path = new List<Point>();
 
             this.Clear = new Distance(ClearDefault);
             this.Cutout = CutoutDefault;
@@ -45,11 +45,11 @@ namespace SharpSprint.Elements
             this.HatchWidth = new Distance(0);
         }
 
-        public Zone(Layer Layer, Distance Width, params Vector[] Path)
+        public Zone(Layer Layer, Distance Width, params Point[] Path)
         {
             this.Layer = Layer;
             this.Width = Width;
-            this.Path = new List<Vector>(Path);
+            this.Path = new List<Point>(Path);
 
             this.Clear = new Distance(ClearDefault);
             this.Cutout = CutoutDefault;
@@ -59,11 +59,11 @@ namespace SharpSprint.Elements
             this.HatchWidth = new Distance(0);
         }
 
-        public Zone(Layer Layer, Distance Width, bool Hatch, params Vector[] Path)
+        public Zone(Layer Layer, Distance Width, bool Hatch, params Point[] Path)
         {
             this.Layer = Layer;
             this.Width = Width;
-            this.Path = new List<Vector>(Path);
+            this.Path = new List<Point>(Path);
 
             this.Clear = new Distance(ClearDefault);
             this.Cutout = CutoutDefault;
@@ -141,7 +141,7 @@ namespace SharpSprint.Elements
                 // Increase the point counter
                 pointCount++;
                 // Make sure we have got the correct type
-                if (token.Type != Token.TokenType.Vector)
+                if (token.Type != Token.TokenType.Tuple)
                     return false;
                 // Add the new point to the list
                 zone.Path.Add(new Vector(new Distance(token.FirstValue), new Distance(token.SecondValue)));
