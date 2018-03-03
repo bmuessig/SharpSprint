@@ -54,7 +54,7 @@ namespace SharpSprint.IO
             if (Line.Count == 0)
                 return;
             Collection.Add(Line);
-            Line.Clear();
+            Line = new TokenRow();
         }
 
         public void Write(Token Token)
