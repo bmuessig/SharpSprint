@@ -106,9 +106,14 @@ namespace SharpSprint.Primitives
             RelativeOffset = 0;
         }
 
-        public Distance(uint Value)
+        internal Distance(uint Value)
         {
             this.Value = Value;
+        }
+
+        public Distance(Distance Copy)
+        {
+            this.Value = Copy.Value;
         }
 
         public Distance(Distance Relative, int RelativeOffset = 0)
@@ -189,12 +194,17 @@ namespace SharpSprint.Primitives
 
         public static bool operator ==(Distance A, Distance B)
         {
+            if ((object)A == null && (object)B == null)
+                return true;
+            if ((object)A == null || (object)B == null)
+                return false;
+            
             return (A.Value == B.Value);
         }
 
         public static bool operator !=(Distance A, Distance B)
         {
-            return (A.Value != B.Value);
+            return !(A == B);
         }
 
         public override bool Equals(Object O)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SharpSprint.Primitives;
 using SharpSprint.IO;
+using SharpSprint.Points;
 
 namespace SharpSprint.Elements
 {

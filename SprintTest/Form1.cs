@@ -10,6 +10,7 @@ using SharpSprint.Elements;
 using SharpSprint.IO;
 using SharpSprint.Primitives;
 using SharpSprint;
+using SharpSprint.Points;
 
 namespace SprintTest
 {
@@ -34,9 +35,9 @@ namespace SprintTest
             Board testBoard = new Board();
             
             Group G1 = new Group();
-            Circle C1 = new Circle(SharpSprint.Layer.CopperTop, Distance.FromMillimeters(1),
+            Circle C1 = new Circle(Layer.CopperTop, Distance.FromMillimeters(1),
                 Vector.FromMillimeters(10, 10), Distance.FromMillimeters(20));
-            Circle C2 = new Circle(SharpSprint.Layer.CopperTop, Distance.FromMillimeters(3),
+            Circle C2 = new Circle(Layer.CopperTop, Distance.FromMillimeters(3),
                 Vector.FromMillimeters(15, 20), Distance.FromMillimeters(15));
 
             C2.Fill = true;
@@ -47,8 +48,8 @@ namespace SprintTest
             G1.Entities.Add(C2);
 
             var cmp = new SharpSprint.Elements.Component(
-                new IDText(SharpSprint.Layer.CopperTop, Vector.FromMillimeters(0,0), "", Distance.FromMillimeters(0)),
-                new ValueText(SharpSprint.Layer.CopperTop, Vector.FromMillimeters(0, 0), "", Distance.FromMillimeters(0)), G1);
+                new IDText(Layer.CopperTop, Vector.FromMillimeters(0, 0), "", Distance.FromMillimeters(0)),
+                new ValueText(Layer.CopperTop, Vector.FromMillimeters(0, 0), "", Distance.FromMillimeters(0)), G1);
 
             testBoard.Canvas.Add(cmp);
 
@@ -72,6 +73,11 @@ namespace SprintTest
             }
             else
                 textBox1.Text = "Write FAIL!";*/
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

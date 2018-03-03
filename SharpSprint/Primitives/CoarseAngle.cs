@@ -55,7 +55,7 @@ namespace SharpSprint.Primitives
             this.RelativeOffset = 0;
         }
 
-        public CoarseAngle(uint Value)
+        internal CoarseAngle(uint Value)
         {
             this.Value = Value;
             this.Relative = null;

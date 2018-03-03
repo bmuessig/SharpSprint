@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SharpSprint.Primitives;
 
-namespace SharpSprint.Primitives
+namespace SharpSprint.Points
 {
     public class Vector : Point
     {
-        public Distance X { get; set; }
+        public new Distance X { get; set; }
 
         public bool MirrorX { get; set; }
         
-        public Distance Y { get; set; }
+        public new Distance Y { get; set; }
 
         public bool MirrorY { get; set; }
 
@@ -143,6 +144,11 @@ namespace SharpSprint.Primitives
 
         public static bool operator ==(Vector A, Vector B)
         {
+            if ((object)A == null && (object)B == null)
+                return true;
+            if ((object)A == null || (object)B == null)
+                return false;
+
             return ((A.X == B.X) && (A.Y == B.Y));
         }
 

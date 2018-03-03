@@ -45,6 +45,7 @@
     <Compile Include="IO\Parser.cs" />
     <Compile Include="IO\TokenRow.cs" />
     <Compile Include="IO\TokenWriter.cs" />
+    <Compile Include="Points\RefPoint.cs" />
     <Compile Include="Primitives\Angle.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Primitives\CoarseAngle.cs" />
@@ -61,17 +62,16 @@
     <Compile Include="Elements\Zone.cs" />
     <Compile Include="Primitives\FineAngle.cs" />
     <Compile Include="IO\Compiler.cs" />
-    <Compile Include="Layer.cs" />
+    <Compile Include="Elements\Layer.cs" />
     <Compile Include="IO\Token.cs" />
     <Compile Include="Primitives\IntegerAngle.cs" />
-    <Compile Include="Primitives\Point.cs" />
-    <Compile Include="Primitives\Vector.cs" />
+    <Compile Include="Points\Point.cs" />
+    <Compile Include="Points\Polar.cs" />
+    <Compile Include="Points\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Primitives\Distance.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Relations\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

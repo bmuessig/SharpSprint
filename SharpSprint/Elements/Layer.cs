@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SharpSprint
+namespace SharpSprint.Elements
 {
     public enum Layer : byte
     {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SharpSprint.Primitives;
 using SharpSprint.IO;
+using SharpSprint.Points;
 
 namespace SharpSprint.Elements
 {
@@ -256,9 +257,8 @@ namespace SharpSprint.Elements
             // Set up the array
             Tokens[Pointer].ArrayPointer = 0;
             Tokens[Pointer].ArrayPrefix = "CON";
-            // Loop through all points
-            uint connCount = 0;
             // Loop through all connections
+            uint connCount = 0;
             while (Tokens[Pointer].ArrayGet(out token))
             {
                 // Increase the connection count
@@ -347,6 +347,126 @@ namespace SharpSprint.Elements
 
             Tokens = writer.Compile();
             return true;
+        }
+
+        public class SMDPadEdgePoint : Point
+        {
+            public SMDPad Pad { get; set; }
+
+            public EdgePointPosition Position { get; set; }
+
+            public new Distance X
+            {
+                get
+                {
+                    switch (Position)
+                    {
+                        case EdgePointPosition.TopLeft:
+                        case EdgePointPosition.CenterLeft:
+                        case EdgePointPosition.BottomLeft:
+                            return Pad.Position.X - (Pad.Width / 2);
+
+                        case EdgePointPosition.TopMiddle:
+                        case EdgePointPosition.CenterMiddle:
+                        case EdgePointPosition.BottomMiddle:
+                            return Pad.Position.X;
+
+                        case EdgePointPosition.TopRight:
+                        case EdgePointPosition.CenterRight:
+                        case EdgePointPosition.BottomRight:
+                            return Pad.Position.X + (Pad.Width / 2);
+                    }
+
+                    return null;
+                }
+
+                set
+                {
+                    switch (Position)
+                    {
+                        case EdgePointPosition.TopLeft:
+                        case EdgePointPosition.CenterLeft:
+                        case EdgePointPosition.BottomLeft:
+                            Pad.Position.X.Value = (value + (Pad.Width / 2)).Value;
+                            return;
+
+                        case EdgePointPosition.TopMiddle:
+                        case EdgePointPosition.CenterMiddle:
+                        case EdgePointPosition.BottomMiddle:
+                            Pad.Position.X.Value = value.Value;
+                            return;
+
+                        case EdgePointPosition.TopRight:
+                        case EdgePointPosition.CenterRight:
+                        case EdgePointPosition.BottomRight:
+                            Pad.Position.X.Value += (value - (Pad.Width / 2)).Value;
+                            return;
+                    }
+                }
+            }
+
+            public new Distance Y
+            {
+                get
+                {
+                    switch (Position)
+                    {
+                        case EdgePointPosition.TopLeft:
+                        case EdgePointPosition.TopMiddle:
+                        case EdgePointPosition.TopRight:
+                            return Pad.Position.Y - (Pad.Height / 2);
+
+                        case EdgePointPosition.CenterLeft:
+                        case EdgePointPosition.CenterMiddle:
+                        case EdgePointPosition.CenterRight:
+                            return Pad.Position.Y;
+
+                        case EdgePointPosition.BottomLeft:
+                        case EdgePointPosition.BottomMiddle:
+                        case EdgePointPosition.BottomRight:
+                            return Pad.Position.Y + (Pad.Height / 2);
+                    }
+
+                    return null;
+                }
+
+                set
+                {
+                    switch (Position)
+                    {
+                        case EdgePointPosition.TopLeft:
+                        case EdgePointPosition.TopMiddle:
+                        case EdgePointPosition.TopRight:
+                            Pad.Position.Y.Value = (value + (Pad.Height / 2)).Value;
+                            return;
+
+                        case EdgePointPosition.CenterLeft:
+                        case EdgePointPosition.CenterMiddle:
+                        case EdgePointPosition.CenterRight:
+                            Pad.Position.Y.Value = value.Value;
+                            return;
+
+                        case EdgePointPosition.BottomLeft:
+                        case EdgePointPosition.BottomMiddle:
+                        case EdgePointPosition.BottomRight:
+                            Pad.Position.Y.Value = (value - (Pad.Height / 2)).Value;
+                            return;
+                    }
+                }
+            }
+
+            public enum EdgePointPosition : byte
+            {
+                TopLeft,
+                TopMiddle,
+                TopRight,
+                CenterLeft,
+                CenterMiddle,
+                CenterRight,
+                BottomLeft,
+                BottomMiddle,
+                BottomRight
+            }
         }
 
         public enum SMDPadThermalTracks : byte
