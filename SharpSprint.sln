@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprintTest", "SprintTest\Sp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprintMap", "SprintMap\SprintMap.csproj", "{984645EC-042F-470E-B228-D297B7B5C608}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpSprintPlot", "SharpSprintPlot\SharpSprintPlot.csproj", "{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{984645EC-042F-470E-B228-D297B7B5C608}.Release|Mixed Platforms.Build.0 = Release|x86
 		{984645EC-042F-470E-B228-D297B7B5C608}.Release|x86.ActiveCfg = Release|x86
 		{984645EC-042F-470E-B228-D297B7B5C608}.Release|x86.Build.0 = Release|x86
+		{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
