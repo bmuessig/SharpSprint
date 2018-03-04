@@ -278,7 +278,7 @@ namespace SharpSprint.Plot
             Graphics gfx = Graphics.FromImage(Render);
 
             // Check if we can speed up things by drawing a whole circle
-            if (Circle.Start.Value == 0 && Circle.Stop.Value == 0)
+            if (Circle.Start == Circle.Stop)
             {
                 // Is the circle filled
                 if (Circle.Fill)
@@ -288,14 +288,19 @@ namespace SharpSprint.Plot
             }
             else // Or just a pie
             {
+                // Calculate the angles
+                int startAngle = Math.Abs(180 + (int)Circle.Start.Angle) % 360,
+                    sweepAngle = Math.Abs(180 + (int)Circle.Stop.Angle - startAngle) % 360;
+
                 // Is the pie filled
                 if (Circle.Fill)
-                    gfx.FillPie(primaryBrush, 0, 0, Box.Width, Box.Height,
-                        (int)Circle.Start.Angle, (int)Circle.Stop.Angle);
+                    gfx.FillPie(primaryBrush, 0, 0, Box.Width, Box.Height, startAngle, sweepAngle);
                 else
-                    gfx.DrawPie(primaryPen, 0, 0, Box.Width, Box.Height,
-                        (int)Circle.Start.Angle, (int)Circle.Stop.Angle);
+                    gfx.DrawPie(primaryPen, 0, 0, Box.Width, Box.Height, startAngle, sweepAngle);
             }
+
+            // Dispose of the graphics
+            gfx.Dispose();
 
             return true;
         }
