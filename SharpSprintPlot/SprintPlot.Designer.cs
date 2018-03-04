@@ -1,4 +1,4 @@
-﻿namespace SharpSprintPlot
+﻿namespace SharpSprint.Plot
 {
     partial class SprintPlot
     {

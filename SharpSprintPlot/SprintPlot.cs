@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace SharpSprintPlot
+namespace SharpSprint.Plot
 {
     public partial class SprintPlot : UserControl
     {

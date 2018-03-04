@@ -8,7 +8,7 @@
     <ProjectGuid>{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SharpSprintPlot</RootNamespace>
+    <RootNamespace>SharpSprint.Plot</RootNamespace>
     <AssemblyName>SharpSprintPlot</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElementStyle.cs" />
     <Compile Include="Plotter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SprintPlot.cs">
