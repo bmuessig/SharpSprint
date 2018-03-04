@@ -8,7 +8,7 @@ using SharpSprint.Points;
 
 namespace SharpSprint.Elements
 {
-    public class Zone : Element
+    public class Zone : Multipoint
     {
         // Required parameters
         public Layer Layer { get; set; }

@@ -8,7 +8,7 @@ using SharpSprint.Points;
 
 namespace SharpSprint.Elements
 {
-    public class Track : Element
+    public class Track : Multipoint
     {
         // Required parameters
         public Layer Layer { get; set; }

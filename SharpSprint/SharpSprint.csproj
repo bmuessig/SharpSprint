@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Elements\IDText.cs" />
+    <Compile Include="Elements\Multipoint.cs" />
     <Compile Include="Elements\ValueText.cs" />
     <Compile Include="IO\Parser.cs" />
     <Compile Include="IO\TokenRow.cs" />
