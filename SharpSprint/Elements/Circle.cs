@@ -43,7 +43,7 @@ namespace SharpSprint.Elements
             this.Soldermask = SoldermaskDefault;
             this.Start = new FineAngle(StartDefault);
             this.Stop = new FineAngle(StopDefault);
-            this.Fill = Fill;
+            this.Fill = FillDefault;
         }
 
         public Circle(Layer Layer, Distance Width, Point Center, Distance Radius, bool Fill = FillDefault)
