@@ -11,6 +11,7 @@ using SharpSprint.IO;
 using SharpSprint.Primitives;
 using SharpSprint;
 using SharpSprint.Points;
+using SharpSprint.Plot;
 
 namespace SprintTest
 {
@@ -78,6 +79,30 @@ namespace SprintTest
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // CIRCLE,LAYER=3,CENTER=88900/533400,RADIUS=50800,WIDTH=20000;
+
+            TokenRow[] testRows;
+            if (Parser.Tokenize("CIRCLE,LAYER=3,CENTER=152400/139700,RADIUS=101600,WIDTH=5000,START=600,STOP=210000,FILL=true;", out testRows) == 0)
+            {
+                Circle testCircle;
+                uint ptr = 0;
+
+                if (Circle.Read(testRows, ref ptr, out testCircle))
+                {
+                    Bitmap test;
+                    Rectangle box;
+                    if(Plotter.Draw(testCircle, new ElementStyle(), 10, out test, out box))
+                        pictureBox1.Image = test;
+                    else
+                        MessageBox.Show("Plot Fail!"); ;
+                }
+                else
+                    MessageBox.Show("Read Fail!");
+            }
         }
     }
 }
