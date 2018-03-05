@@ -33,10 +33,17 @@ namespace SharpSprint.Primitives
         }
 
         // FIXME: Here's a loss of precision for some odd reason
-        public decimal Angle
+        public decimal Degrees
         {
             get { return (decimal)(Value / 1000); }
             set { Value = (uint)Math.Round((decimal)(value * 1000), 0); }
+        }
+
+        public double Radians
+        {
+            // Invert the Degrees since our radian angles are clockwise, while the degrees are counter-clockwise
+            get { return ((double)((360 - (Degrees % 360)) % 360) * Math.PI) / 180; }
+            set { Degrees = (360 - (decimal)(((Radians * 180) / Math.PI) % (2 * Math.PI))) % 360; }
         }
 
         public FineAngle Relative { get; set; }
@@ -72,7 +79,7 @@ namespace SharpSprint.Primitives
 
         public static FineAngle FromAngle(decimal Angle)
         {
-            return new FineAngle() { Angle = Angle };
+            return new FineAngle() { Degrees = Angle };
         }
 
         public static FineAngle FromRelativeAngle(FineAngle Relative, decimal RelativeOffsetAngle)

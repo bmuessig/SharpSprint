@@ -17,19 +17,19 @@ namespace SharpSprint.Points
         public FineAngle AngleFine
         {
             get { return FineAngle.FromAngle(this.Angle); }
-            set { this.Angle = value.Angle; }
+            set { this.Angle = value.Degrees; }
         }
 
         public CoarseAngle AngleCoarse
         {
             get { return CoarseAngle.FromAngle(this.Angle); }
-            set { this.Angle = value.Angle; }
+            set { this.Angle = value.Degrees; }
         }
 
         public IntegerAngle AngleInteger
         {
             get { return IntegerAngle.FromAngle(this.Angle); }
-            set { this.Angle = value.Angle; }
+            set { this.Angle = value.Degrees; }
         }
 
         public new Distance X

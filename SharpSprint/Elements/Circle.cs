@@ -308,10 +308,10 @@ namespace SharpSprint.Elements
                             return Circle.Center.X;
                         case TrackPointPosition.Start:
                             return new Distance((uint)Math.Round(Circle.Center.X.Value +
-                                (Circle.Radius.Value * (decimal)Math.Cos((((double)Circle.Start.Angle * Math.PI) / 180) + Math.PI)), 0));
+                                (Circle.Radius.Value * (decimal)Math.Cos(Circle.Start.Radians)), 0));
                         case TrackPointPosition.Stop:
                             return new Distance((uint)Math.Round(Circle.Center.X.Value +
-                                (Circle.Radius.Value * (decimal)Math.Cos((((double)Circle.Stop.Angle * Math.PI) / 180) + Math.PI)), 0));
+                                (Circle.Radius.Value * (decimal)Math.Cos(Circle.Stop.Radians)), 0));
                     }
 
                     return null;
@@ -344,10 +344,10 @@ namespace SharpSprint.Elements
                             return Circle.Center.Y;
                         case TrackPointPosition.Start:
                             return new Distance((uint)Math.Round(Circle.Center.Y.Value +
-                                (Circle.Radius.Value * (decimal)Math.Sin((((double)Circle.Start.Angle * Math.PI) / 180) + Math.PI)), 0));
+                                (Circle.Radius.Value * (decimal)Math.Sin(Circle.Start.Radians)), 0));
                         case TrackPointPosition.Stop:
                             return new Distance((uint)Math.Round(Circle.Center.Y.Value +
-                                (Circle.Radius.Value * (decimal)Math.Sin((((double)Circle.Stop.Angle * Math.PI) / 180) + Math.PI)), 0));
+                                (Circle.Radius.Value * (decimal)Math.Sin(Circle.Stop.Radians)), 0));
                     }
 
                     return null;

@@ -289,13 +289,13 @@ namespace SharpSprint.Plot
             else // Or just a pie
             {
                 // Calculate the angles
-                int startAngle = Math.Abs(180 + (int)Circle.Start.Angle) % 360,
-                    sweepAngle = Math.Abs(180 + (int)Circle.Stop.Angle - startAngle) % 360;
+                int startAngle = Math.Abs(360 - ((int)Circle.Stop.Degrees % 360)) % 360,
+                    sweepAngle = Math.Abs((int)Circle.Stop.Degrees - (int)Circle.Start.Degrees) % 360;
 
                 // Is the pie filled
                 if (Circle.Fill)
                 {
-                    // Draw the pie shape first
+                    // Fill the pie shape first
                     gfx.FillPie(primaryBrush, 0, 0, Box.Width, Box.Height, startAngle, sweepAngle);
 
                     // Now draw a triangle where one point is the center, and the other two points
@@ -328,10 +328,10 @@ namespace SharpSprint.Plot
                     triangle.Add(triangle[0]);
 
                     // And finally draw the triangle
-                    gfx.FillPolygon(primaryBrush, triangle.ToArray());
+                    //gfx.FillPolygon(primaryBrush, triangle.ToArray());
                 }
                 else
-                    gfx.DrawPie(primaryPen, 0, 0, Box.Width, Box.Height, startAngle, sweepAngle);
+                    gfx.DrawArc(primaryPen, 0, 0, Box.Width, Box.Height, startAngle, sweepAngle);
             }
 
             // Dispose of the graphics

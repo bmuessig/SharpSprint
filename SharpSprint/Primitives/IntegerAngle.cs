@@ -32,10 +32,17 @@ namespace SharpSprint.Primitives
             }
         }
 
-        public decimal Angle
+        public decimal Degrees
         {
             get { return (decimal)Value; }
             set { Value = (uint)Math.Round(value, 0); }
+        }
+
+        public double Radians
+        {
+            // Invert the Degrees since our radian angles are clockwise, while the degrees are counter-clockwise
+            get { return ((double)((360 - (Degrees % 360)) % 360) * Math.PI) / 180; }
+            set { Degrees = (360 - (decimal)(((Radians * 180) / Math.PI) % (2 * Math.PI))) % 360; }
         }
 
         public IntegerAngle Relative { get; set; }
@@ -71,7 +78,7 @@ namespace SharpSprint.Primitives
 
         public static IntegerAngle FromAngle(decimal Angle)
         {
-            return new IntegerAngle() { Angle = Angle };
+            return new IntegerAngle() { Degrees = Angle };
         }
 
         public static IntegerAngle FromRelativeAngle(IntegerAngle Relative, decimal RelativeOffsetAngle)
