@@ -8,12 +8,8 @@ namespace SharpSprint.Points
 {
     public class Vector : Point
     {
-        public new Distance X { get; set; }
-
         public bool MirrorX { get; set; }
-        
-        public new Distance Y { get; set; }
-
+       
         public bool MirrorY { get; set; }
 
         public bool AdjustX { get; set; }

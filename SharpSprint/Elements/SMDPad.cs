@@ -349,11 +349,11 @@ namespace SharpSprint.Elements
             return true;
         }
 
-        public class SMDPadEdgePoint : Point
+        public class SMDPadTrackPoint : Point
         {
             public SMDPad Pad { get; set; }
 
-            public EdgePointPosition Position { get; set; }
+            public TrackPointPosition Position { get; set; }
 
             public new Distance X
             {
@@ -361,25 +361,25 @@ namespace SharpSprint.Elements
                 {
                     // TODO: Add rotational translations below
 
-                    if (Position == EdgePointPosition.CenterMiddle)
+                    if (Position == TrackPointPosition.CenterMiddle)
                         return Pad.Position.X;
 
                     if (Pad.Rotation.Value == 0)
                     {
                         switch (Position)
                         {
-                            case EdgePointPosition.TopLeft:
-                            case EdgePointPosition.CenterLeft:
-                            case EdgePointPosition.BottomLeft:
+                            case TrackPointPosition.TopLeft:
+                            case TrackPointPosition.CenterLeft:
+                            case TrackPointPosition.BottomLeft:
                                 return Pad.Position.X - (Pad.Width / 2);
 
-                            case EdgePointPosition.TopMiddle:
-                            case EdgePointPosition.BottomMiddle:
+                            case TrackPointPosition.TopMiddle:
+                            case TrackPointPosition.BottomMiddle:
                                 return Pad.Position.X;
 
-                            case EdgePointPosition.TopRight:
-                            case EdgePointPosition.CenterRight:
-                            case EdgePointPosition.BottomRight:
+                            case TrackPointPosition.TopRight:
+                            case TrackPointPosition.CenterRight:
+                            case TrackPointPosition.BottomRight:
                                 return Pad.Position.X + (Pad.Width / 2);
                         }
                     }
@@ -393,7 +393,7 @@ namespace SharpSprint.Elements
 
                 set
                 {
-                    if (Position == EdgePointPosition.CenterMiddle)
+                    if (Position == TrackPointPosition.CenterMiddle)
                     {
                         Pad.Position.X.Value = value.Value;
                         return;
@@ -403,20 +403,20 @@ namespace SharpSprint.Elements
                     {
                         switch (Position)
                         {
-                            case EdgePointPosition.TopLeft:
-                            case EdgePointPosition.CenterLeft:
-                            case EdgePointPosition.BottomLeft:
+                            case TrackPointPosition.TopLeft:
+                            case TrackPointPosition.CenterLeft:
+                            case TrackPointPosition.BottomLeft:
                                 Pad.Position.X.Value = (value + (Pad.Width / 2)).Value;
                                 return;
 
-                            case EdgePointPosition.TopMiddle:
-                            case EdgePointPosition.BottomMiddle:
+                            case TrackPointPosition.TopMiddle:
+                            case TrackPointPosition.BottomMiddle:
                                 Pad.Position.X.Value = value.Value;
                                 return;
 
-                            case EdgePointPosition.TopRight:
-                            case EdgePointPosition.CenterRight:
-                            case EdgePointPosition.BottomRight:
+                            case TrackPointPosition.TopRight:
+                            case TrackPointPosition.CenterRight:
+                            case TrackPointPosition.BottomRight:
                                 Pad.Position.X.Value += (value - (Pad.Width / 2)).Value;
                                 return;
                         }
@@ -432,25 +432,25 @@ namespace SharpSprint.Elements
             {
                 get
                 {
-                    if (Position == EdgePointPosition.CenterMiddle)
+                    if (Position == TrackPointPosition.CenterMiddle)
                         return Pad.Position.Y;
 
                     if (Pad.Rotation.Value == 0)
                     {
                         switch (Position)
                         {
-                            case EdgePointPosition.TopLeft:
-                            case EdgePointPosition.TopMiddle:
-                            case EdgePointPosition.TopRight:
+                            case TrackPointPosition.TopLeft:
+                            case TrackPointPosition.TopMiddle:
+                            case TrackPointPosition.TopRight:
                                 return Pad.Position.Y - (Pad.Height / 2);
 
-                            case EdgePointPosition.CenterLeft:
-                            case EdgePointPosition.CenterRight:
+                            case TrackPointPosition.CenterLeft:
+                            case TrackPointPosition.CenterRight:
                                 return Pad.Position.Y;
 
-                            case EdgePointPosition.BottomLeft:
-                            case EdgePointPosition.BottomMiddle:
-                            case EdgePointPosition.BottomRight:
+                            case TrackPointPosition.BottomLeft:
+                            case TrackPointPosition.BottomMiddle:
+                            case TrackPointPosition.BottomRight:
                                 return Pad.Position.Y + (Pad.Height / 2);
                         }
                     }
@@ -464,7 +464,7 @@ namespace SharpSprint.Elements
 
                 set
                 {
-                    if (Position == EdgePointPosition.CenterMiddle)
+                    if (Position == TrackPointPosition.CenterMiddle)
                     {
                         Pad.Position.Y.Value = value.Value;
                         return;
@@ -474,20 +474,20 @@ namespace SharpSprint.Elements
                     {
                         switch (Position)
                         {
-                            case EdgePointPosition.TopLeft:
-                            case EdgePointPosition.TopMiddle:
-                            case EdgePointPosition.TopRight:
+                            case TrackPointPosition.TopLeft:
+                            case TrackPointPosition.TopMiddle:
+                            case TrackPointPosition.TopRight:
                                 Pad.Position.Y.Value = (value + (Pad.Height / 2)).Value;
                                 return;
 
-                            case EdgePointPosition.CenterLeft:
-                            case EdgePointPosition.CenterRight:
+                            case TrackPointPosition.CenterLeft:
+                            case TrackPointPosition.CenterRight:
                                 Pad.Position.Y.Value = value.Value;
                                 return;
 
-                            case EdgePointPosition.BottomLeft:
-                            case EdgePointPosition.BottomMiddle:
-                            case EdgePointPosition.BottomRight:
+                            case TrackPointPosition.BottomLeft:
+                            case TrackPointPosition.BottomMiddle:
+                            case TrackPointPosition.BottomRight:
                                 Pad.Position.Y.Value = (value - (Pad.Height / 2)).Value;
                                 return;
                         }
@@ -499,7 +499,7 @@ namespace SharpSprint.Elements
                 }
             }
 
-            public enum EdgePointPosition : byte
+            public enum TrackPointPosition : byte
             {
                 TopLeft,
                 TopMiddle,

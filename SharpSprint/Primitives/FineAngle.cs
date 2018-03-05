@@ -32,6 +32,7 @@ namespace SharpSprint.Primitives
             }
         }
 
+        // FIXME: Here's a loss of precision for some odd reason
         public decimal Angle
         {
             get { return (decimal)(Value / 1000); }

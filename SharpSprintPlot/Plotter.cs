@@ -294,7 +294,42 @@ namespace SharpSprint.Plot
 
                 // Is the pie filled
                 if (Circle.Fill)
+                {
+                    // Draw the pie shape first
                     gfx.FillPie(primaryBrush, 0, 0, Box.Width, Box.Height, startAngle, sweepAngle);
+
+                    // Now draw a triangle where one point is the center, and the other two points
+                    // are the end points of the pie
+                    
+                    // First, create the trackpoints
+                    int centerX = Box.Width / 2, centerY = Box.Height / 2;
+                    Circle.CircleTrackPoint
+                        centerPoint = new Circle.CircleTrackPoint(Circle, Elements.Circle.CircleTrackPoint.TrackPointPosition.Center),
+                        startPoint = new Circle.CircleTrackPoint(Circle, Elements.Circle.CircleTrackPoint.TrackPointPosition.Start),
+                        stopPoint = new Circle.CircleTrackPoint(Circle, Elements.Circle.CircleTrackPoint.TrackPointPosition.Stop);
+
+                    // Now, map the trackpoint values to the drawing canvas
+                    List<Point> triangle = new List<Point>();
+
+                    // Start point
+                    triangle.Add(new Point(
+                        (int)Math.Round(((startPoint.X.Millimeters - centerPoint.X.Millimeters) * PixelsPerMillimeter) + centerX, 0),
+                        (int)Math.Round(((startPoint.Y.Millimeters - centerPoint.Y.Millimeters) * PixelsPerMillimeter) + centerY, 0)));
+
+                    // Center point
+                    triangle.Add(new Point(centerX, centerY));
+
+                    // End point
+                    triangle.Add(new Point(
+                        (int)Math.Round(((stopPoint.X.Millimeters - centerPoint.X.Millimeters) * PixelsPerMillimeter) + centerX, 0),
+                        (int)Math.Round(((stopPoint.Y.Millimeters - centerPoint.Y.Millimeters) * PixelsPerMillimeter) + centerY, 0)));
+
+                    // Return to beginning
+                    triangle.Add(triangle[0]);
+
+                    // And finally draw the triangle
+                    gfx.FillPolygon(primaryBrush, triangle.ToArray());
+                }
                 else
                     gfx.DrawPie(primaryPen, 0, 0, Box.Width, Box.Height, startAngle, sweepAngle);
             }

@@ -140,7 +140,7 @@ namespace SharpSprint.Elements
             if (token.Type != Token.TokenType.Tuple)
                 return false;
             // Store the value
-            circle.Center = new Vector(new Distance(token.FirstValue), new Distance(token.SecondValue));
+            circle.Center = new Point(new Distance(token.FirstValue), new Distance(token.SecondValue));
 
             // RADIUS
             if (!Tokens[Pointer].Get("RADIUS", out token))
@@ -290,6 +290,98 @@ namespace SharpSprint.Elements
 
             Tokens = writer.Compile();
             return true;
+        }
+
+        public class CircleTrackPoint : Point
+        {
+            public Circle Circle { get; set; }
+
+            public TrackPointPosition Position { get; set; }
+
+            public new Distance X
+            {
+                get
+                {
+                    switch (Position)
+                    {
+                        case TrackPointPosition.Center:
+                            return Circle.Center.X;
+                        case TrackPointPosition.Start:
+                            return new Distance((uint)Math.Round(Circle.Center.X.Value +
+                                (Circle.Radius.Value * (decimal)Math.Cos((((double)Circle.Start.Angle * Math.PI) / 180) + Math.PI)), 0));
+                        case TrackPointPosition.Stop:
+                            return new Distance((uint)Math.Round(Circle.Center.X.Value +
+                                (Circle.Radius.Value * (decimal)Math.Cos((((double)Circle.Stop.Angle * Math.PI) / 180) + Math.PI)), 0));
+                    }
+
+                    return null;
+                }
+
+                set
+                {
+                    switch (Position)
+                    {
+                        case TrackPointPosition.Center:
+                            Circle.Center.X = value;
+                            return;
+                        case TrackPointPosition.Start:
+
+                            return;
+                        case TrackPointPosition.Stop:
+
+                            return;
+                    }
+                }
+            }
+
+            public new Distance Y
+            {
+                get
+                {
+                    switch (Position)
+                    {
+                        case TrackPointPosition.Center:
+                            return Circle.Center.Y;
+                        case TrackPointPosition.Start:
+                            return new Distance((uint)Math.Round(Circle.Center.Y.Value +
+                                (Circle.Radius.Value * (decimal)Math.Sin((((double)Circle.Start.Angle * Math.PI) / 180) + Math.PI)), 0));
+                        case TrackPointPosition.Stop:
+                            return new Distance((uint)Math.Round(Circle.Center.Y.Value +
+                                (Circle.Radius.Value * (decimal)Math.Sin((((double)Circle.Stop.Angle * Math.PI) / 180) + Math.PI)), 0));
+                    }
+
+                    return null;
+                }
+
+                set
+                {
+                    switch (Position)
+                    {
+                        case TrackPointPosition.Center:
+                            Circle.Center.Y = value;
+                            return;
+                        case TrackPointPosition.Start:
+
+                            return;
+                        case TrackPointPosition.Stop:
+
+                            return;
+                    }
+                }
+            }
+
+            public CircleTrackPoint(Circle Circle, TrackPointPosition Position)
+            {
+                this.Circle = Circle;
+                this.Position = Position;
+            }
+
+            public enum TrackPointPosition : byte
+            {
+                Center,
+                Start,
+                Stop
+            }
         }
     }
 }
