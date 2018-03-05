@@ -325,10 +325,10 @@ namespace SharpSprint.Elements
                             Circle.Center.X = value;
                             return;
                         case TrackPointPosition.Start:
-
+                            //TODO
                             return;
                         case TrackPointPosition.Stop:
-
+                            //TODO
                             return;
                     }
                 }
@@ -361,10 +361,10 @@ namespace SharpSprint.Elements
                             Circle.Center.Y = value;
                             return;
                         case TrackPointPosition.Start:
-
+                            //TODO
                             return;
                         case TrackPointPosition.Stop:
-
+                            //TODO
                             return;
                     }
                 }
