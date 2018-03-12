@@ -49,22 +49,44 @@ namespace SharpSprint.Elements
 
             // Define the working variables
             Group group = new Group();
-            Token token;
+            bool endFound = false;
+            Entity[] entities;
 
-            // Now, consume all inner arguments, until we hit our END_GROUP token
-            while (Pointer < Tokens.Length)
+            // Skip ahead to first group element (or the end if it's empty)
+            // Then, consume all inner arguments, until we hit our END_GROUP token or the end of input
+            for (Pointer++; Pointer < Tokens.Length; Pointer++ )
             {
-                if (Tokens[Pointer].Count == 1)
+                // Skip empty rows
+                if (Tokens[Pointer].Count < 1)
+                    continue;
+
+                if (Tokens[Pointer][0].Type == Token.TokenType.Keyword
+                    && Tokens[Pointer][0].Handle.ToUpper().Trim() == "END_GROUP")
                 {
-                    if (Tokens[Pointer][0].Type == Token.TokenType.Keyword
-                        && Tokens[Pointer][0].Handle.ToUpper().Trim() == "END_GROUP")
-                        break;
+                    // Make sure that the end is only a single token
+                    if (Tokens[Pointer].Count != 1)
+                        return false;
+
+                    // Store that we have found an end
+                    endFound = true;
+
+                    // Break out of the loop
+                    break;
+                }
+                else
+                {
+                    // If it's not an end, try parsing it as one of the other elements
+                    if (!Parser.Parse(Tokens, ref Pointer, out entities, 1))
+                        return false;
+
+                    // Now, add the new entities to the group
+                    group.Entities.AddRange(entities);
                 }
             }
 
-            // Make sure all tokens have been consumed
-            //if (Tokens[Pointer].Count > RequiredArgCount + optCount + 1)
-                //return false;
+            // Make sure we have not just hit the end of the stream
+            if (!endFound)
+                return false;
 
             // Return the successful new element
             Result = group;

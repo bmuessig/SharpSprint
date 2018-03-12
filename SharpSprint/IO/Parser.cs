@@ -130,135 +130,174 @@ namespace SharpSprint.IO
             OutputTokens = lines.ToArray();
             return 0;
         }
-
-        public static uint Parse(TokenRow[] Rows, out Entity[] Result)
+        
+        // Count = 0: Process all
+        public static bool Parse(TokenRow[] Rows, ref uint Pointer, out Entity[] Result, uint Count = 0)
         {
             // Working variables
-            uint line = 0;
             List<Entity> entities = new List<Entity>();
 
             // Assign a value to result ahead of time to allow early exiting
             Result = null;
 
+            // Make sure the pointer is not out of bounds
+            if (Pointer >= Rows.Length)
+                return false;
+
+            // Check, if we need to process all following tokens
+            bool processAll = (Count == 0);
+
             // Now, try all element signatures on the input
             // The elements are arranged by most used first for speed
-            while (line < Rows.Length)
+            for (; (Count > 0 || processAll) && Pointer < Rows.Length; Pointer++ )
             {
                 // Track
-                if (Track.Identify(Rows, line))
+                if (Track.Identify(Rows, Pointer))
                 {
                     // Try parsing the element
                     Track e;
-                    if (!Track.Read(Rows, ref line, out e))
-                        return line;
+                    if (!Track.Read(Rows, ref Pointer, out e))
+                        return false;
 
                     // Finally add it
                     entities.Add(e);
+
+                    // Update the counter
+                    if (!processAll)
+                        Count--;
 
                     // And proceed
                     continue;
                 }
 
                 // SMDPad
-                if (SMDPad.Identify(Rows, line))
+                if (SMDPad.Identify(Rows, Pointer))
                 {
                     // Try parsing the element
                     SMDPad e;
-                    if (!SMDPad.Read(Rows, ref line, out e))
-                        return line;
+                    if (!SMDPad.Read(Rows, ref Pointer, out e))
+                        return false;
 
                     // Finally add it
                     entities.Add(e);
+
+                    // Update the counter
+                    if (!processAll)
+                        Count--;
 
                     // And proceed
                     continue;
                 }
 
                 // THTPad
-                if (THTPad.Identify(Rows, line))
+                if (THTPad.Identify(Rows, Pointer))
                 {
                     // Try parsing the element
                     THTPad e;
-                    if (!THTPad.Read(Rows, ref line, out e))
-                        return line;
+                    if (!THTPad.Read(Rows, ref Pointer, out e))
+                        return false;
 
                     // Finally add it
                     entities.Add(e);
+
+                    // Update the counter
+                    if (!processAll)
+                        Count--;
 
                     // And proceed
                     continue;
                 }
 
                 // Group
-                if (Group.Identify(Rows, line))
+                if (Group.Identify(Rows, Pointer))
                 {
                     // Try parsing the element
                     Group e;
-                    if (!Group.Read(Rows, ref line, out e))
-                        return line;
+                    if (!Group.Read(Rows, ref Pointer, out e))
+                        return false;
 
                     // Finally add it
                     entities.Add(e);
+
+                    // Update the counter
+                    if (!processAll)
+                        Count--;
 
                     // And proceed
                     continue;
                 }
 
                 // Zone
-                if (Zone.Identify(Rows, line))
+                if (Zone.Identify(Rows, Pointer))
                 {
                     // Try parsing the element
                     Zone e;
-                    if (!Zone.Read(Rows, ref line, out e))
-                        return line;
+                    if (!Zone.Read(Rows, ref Pointer, out e))
+                        return false;
 
                     // Finally add it
                     entities.Add(e);
+
+                    // Update the counter
+                    if (!processAll)
+                        Count--;
 
                     // And proceed
                     continue;
                 }
 
                 // Text
-                if (Text.Identify(Rows, line))
+                if (Text.Identify(Rows, Pointer))
                 {
                     // Try parsing the element
                     Text e;
-                    if (!Text.Read(Rows, ref line, out e))
-                        return line;
+                    if (!Text.Read(Rows, ref Pointer, out e))
+                        return false;
 
                     // Finally add it
                     entities.Add(e);
+
+                    // Update the counter
+                    if (!processAll)
+                        Count--;
 
                     // And proceed
                     continue;
                 }
 
                 // Circle
-                if (Circle.Identify(Rows, line))
+                if (Circle.Identify(Rows, Pointer))
                 {
                     // Try parsing the element
                     Circle e;
-                    if (!Circle.Read(Rows, ref line, out e))
-                        return line;
+                    if (!Circle.Read(Rows, ref Pointer, out e))
+                        return false;
 
                     // Finally add it
                     entities.Add(e);
+
+                    // Update the counter
+                    if (!processAll)
+                        Count--;
 
                     // And proceed
                     continue;
                 }
 
                 // Component
-                if (Component.Identify(Rows, line))
+                if (Component.Identify(Rows, Pointer))
                 {
                     // Try parsing the element
                     Component e;
-                    if (!Component.Read(Rows, ref line, out e))
-                        return line;
+                    if (!Component.Read(Rows, ref Pointer, out e))
+                        return false;
 
                     // Finally add it
                     entities.Add(e);
+
+                    // Update the counter
+                    if (!processAll)
+                        Count--;
 
                     // And proceed
                     continue;
@@ -268,10 +307,10 @@ namespace SharpSprint.IO
                 // They would go here
 
                 // Unknown element => fail
-                return line;
+                return false;
             }
 
-            return 0;
+            return true;
         }
     }
 }

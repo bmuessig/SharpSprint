@@ -47,8 +47,11 @@ namespace SharpSprint
             if ((line = Parser.Tokenize(InputLines, out rows)) != 0)
                 return line; // We have an error on a particular line
 
+            // Reset the line
+            line = 0;
+
             // Run the tokens through the parser to turn them into Entities and Elements
-            if ((line = Parser.Parse(rows, out entities)) != 0)
+            if (!Parser.Parse(rows, ref line, out entities))
                 return line;
 
             // Finally, add the new elements to the list
