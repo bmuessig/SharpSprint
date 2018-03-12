@@ -86,7 +86,7 @@ namespace SprintTest
             // CIRCLE,LAYER=3,CENTER=88900/533400,RADIUS=50800,WIDTH=20000;
 
             TokenRow[] testRows;
-            if (Parser.Tokenize("CIRCLE,LAYER=3,CENTER=152400/139700,RADIUS=101600,WIDTH=5000,START=600,STOP=210000,FILL=true;", out testRows) == 0)
+            if (Parser.Tokenize("CIRCLE,LAYER=3,CENTER=152400/139700,RADIUS=101600,WIDTH=5000,START=600,STOP=210000,FILL=false;", out testRows) == 0)
             {
                 Circle testCircle;
                 uint ptr = 0;
