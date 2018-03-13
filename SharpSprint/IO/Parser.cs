@@ -57,8 +57,8 @@ namespace SharpSprint.IO
                         // Add the line to the set if it is not empty
                         lines.Add(line);
 
-                        // And clear the line
-                        line.Clear();
+                        // And create a new line
+                        line = new TokenRow();
                     }
 
                     // We need to update the line number
@@ -149,7 +149,7 @@ namespace SharpSprint.IO
 
             // Now, try all element signatures on the input
             // The elements are arranged by most used first for speed
-            for (; (Count > 0 || processAll) && Pointer < Rows.Length; Pointer++ )
+            for (; (Count > 0 || processAll) && Pointer < Rows.Length; Pointer += (Count > 0 || processAll) ? 1u : 0u )
             {
                 // Track
                 if (Track.Identify(Rows, Pointer))
@@ -309,6 +309,9 @@ namespace SharpSprint.IO
                 // Unknown element => fail
                 return false;
             }
+
+            // Finally export the result
+            Result = entities.ToArray();
 
             return true;
         }

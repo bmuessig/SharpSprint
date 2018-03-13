@@ -105,23 +105,47 @@ namespace SharpSprint.IO
 
         public bool HasDuplicates(bool ExactMatch = false)
         {
-            List<string> keywords = new List<string>();
-            foreach (Token t in this)
+            string mainKeyword = string.Empty;
+            List<string> arguments = new List<string>();
+
+            for (int ptr = 0; ptr < this.Count; ptr++)
             {
-                if (string.IsNullOrWhiteSpace(t.Handle))
+                if (string.IsNullOrWhiteSpace(this[ptr].Handle))
                     continue;
+
+                // If the first token is just a keyword (as it should be), don't add it to the duplicates list
+                if (ptr == 0 && this[ptr].Type == Token.TokenType.Keyword)
+                {
+                    // But instead, store it
+                    mainKeyword = ExactMatch ? this[ptr].Handle : this[ptr].Handle.ToUpper();
+                    continue;
+                }
 
                 if (ExactMatch)
                 {
-                    if (keywords.Contains(t.Handle))
+                    // First, check if the argument is a keyword and equal to the first one on the line
+                    if (this[ptr].Type == Token.TokenType.Keyword && this[ptr].Handle == mainKeyword)
                         return true;
-                    keywords.Add(t.Handle);
+
+                    // Check if the argument is already known
+                    if (arguments.Contains(this[ptr].Handle))
+                        return true;
+
+                    // Finally, add the argument to the list
+                    arguments.Add(this[ptr].Handle);
                 }
                 else
                 {
-                    if (keywords.Contains(t.Handle.Trim().ToUpper()))
+                    // First, check if the argument is a keyword and equal to the first one on the line
+                    if (this[ptr].Type == Token.TokenType.Keyword && this[ptr].Handle == mainKeyword.ToUpper())
                         return true;
-                    keywords.Add(t.Handle.Trim().ToUpper());
+
+                    // Check if the argument is already known
+                    if (arguments.Contains(this[ptr].Handle.Trim().ToUpper()))
+                        return true;
+
+                    // Finally, add the argument to the list
+                    arguments.Add(this[ptr].Handle.Trim().ToUpper());
                 }
             }
 

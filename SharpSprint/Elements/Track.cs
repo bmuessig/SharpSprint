@@ -35,7 +35,7 @@ namespace SharpSprint.Elements
 
         private Track()
         {
-            this.Path = new List<Point>(Path);
+            this.Path = new List<Point>();
 
             this.Clear = new Distance(ClearDefault);
             this.Cutout = CutoutDefault;
