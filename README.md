@@ -1,5 +1,5 @@
 # SharpSprint
-Library for the Text-IO interface to SprintLayout
+Interface to the Text-IO interface of SprintLayout and library for computer aided PCB generation.
 
 This C# library and accompanging test suite is designed to provide an easy to use, but powerful interface to the popular
 SprintLayout PCB CAD program developed by the German engineering company Abacom.
