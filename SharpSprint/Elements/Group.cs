@@ -22,6 +22,10 @@ namespace SharpSprint.Elements
 
         public static bool Identify(TokenRow[] Tokens, uint Pointer)
         {
+            // Input sanity check
+            if (Tokens == null)
+                return false;
+
             // First, make sure we have met the amount of required arguments
             if (Tokens[Pointer].Count != RequiredArgCount + 1)
                 return false;
@@ -56,10 +60,15 @@ namespace SharpSprint.Elements
             // Then, consume all inner arguments, until we hit our END_GROUP token or the end of input
             for (Pointer++; Pointer < Tokens.Length; Pointer++ )
             {
+                // Fail, if the TokenRow is null
+                if (Tokens[Pointer] == null)
+                    return false;
+
                 // Skip empty rows
                 if (Tokens[Pointer].Count < 1)
                     continue;
 
+                // Check if we have hit the end element
                 if (Tokens[Pointer][0].Type == Token.TokenType.Keyword
                     && Tokens[Pointer][0].Handle.ToUpper().Trim() == "END_GROUP")
                 {
