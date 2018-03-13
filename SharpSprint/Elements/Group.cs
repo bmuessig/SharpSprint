@@ -6,7 +6,7 @@ using SharpSprint.IO;
 
 namespace SharpSprint.Elements
 {
-    public class Group : Entity
+    public class Group : Container
     {
         // Required Parameters
         public List<Entity> Entities { get; private set; }

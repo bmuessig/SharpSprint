@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elements\Container.cs" />
     <Compile Include="Elements\IDText.cs" />
     <Compile Include="Elements\Multipoint.cs" />
     <Compile Include="Elements\ValueText.cs" />

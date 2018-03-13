@@ -7,7 +7,7 @@ using SharpSprint.Primitives;
 
 namespace SharpSprint.Elements
 {
-    public class Component : Entity
+    public class Component : Container
     {
         // Required parameters
         public List<Entity> Entities { get; private set; }
