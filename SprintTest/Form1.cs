@@ -29,13 +29,13 @@ namespace SprintTest
             TokenRow[] testRows;
             if (Parser.Tokenize(input, out testRows) == 0)
             {
-                uint pointer = 0;
-                Entity[] entities;
+                uint pointer;
+                Board test = new Board();
 
-                if (!Parser.Parse(testRows, ref pointer, out entities))
+                if((pointer = test.Read(testRows)) != 0)
                     MessageBox.Show(string.Format("Error on statement {0}!", pointer));
                 else
-                    MessageBox.Show(string.Format("Successfully read {0} entities!", entities.Length));
+                    MessageBox.Show(string.Format("Successfully read {0} entities!", test.Count));
             }
 
             Board testBoard = new Board();
@@ -57,11 +57,11 @@ namespace SprintTest
                 new IDText(Layer.CopperTop, Vector.FromMillimeters(0, 0), "", Distance.FromMillimeters(0)),
                 new ValueText(Layer.CopperTop, Vector.FromMillimeters(0, 0), "", Distance.FromMillimeters(0)), G1);
 
-            testBoard.Canvas.Add(cmp);
+            testBoard.Add(cmp);
 
             string output;
 
-            if (testBoard.Compile(out output))
+            if (testBoard.Write(out output))
                 textBox1.Text = output;
             else
                 textBox1.Text = "Compile FAIL!";
