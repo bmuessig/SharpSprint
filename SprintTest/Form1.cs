@@ -71,20 +71,6 @@ namespace SprintTest
                 textBox1.Text = output;
             else
                 textBox1.Text = "Compile FAIL!";
-
-            /*Token[][] lines;
-            ushort indent = 0;
-            string output;
-
-            if (cmp.Write(out lines))
-            {
-                if (Compiler.CompileBlock(lines, ref indent, out output))
-                    textBox1.Text = output;
-                else
-                    textBox1.Text = "Compile FAIL!";
-            }
-            else
-                textBox1.Text = "Write FAIL!";*/
         }
 
         private void button2_Click(object sender, EventArgs e)
