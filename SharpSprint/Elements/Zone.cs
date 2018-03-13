@@ -270,7 +270,6 @@ namespace SharpSprint.Elements
                             continue;
                     }
                     writer.Write(new Token(string.Format("P{0}", counter), Path[counter].X.Value, Path[counter].Y.Value));
-                    counter++;
                 }
             }
             else
