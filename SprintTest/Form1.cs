@@ -36,6 +36,12 @@ namespace SprintTest
                     MessageBox.Show(string.Format("Error on statement {0}!", pointer));
                 else
                     MessageBox.Show(string.Format("Successfully read {0} entities!", test.Count));
+
+                string testout;
+                if (test.Write(out testout))
+                    MessageBox.Show(string.Format("Successfully wrote {0} characters!", testout.Length));
+                else
+                    MessageBox.Show("Error compiling the entities again!");
             }
 
             Board testBoard = new Board();
