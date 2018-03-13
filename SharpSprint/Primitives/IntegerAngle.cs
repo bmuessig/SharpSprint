@@ -85,5 +85,85 @@ namespace SharpSprint.Primitives
         {
             return new IntegerAngle(Relative) { RelativeOffsetAngle = RelativeOffsetAngle };
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}°", this.Degrees);
+        }
+
+        public override bool Equals(Object O)
+        {
+            if (O == null)
+                return false;
+            if (!(O is Angle))
+                return false;
+
+            return (this == (Angle)O);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
+        }
+
+        public static bool operator !=(IntegerAngle A, Angle B)
+        {
+            return !(A == B);
+        }
+
+        public static IntegerAngle operator +(IntegerAngle A, Angle B)
+        {
+            return IntegerAngle.FromAngle(A.Degrees + B.Degrees);
+        }
+
+        public static IntegerAngle operator -(IntegerAngle A, Angle B)
+        {
+            return IntegerAngle.FromAngle(A.Degrees - B.Degrees);
+        }
+
+        public static IntegerAngle operator *(IntegerAngle A, uint N)
+        {
+            return new IntegerAngle((uint)(N * A.Value));
+        }
+
+        public static IntegerAngle operator *(uint N, IntegerAngle A)
+        {
+            return (A * N);
+        }
+
+        public static IntegerAngle operator /(IntegerAngle A, uint N)
+        {
+            return new IntegerAngle((uint)(A.Value / N));
+        }
+
+        public static bool operator >(IntegerAngle A, Angle B)
+        {
+            return (A.Degrees > B.Degrees);
+        }
+
+        public static bool operator >=(IntegerAngle A, Angle B)
+        {
+            return (A.Degrees >= B.Degrees);
+        }
+
+        public static bool operator <(IntegerAngle A, Angle B)
+        {
+            return (A.Degrees < B.Degrees);
+        }
+
+        public static bool operator <=(IntegerAngle A, Angle B)
+        {
+            return (A.Degrees <= B.Degrees);
+        }
+
+        public static bool operator ==(IntegerAngle A, Angle B)
+        {
+            if ((object)A == null && (object)B == null)
+                return true;
+            if ((object)A == null || (object)B == null)
+                return false;
+
+            return (A.Degrees == B.Degrees);
+        }
     }
 }

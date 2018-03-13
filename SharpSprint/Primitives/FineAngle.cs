@@ -86,5 +86,85 @@ namespace SharpSprint.Primitives
         {
             return new FineAngle(Relative) { RelativeOffsetAngle = RelativeOffsetAngle };
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}°", this.Degrees);
+        }
+
+        public override bool Equals(Object O)
+        {
+            if (O == null)
+                return false;
+            if (!(O is Angle))
+                return false;
+
+            return (this == (Angle)O);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
+        }
+
+        public static bool operator !=(FineAngle A, Angle B)
+        {
+            return !(A == B);
+        }
+
+        public static FineAngle operator +(FineAngle A, Angle B)
+        {
+            return FineAngle.FromAngle(A.Degrees + B.Degrees);
+        }
+
+        public static FineAngle operator -(FineAngle A, Angle B)
+        {
+            return FineAngle.FromAngle(A.Degrees - B.Degrees);
+        }
+
+        public static FineAngle operator *(FineAngle A, uint N)
+        {
+            return new FineAngle((uint)(N * A.Value));
+        }
+
+        public static FineAngle operator *(uint N, FineAngle A)
+        {
+            return (A * N);
+        }
+
+        public static FineAngle operator /(FineAngle A, uint N)
+        {
+            return new FineAngle((uint)(A.Value / N));
+        }
+
+        public static bool operator >(FineAngle A, Angle B)
+        {
+            return (A.Degrees > B.Degrees);
+        }
+
+        public static bool operator >=(FineAngle A, Angle B)
+        {
+            return (A.Degrees >= B.Degrees);
+        }
+
+        public static bool operator <(FineAngle A, Angle B)
+        {
+            return (A.Degrees < B.Degrees);
+        }
+
+        public static bool operator <=(FineAngle A, Angle B)
+        {
+            return (A.Degrees <= B.Degrees);
+        }
+
+        public static bool operator ==(FineAngle A, Angle B)
+        {
+            if ((object)A == null && (object)B == null)
+                return true;
+            if ((object)A == null || (object)B == null)
+                return false;
+
+            return (A.Degrees == B.Degrees);
+        }
     }
 }

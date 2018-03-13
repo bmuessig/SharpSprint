@@ -85,5 +85,85 @@ namespace SharpSprint.Primitives
         {
             return new CoarseAngle(Relative) { RelativeOffsetAngle = RelativeOffsetAngle };
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}°", this.Degrees);
+        }
+
+        public override bool Equals(Object O)
+        {
+            if (O == null)
+                return false;
+            if (!(O is Angle))
+                return false;
+
+            return (this == (Angle)O);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
+        }
+
+        public static bool operator !=(CoarseAngle A, Angle B)
+        {
+            return !(A == B);
+        }
+
+        public static CoarseAngle operator +(CoarseAngle A, Angle B)
+        {
+            return CoarseAngle.FromAngle(A.Degrees + B.Degrees);
+        }
+
+        public static CoarseAngle operator -(CoarseAngle A, Angle B)
+        {
+            return CoarseAngle.FromAngle(A.Degrees - B.Degrees);
+        }
+
+        public static CoarseAngle operator *(CoarseAngle A, uint N)
+        {
+            return new CoarseAngle((uint)(N * A.Value));
+        }
+
+        public static CoarseAngle operator *(uint N, CoarseAngle A)
+        {
+            return (A * N);
+        }
+
+        public static CoarseAngle operator /(CoarseAngle A, uint N)
+        {
+            return new CoarseAngle((uint)(A.Value / N));
+        }
+
+        public static bool operator >(CoarseAngle A, Angle B)
+        {
+            return (A.Degrees > B.Degrees);
+        }
+
+        public static bool operator >=(CoarseAngle A, Angle B)
+        {
+            return (A.Degrees >= B.Degrees);
+        }
+
+        public static bool operator <(CoarseAngle A, Angle B)
+        {
+            return (A.Degrees < B.Degrees);
+        }
+
+        public static bool operator <=(CoarseAngle A, Angle B)
+        {
+            return (A.Degrees <= B.Degrees);
+        }
+
+        public static bool operator ==(CoarseAngle A, Angle B)
+        {
+            if ((object)A == null && (object)B == null)
+                return true;
+            if ((object)A == null || (object)B == null)
+                return false;
+
+            return (A.Degrees == B.Degrees);
+        }
     }
 }
