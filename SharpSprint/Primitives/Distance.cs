@@ -211,7 +211,7 @@ namespace SharpSprint.Primitives
         {
             if (O == null)
                 return false;
-            if (O.GetType() != typeof(Distance))
+            if (!(O is Distance))
                 return false;
 
             Distance D = (Distance)O;
