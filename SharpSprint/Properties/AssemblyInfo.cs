@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
 [assembly: AssemblyTitle("SharpSprint")]
-[assembly: AssemblyDescription("Library for the Text-IO interface to SprintLayout")]
+[assembly: AssemblyDescription("Interface to the Text-IO interface of SprintLayout and library for computer aided PCB generation")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SharpSprint")]
