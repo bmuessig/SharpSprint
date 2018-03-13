@@ -76,6 +76,10 @@ namespace SharpSprint.Elements
 
         public static bool Identify(TokenRow[] Tokens, uint Pointer)
         {
+            // Input sanity check
+            if (Tokens == null)
+                return false;
+
             // First, make sure we have met the amount of required arguments
             if (Tokens[Pointer].Count < RequiredArgCount + 1)
                 return false;

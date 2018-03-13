@@ -64,11 +64,17 @@ namespace SharpSprint.IO
 
         public void Write(TokenRow Tokens)
         {
+            if (Tokens == null)
+                return;
+
             Line.AddRange(Tokens);
         }
 
         public void Write(TokenRow[] Lines)
         {
+            if (Lines == null)
+                return;
+
             foreach (TokenRow Line in Lines)
             {
                 Write(Line);

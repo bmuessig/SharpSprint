@@ -102,6 +102,10 @@ namespace SharpSprint.Elements
 
         public static bool Identify(TokenRow[] Tokens, uint Pointer)
         {
+            // Input sanity check
+            if (Tokens == null)
+                return false;
+
             // First, make sure we have met the amount of required arguments
             if (Tokens[Pointer].Count < RequiredArgCount + 1)
                 return false;
@@ -129,6 +133,10 @@ namespace SharpSprint.Elements
         protected static bool Read(TokenRow[] Tokens, bool AllowVisibility, ref uint Pointer, out Text Result)
         {
             Result = null;
+
+            // Input sanity check
+            if (Tokens == null)
+                return false;
 
             // Check if the pointer is within range
             if (Pointer >= Tokens.Length)

@@ -15,11 +15,17 @@ namespace SharpSprint.IO
 
         public bool Contains(string Keyword, bool ExactMatch = false)
         {
+            if (string.IsNullOrWhiteSpace(Keyword))
+                return false;
+
             if (!ExactMatch)
                 Keyword = Keyword.Trim().ToUpper();
 
             foreach (Token t in this)
             {
+                if (string.IsNullOrWhiteSpace(t.Handle))
+                    continue;
+
                 if (ExactMatch)
                 {
                     if (t.Handle == Keyword)
@@ -39,8 +45,8 @@ namespace SharpSprint.IO
         {
             Result = new Token();
 
-            // If there are no elements, there cannot be a result
-            if (this.Count == 0)
+            // If there are no elements or no keyword, there cannot be a result
+            if (this.Count == 0 || string.IsNullOrWhiteSpace(Keyword))
                 return false;
 
             // If the case does not matter, make it all uppercase
@@ -50,6 +56,9 @@ namespace SharpSprint.IO
             // This is supposed to run for one loop, no matter where we start in the array
             for (int i = 0; i < this.Count; i++, InternalPointer = (uint)((InternalPointer + 1) % this.Count))
             {
+                if (string.IsNullOrWhiteSpace(this[(int)InternalPointer].Handle))
+                    continue;
+
                 if (ExactMatch)
                 {
                     if (this[(int)InternalPointer].Handle == Keyword)
@@ -99,6 +108,9 @@ namespace SharpSprint.IO
             List<string> keywords = new List<string>();
             foreach (Token t in this)
             {
+                if (string.IsNullOrWhiteSpace(t.Handle))
+                    continue;
+
                 if (ExactMatch)
                 {
                     if (keywords.Contains(t.Handle))
@@ -120,14 +132,13 @@ namespace SharpSprint.IO
         {
             Result = new Token();
 
-            // If there are no elements, there cannot be a result
-            if (this.Count == 0)
+            // If there are no elements or an invalid search string, there cannot be a result
+            if (this.Count == 0 || string.IsNullOrWhiteSpace(ArrayPrefix))
                 return false;
 
             // Now, assemble the search string
             string search = string.Format("{0}{1}",
                 ExactMatch ? ArrayPrefix : ArrayPrefix.ToUpper().Trim(), ArrayPointer);
-
 
             // This is supposed to run for one loop, no matter where we start in the array
             // i, in this case, is just the helper variable for the counter
