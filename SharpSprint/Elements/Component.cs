@@ -203,7 +203,7 @@ namespace SharpSprint.Elements
             }
 
             // Skip ahead to first group element
-            // Then, consume all inner arguments, until we hit our END_GROUP token or the end of input
+            // Then, consume all inner arguments, until we hit our END_COMPONENT token or the end of input
             for (Pointer++; Pointer < Tokens.Length; Pointer++)
             {
                 // Fail, if the TokenRow is null
