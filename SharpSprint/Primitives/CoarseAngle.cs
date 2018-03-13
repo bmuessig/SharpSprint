@@ -106,6 +106,16 @@ namespace SharpSprint.Primitives
             return Value.GetHashCode();
         }
 
+        public static implicit operator CoarseAngle(FineAngle A)
+        {
+            return CoarseAngle.FromAngle(A.Degrees);
+        }
+
+        public static implicit operator CoarseAngle(IntegerAngle A)
+        {
+            return CoarseAngle.FromAngle(A.Degrees);
+        }
+
         public static bool operator !=(CoarseAngle A, Angle B)
         {
             return !(A == B);
