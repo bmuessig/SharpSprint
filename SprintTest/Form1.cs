@@ -24,13 +24,18 @@ namespace SprintTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            TokenRow[] testRows;
-            if (Parser.Tokenize("ZONE, LAYER=3, WIDTH=8000, HATCH=true, P0=150000 / 250000, P1=150000 / 450000, P2=250000 / 450000, P3=250000 / 650000;", out testRows) == 0)
-            {
-                Zone testZone;
-                uint ptr = 0;
+            string input = Properties.Resources.TestSuite;
 
-                Zone.Read(testRows, ref ptr, out testZone);
+            TokenRow[] testRows;
+            if (Parser.Tokenize(input, out testRows) == 0)
+            {
+                uint pointer = 0;
+                Entity[] entities;
+
+                if (!Parser.Parse(testRows, ref pointer, out entities))
+                    MessageBox.Show(string.Format("Error on statement {0}!", pointer));
+                else
+                    MessageBox.Show(string.Format("Successfully read {0} entities!", entities.Length));
             }
 
             Board testBoard = new Board();
@@ -74,11 +79,6 @@ namespace SprintTest
             }
             else
                 textBox1.Text = "Write FAIL!";*/
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void button2_Click(object sender, EventArgs e)
