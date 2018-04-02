@@ -78,6 +78,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharpSprintControl\SharpSprintControl.csproj">
+      <Project>{25AFCDD2-C45C-42FE-A12E-597B875761A6}</Project>
+      <Name>SharpSprintControl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharpSprintPlot\SharpSprintPlot.csproj">
       <Project>{3F95705F-0D0D-4FA4-8EE6-FE51413CF3A8}</Project>
       <Name>SharpSprintPlot</Name>
