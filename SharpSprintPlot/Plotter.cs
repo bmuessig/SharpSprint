@@ -243,6 +243,50 @@ namespace SharpSprint.Plot
             return Draw(Entity, Color.Empty, Color.Empty, SkipUnsupportedEntities);
         }
 
+        public static bool Draw(THTPad Pad, ElementStyle Style, uint PixelsPerMillimeter, out Bitmap Render, out Rectangle Box)
+        {
+            Render = null;
+            Box = Rectangle.Empty;
+
+            // Input sanity checks
+            if (Pad == null)
+                return false;
+            if (Pad.Size == null || Pad.Rotation == null || Pad.Position == null || Pad.Drill == null)
+                return false;
+
+            // Measure the bounding box
+            if (!Measure(Pad, PixelsPerMillimeter, out Box, false))
+                return false;
+
+            // Get the layer color
+            Color layerColor = GetLayerColor(Style, Pad.Layer);
+            if (layerColor == Color.Empty || Style.StrokeColor == Color.Empty || Style.ViaColor == Color.Empty
+                || Style.DrillColor == Color.Empty || Style.BackgroundColor == Color.Empty)
+                return false;
+
+            // Create a new bitmap
+            Render = new Bitmap(Box.Width + 1, Box.Height + 1);
+
+            // Check if there is anything to draw
+            if (Pad.Size.Value == 0)
+                return true;
+
+            // Create the pens and brushes
+            SolidBrush primaryBrush = new SolidBrush(layerColor),
+                viaBrush = new SolidBrush(Style.ViaColor),
+                drillBrush = new SolidBrush(Style.DrillColor),
+                backgroundBrush = new SolidBrush(Style.BackgroundColor);
+            Pen strokePen = new Pen(Style.StrokeColor, (float)Style.StrokeMillimeters * PixelsPerMillimeter);
+
+            // Create a new graphics context
+            Graphics gfx = Graphics.FromImage(Render);
+
+            // Fill the graphics with the background color
+            gfx.FillRectangle(backgroundBrush, 0, 0, Render.Width, Render.Height);
+
+            return true;
+        }
+
         public static bool Draw(Circle Circle, ElementStyle Style, uint PixelsPerMillimeter, out Bitmap Render, out Rectangle Box)
         {
             Render = null;
@@ -251,7 +295,8 @@ namespace SharpSprint.Plot
             // Input sanity checks
             if (Circle == null)
                 return false;
-            if (Circle.Center == null || Circle.Radius == null || Circle.Width == null)
+            if (Circle.Center == null || Circle.Radius == null || Circle.Width == null
+                || Circle.Start == null || Circle.Stop == null)
                 return false;
 
             // Measure the bounding box
@@ -260,7 +305,7 @@ namespace SharpSprint.Plot
 
             // Get the layer color
             Color layerColor = GetLayerColor(Style, Circle.Layer);
-            if(layerColor == Color.Empty || Style.StrokeColor == Color.Empty || Style.DrillColor == Color.Empty)
+            if(layerColor == Color.Empty || Style.BackgroundColor == Color.Empty)
                 return false;
 
             // Create a new bitmap
@@ -272,10 +317,14 @@ namespace SharpSprint.Plot
 
             // Create the pens and brushes
             Pen primaryPen = new Pen(layerColor, (float)Circle.Width.Millimeters * PixelsPerMillimeter);
-            SolidBrush primaryBrush = new SolidBrush(layerColor);
+            SolidBrush primaryBrush = new SolidBrush(layerColor),
+                backgroundBrush = new SolidBrush(Style.BackgroundColor);
 
             // Create a new graphics context
             Graphics gfx = Graphics.FromImage(Render);
+
+            // Fill the graphics with the background color
+            gfx.FillRectangle(backgroundBrush, 0, 0, Render.Width, Render.Height);
 
             // Check if we can speed up things by drawing a whole circle
             if (Circle.Start == Circle.Stop)
