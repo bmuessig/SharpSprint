@@ -11,12 +11,12 @@ namespace SharpSprint.IO
         public TokenType Type;
         public IndentTransition Indent;
         public string Handle;
-        public uint FirstValue;
-        public uint SecondValue;
+        public int FirstValue;
+        public int SecondValue;
         public bool BoolValue;
         public string TextValue;
 
-        private static Regex RegexParser = new Regex(@"^(\w+)(?:[ \t]*=[ \t]*(?:(\d+)(?:[ \t]*\/[ \t]*(\d+))?|(true|false)|\|(.*?)\|))?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static Regex RegexParser = new Regex(@"^(\w+)(?:[ \t]*=[ \t]*(?:(-?\d+)(?:[ \t]*\/[ \t]*(-?\d+))?|(true|false)|\|(.*?)\|))?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public Token(string Handle)
         {
@@ -40,7 +40,7 @@ namespace SharpSprint.IO
             this.TextValue = string.Empty;
         }
 
-        public Token(string Handle, uint Value)
+        public Token(string Handle, int Value)
         {
             this.Type = TokenType.Value;
             this.Indent = IndentTransition.None;
@@ -51,7 +51,7 @@ namespace SharpSprint.IO
             this.TextValue = string.Empty;
         }
 
-        public Token(string Handle, uint FirstValue, uint SecondValue)
+        public Token(string Handle, int FirstValue, int SecondValue)
         {
             this.Type = TokenType.Tuple;
             this.Indent = IndentTransition.None;
@@ -135,17 +135,17 @@ namespace SharpSprint.IO
             // One number
             if (match.Groups[2].Length > 0)
             {
-                uint val1;
+                int val1;
 
-                if (!uint.TryParse(match.Groups[2].Value.Trim(), out val1))
+                if (!int.TryParse(match.Groups[2].Value.Trim(), out val1))
                     return false; // Invalid number
 
                 // Is it a pair?
                 if (match.Groups[3].Length > 0)
                 {
-                    uint val2;
+                    int val2;
 
-                    if (!uint.TryParse(match.Groups[3].Value.Trim(), out val2))
+                    if (!int.TryParse(match.Groups[3].Value.Trim(), out val2))
                         return false; // Invalid number
 
                     Result = new Token(keyword, val1, val2);

@@ -16,7 +16,7 @@ namespace SharpSprint.IO
             OutputTokens = null;
 
             StringBuilder builder = new StringBuilder();
-            uint lineNumber = 0;
+            uint lineNumber = 1;
             bool inString = false;
             char lastChr = (char)0;
 

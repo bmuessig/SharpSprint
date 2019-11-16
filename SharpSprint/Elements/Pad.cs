@@ -14,6 +14,6 @@ namespace SharpSprint.Elements
         bool Thermal { get; set; }
         ushort ThermalTracksWidth { get; set; }
         uint PadID { get; set; }
-        List<uint> Connections { get; set; }
+        List<int> Connections { get; set; }
     }
 }

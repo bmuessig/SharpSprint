@@ -24,7 +24,7 @@ namespace SharpSprint.Elements
         public ushort ThermalTracksWidth { get; set; } // 100
         public SMDPadThermalTracks ThermalTracks { get; set; }
         public uint PadID { get; set; }
-        public List<uint> Connections { get; set; }
+        public List<int> Connections { get; set; }
 
         // Default optional parameters
         private const uint ClearDefault = 4000;
