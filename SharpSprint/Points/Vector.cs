@@ -18,7 +18,7 @@ namespace SharpSprint.Points
         {
             get
             {
-                return new Distance((uint)(Math.Sqrt(X.Value * X.Value + Y.Value * Y.Value)));
+                return new Distance((int)(Math.Sqrt(X.Value * X.Value + Y.Value * Y.Value)));
             }
 
             set
@@ -29,9 +29,9 @@ namespace SharpSprint.Points
                     Y = new Distance();
 
                 if(AdjustX)
-                    X = new Distance((uint)(Math.Sqrt(value.Value * value.Value - Y.Value * Y.Value)));
+                    X = new Distance((int)(Math.Sqrt(value.Value * value.Value - Y.Value * Y.Value)));
                 else
-                    Y = new Distance((uint)(Math.Sqrt(value.Value * value.Value - X.Value * X.Value)));
+                    Y = new Distance((int)(Math.Sqrt(value.Value * value.Value - X.Value * X.Value)));
             }
         }
 
@@ -63,27 +63,27 @@ namespace SharpSprint.Points
                 // Calculate the remaining side
                 // Note, that C#'s trig functions are using radians
                 if(AdjustX)
-                    X = new Distance((uint)Math.Round(Y.Value / Math.Tan(((double)value * Math.PI) / 180), 0));
+                    X = new Distance((int)Math.Round(Y.Value / Math.Tan(((double)value * Math.PI) / 180), 0));
                 else
-                    Y = new Distance((uint)Math.Round(X.Value * Math.Tan(((double)value * Math.PI) / 180), 0));
+                    Y = new Distance((int)Math.Round(X.Value * Math.Tan(((double)value * Math.PI) / 180), 0));
             }
         }
 
         public FineAngle AngleFine
         {
-            get { return FineAngle.FromAngle(this.Angle); }
+            get { return FineAngle.FromDegrees(this.Angle); }
             set { this.Angle = value.Degrees; }
         }
 
         public CoarseAngle AngleCoarse
         {
-            get { return CoarseAngle.FromAngle(this.Angle); }
+            get { return CoarseAngle.FromDegrees(this.Angle); }
             set { this.Angle = value.Degrees; }
         }
 
         public IntegerAngle AngleInteger
         {
-            get { return IntegerAngle.FromAngle(this.Angle); }
+            get { return IntegerAngle.FromDegrees(this.Angle); }
             set { this.Angle = value.Degrees; }
         }
 
@@ -118,14 +118,14 @@ namespace SharpSprint.Points
             return new Vector(A.X - B.X, A.Y - B.Y);
         }
 
-        public static Vector operator *(Vector V, uint N)
+        public static Vector operator *(Vector V, int N)
         {
             return new Vector(V.X * N, V.Y * N);
         }
 
-        public static Vector operator *(uint N, Vector V)
+        public static Vector operator *(int N, Vector V)
         {
-            return (V * N);
+            return V * N;
         }
 
         public static Distance operator *(Vector A, Vector B)
@@ -133,7 +133,7 @@ namespace SharpSprint.Points
             return new Distance(A.X.Value * B.X.Value + A.Y.Value * B.Y.Value);
         }
 
-        public static Vector operator /(Vector V, uint N)
+        public static Vector operator /(Vector V, int N)
         {
             return new Vector(V.X / N, V.Y / N);
         }
@@ -145,12 +145,17 @@ namespace SharpSprint.Points
             if ((object)A == null || (object)B == null)
                 return false;
 
-            return ((A.X == B.X) && (A.Y == B.Y));
+            return A.X == B.X && A.Y == B.Y;
         }
 
         public static bool operator !=(Vector A, Vector B)
         {
-            return !(A == B);
+            if ((object)A == null && (object)B == null)
+                return false;
+            if ((object)A == null || (object)B == null)
+                return true;
+
+            return A.X != B.X || A.Y != B.Y;
         }
 
         public override bool Equals(Object O)
@@ -161,12 +166,12 @@ namespace SharpSprint.Points
                 return false;
 
             Vector V = (Vector)O;
-            return (this.X == V.X && this.Y == V.Y && this.AdjustX == V.AdjustX);
+            return this.X == V.X && this.Y == V.Y && this.AdjustX == V.AdjustX;
         }
 
         public override int GetHashCode()
         {
-            return (X.GetHashCode() ^ Y.GetHashCode());
+            return X.GetHashCode() ^ Y.GetHashCode();
         }
     }
 }

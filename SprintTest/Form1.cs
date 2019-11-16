@@ -12,7 +12,6 @@ using SharpSprint.Primitives;
 using SharpSprint;
 using SharpSprint.Points;
 using SharpSprint.Plot;
-using SharpSprint.Control;
 
 namespace SprintTest
 {
@@ -96,43 +95,6 @@ namespace SprintTest
                 else
                     MessageBox.Show("Read Fail!");
             }
-        }
-
-        RemoteControl test;
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            test = new RemoteControl();
-            test.Launch();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            if (test.Attach())
-            {
-                if (test.UpdateInfo())
-                {
-                    MessageBox.Show(string.Format("SprintLayout Version {0}\nFile: {1}", test.Version, test.FileName));
-                }
-            }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            test.Import(@"C:\Users\Benedikt\Documents\PCBs\DecisionMaker v7.txt");
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            string filename;
-            test.UpdateInfo();
-            if (test.CreateFileName(out filename))
-            {
-                MessageBox.Show(filename);
-                test.Export(filename);
-            }
-            else
-                test.Export("Test1234.txt");
         }
     }
 }

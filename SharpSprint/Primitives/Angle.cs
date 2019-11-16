@@ -7,10 +7,8 @@ namespace SharpSprint.Primitives
 {
     public interface Angle
     {
-        uint Value { get; set; }
+        int Value { get; set; }
         decimal Degrees { get; set; }
         double Radians { get; set; }
-        int RelativeOffset { get; set; }
-        decimal RelativeOffsetAngle { get; set; }
     }
 }

@@ -25,11 +25,11 @@ namespace SharpSprint.Elements
         public bool Fill { get; set; } // False
 
         // Default optional parameters
-        private const uint ClearDefault = 4000;
+        private const int ClearDefault = 4000;
         private const bool CutoutDefault = false;
         private const bool SoldermaskDefault = false;
-        private const uint StartDefault = 0;
-        private const uint StopDefault = 0;
+        private const int StartDefault = 0;
+        private const int StopDefault = 0;
         private const bool FillDefault = false;
 
         // Required and optional count
@@ -123,7 +123,7 @@ namespace SharpSprint.Elements
             if (token.Type != Token.TokenType.Value)
                 return false;
             // Make sure the value is in range
-            if (token.FirstValue < (uint)Layer.CopperTop || token.FirstValue > (uint)Layer.Mechanical)
+            if (token.FirstValue < (int)Layer.CopperTop || token.FirstValue > (int)Layer.Mechanical)
                 return false;
             // Store the value
             circle.Layer = (Layer)token.FirstValue;
@@ -200,10 +200,8 @@ namespace SharpSprint.Elements
                 // Make sure we have got the correct type
                 if (token.Type != Token.TokenType.Value)
                     return false;
-                if (token.FirstValue > uint.MaxValue)
-                    return false;
                 // Store the value
-                circle.Start = new FineAngle((uint)token.FirstValue);
+                circle.Start = new FineAngle(token.FirstValue);
                 // Increment the optional argument count
                 optCount++;
             }
@@ -214,10 +212,8 @@ namespace SharpSprint.Elements
                 // Make sure we have got the correct type
                 if (token.Type != Token.TokenType.Value)
                     return false;
-                if (token.FirstValue > uint.MaxValue)
-                    return false;
                 // Store the value
-                circle.Stop = new FineAngle((uint)token.FirstValue);
+                circle.Stop = new FineAngle(token.FirstValue);
                 // Increment the optional argument count
                 optCount++;
             }
@@ -254,7 +250,7 @@ namespace SharpSprint.Elements
             // Now write the required values
             // Layer
             if (Layer >= Layer.CopperTop && Layer <= Layer.Mechanical)
-                writer.Write(new Token("LAYER", (uint)Layer));
+                writer.Write(new Token("LAYER", (int)Layer));
             else
                 return false;
 
@@ -311,10 +307,10 @@ namespace SharpSprint.Elements
                         case TrackPointPosition.Center:
                             return Circle.Center.X;
                         case TrackPointPosition.Start:
-                            return new Distance((uint)Math.Round(Circle.Center.X.Value +
+                            return new Distance((int)Math.Round(Circle.Center.X.Value +
                                 (Circle.Radius.Value * (decimal)Math.Cos(Circle.Start.Radians)), 0));
                         case TrackPointPosition.Stop:
-                            return new Distance((uint)Math.Round(Circle.Center.X.Value +
+                            return new Distance((int)Math.Round(Circle.Center.X.Value +
                                 (Circle.Radius.Value * (decimal)Math.Cos(Circle.Stop.Radians)), 0));
                     }
 
@@ -347,10 +343,10 @@ namespace SharpSprint.Elements
                         case TrackPointPosition.Center:
                             return Circle.Center.Y;
                         case TrackPointPosition.Start:
-                            return new Distance((uint)Math.Round(Circle.Center.Y.Value +
+                            return new Distance((int)Math.Round(Circle.Center.Y.Value +
                                 (Circle.Radius.Value * (decimal)Math.Sin(Circle.Start.Radians)), 0));
                         case TrackPointPosition.Stop:
-                            return new Distance((uint)Math.Round(Circle.Center.Y.Value +
+                            return new Distance((int)Math.Round(Circle.Center.Y.Value +
                                 (Circle.Radius.Value * (decimal)Math.Sin(Circle.Stop.Radians)), 0));
                     }
 

@@ -30,9 +30,9 @@ namespace SharpSprint.Elements
         public List<uint> Connections { get; set; }
 
         // Default optional parameters
-        private const uint ClearDefault = 4000;
+        private const int ClearDefault = 4000;
         private const bool SoldermaskDefault = true;
-        private const uint RotationDefault = 0;
+        private const int RotationDefault = 0;
         private const bool ViaDefault = false;
         private const bool ThermalDefault = false;
         private const ushort ThermalTracksWidthDefault = 100;
@@ -267,7 +267,7 @@ namespace SharpSprint.Elements
                 if (token.FirstValue > uint.MaxValue)
                     return false;
                 // Store the value
-                pad.Rotation = new CoarseAngle((uint)token.FirstValue);
+                pad.Rotation = new CoarseAngle(token.FirstValue);
                 // Increment the optional argument count
                 optCount++;
             }
@@ -345,7 +345,7 @@ namespace SharpSprint.Elements
                 if (token.Type != Token.TokenType.Value)
                     return false;
                 // Store the value
-                pad.PadID = token.FirstValue;
+                pad.PadID = (uint)token.FirstValue;
                 // Increment the optional argument count
                 optCount++;
             }
@@ -365,7 +365,7 @@ namespace SharpSprint.Elements
                 if (token.Type != Token.TokenType.Value)
                     return false;
                 // Add the new connection to the list
-                pad.Connections.Add(token.FirstValue);
+                pad.Connections.Add((uint)token.FirstValue);
             }
 
             // Make sure all tokens have been consumed
@@ -388,7 +388,7 @@ namespace SharpSprint.Elements
             // Now write the required values
             // Layer
             if (Layer >= Layer.CopperTop && Layer <= Layer.Mechanical)
-                writer.Write(new Token("LAYER", (uint)Layer));
+                writer.Write(new Token("LAYER", (int)Layer));
             else
                 return false;
 
@@ -403,7 +403,7 @@ namespace SharpSprint.Elements
 
             // Form
             if (Form >= THTPadForm.Round && Form <= THTPadForm.HighRectangular)
-                writer.Write(new Token("FORM", (uint)Form));
+                writer.Write(new Token("FORM", (int)Form));
             else
                 return false;
 
@@ -438,12 +438,12 @@ namespace SharpSprint.Elements
 
             // ThermalTracks
             if (ThermalTracks != 0)
-                writer.Write(new Token("THERMAL_TRACKS", (uint)ThermalTracks));
+                writer.Write(new Token("THERMAL_TRACKS", (int)ThermalTracks));
 
             // PadID
             // TODO: Maybe this needs some automation to prevent duplicates?
             if (PadID != 0)
-                writer.Write(new Token("PAD_ID", PadID));
+                writer.Write(new Token("PAD_ID", (int)PadID));
 
             // Connections
             if (Connections != null)
@@ -454,7 +454,7 @@ namespace SharpSprint.Elements
                 {
                     if (conn == 0)
                         return false;
-                    writer.Write(new Token(string.Format("CON{0}", counter), conn));
+                    writer.Write(new Token(string.Format("CON{0}", counter), (int)conn));
                     counter++;
                 }
             }

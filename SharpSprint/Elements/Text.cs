@@ -27,12 +27,12 @@ namespace SharpSprint.Elements
         public bool MirrorVertical { get; set; } // False
 
         // Default optional parameters
-        protected const uint ClearDefault = 4000;
+        protected const int ClearDefault = 4000;
         protected const bool CutoutDefault = false;
         protected const bool SoldermaskDefault = false;
         protected const TextStyle StyleDefault = TextStyle.Normal;
         protected const TextThickness ThicknessDefault = TextThickness.Normal;
-        protected const uint RotationDefault = 0;
+        protected const int RotationDefault = 0;
         protected const bool MirrorHorizontalDefault = false;
         protected const bool MirrorVerticalDefault = false;
         protected const bool VisibleDefault = true;
@@ -268,7 +268,7 @@ namespace SharpSprint.Elements
                 if (token.FirstValue > uint.MaxValue)
                     return false;
                 // Store the value
-                text.Rotation = new CoarseAngle((uint)token.FirstValue);
+                text.Rotation = new CoarseAngle((int)token.FirstValue);
                 // Increment the optional argument count
                 optCount++;
             }
@@ -335,7 +335,7 @@ namespace SharpSprint.Elements
             // Now write the required values
             // Layer
             if (Layer >= Layer.CopperTop && Layer <= Layer.Mechanical)
-                writer.Write(new Token("LAYER", (uint)Layer));
+                writer.Write(new Token("LAYER", (int)Layer));
             else
                 return false;
 
@@ -364,11 +364,11 @@ namespace SharpSprint.Elements
 
             // Style
             if (Style != StyleDefault)
-                writer.Write(new Token("STYLE", (uint)Style));
+                writer.Write(new Token("STYLE", (int)Style));
 
             // Thickness
             if (Thickness != ThicknessDefault)
-                writer.Write(new Token("THICKNESS", (uint)Thickness));
+                writer.Write(new Token("THICKNESS", (int)Thickness));
 
             // Rotation
             if (Rotation.Value != RotationDefault)

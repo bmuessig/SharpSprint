@@ -22,7 +22,7 @@ namespace SharpSprint.Elements
 
         // Default optional parameters
         private const bool UsePickplaceDefault = false;
-        private const uint RotationDefault = 0;
+        private const int RotationDefault = 0;
 
         // Required and optional count
         private const byte RequiredArgCount = 0;
@@ -192,7 +192,7 @@ namespace SharpSprint.Elements
                     if (token.FirstValue > uint.MaxValue)
                         return false;
                     // Store the value
-                    component.Rotation = new IntegerAngle((uint)token.FirstValue);
+                    component.Rotation = new IntegerAngle((int)token.FirstValue);
                     // Increment the optional argument count
                     optCount++;
                 }

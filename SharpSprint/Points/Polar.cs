@@ -16,19 +16,19 @@ namespace SharpSprint.Points
 
         public FineAngle AngleFine
         {
-            get { return FineAngle.FromAngle(this.Angle); }
+            get { return FineAngle.FromDegrees(this.Angle); }
             set { this.Angle = value.Degrees; }
         }
 
         public CoarseAngle AngleCoarse
         {
-            get { return CoarseAngle.FromAngle(this.Angle); }
+            get { return CoarseAngle.FromDegrees(this.Angle); }
             set { this.Angle = value.Degrees; }
         }
 
         public IntegerAngle AngleInteger
         {
-            get { return IntegerAngle.FromAngle(this.Angle); }
+            get { return IntegerAngle.FromDegrees(this.Angle); }
             set { this.Angle = value.Degrees; }
         }
 
@@ -36,7 +36,7 @@ namespace SharpSprint.Points
         {
             get
             {
-                return new Distance((uint)Math.Round(Origin.X.Value + Radius.Value * Math.Cos(((double)Angle * Math.PI) / 180), 0));
+                return new Distance((int)Math.Round(Origin.X.Value + Radius.Value * Math.Cos(((double)Angle * Math.PI) / 180), 0));
             }
 
             set
@@ -49,7 +49,7 @@ namespace SharpSprint.Points
         {
             get
             {
-                return new Distance((uint)Math.Round(Origin.Y.Value + Radius.Value * Math.Sin(((double)Angle * Math.PI) / 180), 0));
+                return new Distance((int)Math.Round(Origin.Y.Value + Radius.Value * Math.Sin(((double)Angle * Math.PI) / 180), 0));
             }
 
             set

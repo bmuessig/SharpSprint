@@ -23,7 +23,7 @@ namespace SharpSprint.Elements
         public bool FlatEnd { get; set; } // False
 
         // Default optional parameters
-        private const uint ClearDefault = 4000;
+        private const int ClearDefault = 4000;
         private const bool CutoutDefault = false;
         private const bool SoldermaskDefault = false;
         private const bool FlatStartDefault = false;
@@ -234,7 +234,7 @@ namespace SharpSprint.Elements
             // Now write the required values
             // Layer
             if (Layer >= Layer.CopperTop && Layer <= Layer.Mechanical)
-                writer.Write(new Token("LAYER", (uint)Layer));
+                writer.Write(new Token("LAYER", (int)Layer));
             else
                 return false;
 
